@@ -1,0 +1,2323 @@
+/* ============================================================================
+   SPYY DESIGN SYSTEM — Component layer
+   Geometry, colour and state behaviour reverse-engineered from higgsfield.ai.
+
+   Architecture
+     .spy-<component>            base component
+     [data-variant]              intent      (brand, secondary, ghost, danger…)
+     [data-size]                 size ladder
+     [data-state] / :pseudo      state
+     --spy-<component>-<slot>    component token slot (overridable per subtree)
+
+   Every component reads Tier-2 semantics only — never a raw primitive — so
+   flipping [data-theme] re-themes the whole system.
+   ========================================================================= */
+
+/* ---------------------------------------------------------------------------
+   BASE
+   ------------------------------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background-color: var(--hf-color-background-primary);
+  color: var(--hf-color-text-primary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--text-body-s);
+  line-height: var(--text-body-s--line-height);
+  letter-spacing: var(--hf-tracking-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbars are drawn, never left to the OS.                            [I] */
+* { scrollbar-width: thin; scrollbar-color: var(--hf-color-border-strong) transparent; }
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--hf-color-border-default);
+  border-radius: var(--hf-radius-full);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover { background-color: var(--hf-color-border-strong); background-clip: content-box; }
+
+::selection { background: var(--hf-color-lime-alpha-30); color: var(--hf-color-text-primary); }
+
+/* ---------------------------------------------------------------------------
+   TYPOGRAPHY UTILITIES
+   Naming mirrors the token names so a spec can be read straight off a comp.
+   ------------------------------------------------------------------------ */
+.spy-caption-s { font: var(--hf-type-weight-regular) var(--text-caption-s)/var(--text-caption-s--line-height) var(--hf-type-family-secondary); letter-spacing: var(--hf-tracking-ui); }
+.spy-caption-m { font: var(--hf-type-weight-regular) var(--text-caption-m)/var(--text-caption-m--line-height) var(--hf-type-family-secondary); letter-spacing: var(--hf-tracking-ui); }
+.spy-caption-l { font: var(--hf-type-weight-regular) var(--text-caption-l)/var(--text-caption-l--line-height) var(--hf-type-family-secondary); letter-spacing: var(--hf-tracking-ui); }
+.spy-body-s    { font: var(--hf-type-weight-regular) var(--text-body-s)/var(--text-body-s--line-height) var(--hf-type-family-secondary); letter-spacing: var(--hf-tracking-body); }
+.spy-body-m    { font: var(--hf-type-weight-regular) var(--text-body-m)/var(--text-body-m--line-height) var(--hf-type-family-secondary); letter-spacing: var(--hf-tracking-body); }
+.spy-body-l    { font: var(--hf-type-weight-regular) var(--text-body-l)/var(--text-body-l--line-height) var(--hf-type-family-secondary); letter-spacing: var(--hf-tracking-body); }
+
+.spy-h6 { font: var(--hf-type-weight-semi-bold) var(--text-h6)/var(--text-h6--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-body); margin: 0; }
+.spy-h5 { font: var(--hf-type-weight-semi-bold) var(--text-h5)/var(--text-h5--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-display); margin: 0; }
+.spy-h4 { font: var(--hf-type-weight-bold) var(--text-h4)/var(--text-h4--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-display); margin: 0; }
+.spy-h3 { font: var(--hf-type-weight-bold) var(--text-h3)/var(--text-h3--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-display); margin: 0; }
+.spy-h2 { font: var(--hf-type-weight-bold) var(--text-h2)/var(--text-h2--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-display); margin: 0; }
+.spy-h1 { font: var(--hf-type-weight-bold) var(--text-h1)/var(--text-h1--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-display); margin: 0; }
+.spy-display { font: var(--hf-type-weight-black) var(--text-display)/var(--text-display--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-display); margin: 0; }
+
+/* Caps styles always carry -4% tracking. Confirmed across every caps token. */
+.spy-caps {
+  text-transform: uppercase;
+  letter-spacing: var(--hf-tracking-caps);
+  font-weight: var(--hf-type-weight-bold);
+}
+.spy-mono { font-family: var(--hf-type-family-mono); }
+.spy-grotesk { font-family: var(--hf-type-family-grotesk); }
+
+.spy-text-secondary { color: var(--hf-color-text-secondary); }
+.spy-text-tertiary  { color: var(--hf-color-text-tertiary); }
+.spy-text-brand     { color: var(--hf-color-text-brand); }
+.spy-text-danger    { color: var(--hf-color-text-danger); }
+.spy-text-success   { color: var(--hf-color-text-success); }
+.spy-text-warning   { color: var(--hf-color-text-warning); }
+
+/* ---------------------------------------------------------------------------
+   LAYOUT
+   ------------------------------------------------------------------------ */
+.spy-container {
+  width: 100%;
+  max-width: var(--hf-container-max);
+  margin-inline: auto;
+  padding-inline: var(--hf-gutter);
+}
+@media (min-width: 48rem) { .spy-container { padding-inline: var(--hf-gutter-lg); } }
+
+.spy-stack { display: flex; flex-direction: column; gap: var(--hf-space-400); }
+.spy-row   { display: flex; align-items: center; gap: var(--hf-space-200); }
+.spy-row-lg{ display: flex; align-items: center; gap: var(--hf-space-300); }
+
+/* ---------------------------------------------------------------------------
+   ICON
+   Spec (confirmed from Higgsfield's SVGs):
+     24x24 viewBox · outline · stroke-width 1.5 · stroke=currentColor
+     fill=none · round caps on organic paths, square caps on geometric ones
+     paths land on .25 offsets of the 24 grid (e.g. 6.25 / 17.75)
+   Rendered size comes from the icon token ladder, never from the viewBox.
+   ------------------------------------------------------------------------ */
+.spy-icon {
+  --spy-icon-size: var(--hf-icon-md);
+  width: var(--spy-icon-size);
+  height: var(--spy-icon-size);
+  flex-shrink: 0;
+  display: inline-flex;
+  stroke-width: 1.5;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+}
+.spy-icon[data-size="xs"] { --spy-icon-size: var(--hf-icon-xs); }
+.spy-icon[data-size="sm"] { --spy-icon-size: var(--hf-icon-sm); }
+.spy-icon[data-size="md"] { --spy-icon-size: var(--hf-icon-md); }
+.spy-icon[data-size="lg"] { --spy-icon-size: var(--hf-icon-lg); }
+.spy-icon[data-size="xl"] { --spy-icon-size: var(--hf-icon-xl); }
+/* Solid variant exists only for status/indicator glyphs, never for actions. */
+.spy-icon[data-fill="solid"] { fill: currentColor; stroke: none; }
+
+/* ---------------------------------------------------------------------------
+   BUTTON
+   Properties : variant · size · iconOnly · fullWidth · loading · disabled
+   States     : default · hover · active · focus-visible · disabled · loading
+
+   Structural notes carried over verbatim from Higgsfield:
+     · display is inline-grid + grid-auto-flow:column + place-content:center
+       (not flex) so a single label centres optically without line-height math
+     · a 2px transparent border is always reserved, so outline variants never
+       shift layout
+     · hover/press on a filled button is a brightness() filter, not a second
+       colour token: hover .8, press .6
+     · hover on a transparent button is an ::after alpha overlay
+     · focus ring = 2px page-coloured gap + 4px brand ring, drawn with
+       box-shadow, with `outline: 2px solid transparent` for forced-colors
+   ------------------------------------------------------------------------ */
+.spy-btn {
+  --spy-btn-hover-overlay: var(--hf-color-transparent-light-20);
+  position: relative;
+  isolation: isolate;
+  display: inline-grid;
+  grid-auto-flow: column;
+  place-content: center;
+  align-items: center;
+  max-width: 100%;
+  border: var(--hf-border-width-thick) solid transparent;
+  background-color: transparent;
+  color: var(--hf-color-text-primary);
+  font-family: var(--hf-type-family-secondary);
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+  outline: none;
+  transition-property: color, background-color, border-color, box-shadow, filter;
+  transition-duration: var(--hf-duration-150);
+  transition-timing-function: var(--hf-ease-in-out);
+}
+.spy-btn > .spy-icon { --spy-icon-size: var(--spy-btn-icon, var(--hf-icon-md)); }
+
+/* transparent-background hover overlay */
+.spy-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: transparent;
+  transition: background-color var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-btn:hover::after,
+.spy-btn:focus-visible::after { background-color: var(--spy-btn-hover-overlay); }
+
+.spy-btn:focus-visible {
+  outline: var(--hf-border-width-thick) solid transparent;
+  box-shadow:
+    0 0 0 var(--hf-border-width-thick) var(--hf-color-background-primary),
+    0 0 0 var(--hf-space-100) var(--hf-color-border-focus);
+}
+.spy-btn:disabled,
+.spy-btn[aria-disabled="true"] { pointer-events: none; opacity: 0.5; }
+.spy-btn[aria-busy="true"] { cursor: wait; }
+
+/* -- Size ladder ----------------------------------------------------- [C]
+   Heights 24 / 32 / 40 / 48 with radius stepping 6 / 8 / 10 / 12.
+   The radius:height relationship is not proportional — it plateaus. The lg
+   step (56 / 14) is [I], continuing the ladder and cross-checked against the
+   app-scale button at the same height.                                     */
+.spy-btn[data-size="xxs"] {
+  height: var(--hf-space-600); min-width: var(--hf-space-600);
+  gap: var(--hf-space-150); padding: 0 var(--hf-space-300);
+  border-radius: var(--hf-radius-150);
+  font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium); letter-spacing: var(--hf-type-letter-spacing-none);
+  --spy-btn-icon: var(--hf-icon-xs);
+}
+.spy-btn[data-size="xs"] {
+  height: var(--hf-space-800); min-width: var(--hf-space-800);
+  gap: var(--hf-space-150); padding: var(--hf-space-150) var(--hf-space-300);
+  border-radius: var(--hf-radius-200);
+  font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium); letter-spacing: var(--hf-type-letter-spacing-none);
+  --spy-btn-icon: var(--hf-icon-sm);
+}
+.spy-btn[data-size="sm"] {
+  height: var(--hf-space-1000); min-width: var(--hf-space-1000);
+  gap: var(--hf-space-150); padding: var(--hf-space-200) var(--hf-space-400);
+  border-radius: var(--hf-radius-250);
+  font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium); letter-spacing: var(--hf-type-letter-spacing-none);
+  --spy-btn-icon: var(--hf-icon-md);
+}
+.spy-btn[data-size="md"] {
+  height: var(--hf-space-1200); min-width: var(--hf-space-1200);
+  gap: var(--hf-space-150); padding: var(--hf-space-400);
+  border-radius: var(--hf-radius-300);
+  font-size: var(--hf-type-size-400); line-height: var(--hf-type-line-height-600);
+  font-weight: var(--hf-type-weight-semi-bold); letter-spacing: var(--hf-type-letter-spacing-slight);
+  --spy-btn-icon: var(--hf-icon-lg);
+}
+.spy-btn[data-size="lg"] {
+  height: var(--hf-space-1400); min-width: var(--hf-space-1400);
+  gap: var(--hf-space-200); padding: var(--hf-space-400) var(--hf-space-500);
+  border-radius: 0.875rem;
+  font-size: var(--hf-type-size-500); line-height: var(--hf-type-line-height-800);
+  font-weight: var(--hf-type-weight-semi-bold); letter-spacing: var(--hf-type-letter-spacing-slight);
+  --spy-btn-icon: var(--hf-icon-lg);
+}
+
+.spy-btn[data-icon-only] { padding-inline: 0; }
+.spy-btn[data-full-width] { width: 100%; }
+
+/* -- Variants -------------------------------------------------------- [C] */
+
+/* brand — the lime pill. Press feedback is a filter, so the token stays one. */
+.spy-btn[data-variant="brand"] {
+  background-color: var(--hf-color-button-brand);
+  color: var(--hf-color-text-inverse);
+  --spy-btn-hover-overlay: transparent;
+}
+.spy-btn[data-variant="brand"]:hover { filter: brightness(0.8); }
+.spy-btn[data-variant="brand"]:active { filter: brightness(0.6); }
+/* [C] The lime gloss is not marketing-only: sampling the editor's primary
+   action returned #eefd17 at the top edge, i.e. the same #ffff14 gradient
+   riding over the lime fill. Opt in with data-gloss. */
+.spy-btn[data-variant="brand"][data-gloss] {
+  background-image:
+    var(--hf-gradient-special-gloss-lime),
+    linear-gradient(90deg, var(--hf-color-button-brand) 0%, var(--hf-color-button-brand) 100%);
+}
+
+/* brand-soft — lime at 10% with brand text. Used for Login, secondary CTAs. */
+.spy-btn[data-variant="brand-soft"] {
+  background-color: var(--hf-color-transparent-lime-10);
+  color: var(--hf-color-text-link);
+  box-shadow: inset 0 var(--hf-space-050) 3px var(--hf-color-transparent-light-05);
+  --spy-btn-hover-overlay: transparent;
+}
+.spy-btn[data-variant="brand-soft"]:hover { filter: brightness(0.8); }
+.spy-btn[data-variant="brand-soft"]:active { filter: brightness(0.6); }
+
+/* secondary — inverted: white surface, dark label. Carries a raised shadow. */
+.spy-btn[data-variant="secondary"] {
+  background-color: var(--hf-color-button-primary);
+  color: var(--hf-color-text-inverse);
+  box-shadow: var(--hf-shadow-raised-sm);
+  --spy-btn-hover-overlay: var(--hf-color-transparent-dark-50);
+}
+
+/* tertiary — 10% white glass. Blurs whatever sits behind it. */
+.spy-btn[data-variant="tertiary"] {
+  background-color: var(--hf-color-transparent-light-10);
+  color: var(--hf-color-text-primary);
+  backdrop-filter: blur(var(--hf-space-1000));
+}
+
+/* ghost — no surface until hover. */
+.spy-btn[data-variant="ghost"] {
+  background-color: transparent;
+  color: var(--hf-color-text-primary);
+  --spy-btn-hover-overlay: var(--hf-color-overlay-dim-strong);
+}
+
+/* outline — 1px hairline that disappears on hover as the fill comes up. */
+.spy-btn[data-variant="outline"] {
+  background-color: transparent;
+  color: var(--hf-color-text-primary);
+  border-width: var(--hf-border-width-thin);
+  border-color: var(--hf-color-border-default);
+  --spy-btn-hover-overlay: transparent;
+}
+.spy-btn[data-variant="outline"]:hover,
+.spy-btn[data-variant="outline"]:focus-visible {
+  background-color: var(--hf-color-overlay-dim-strong);
+  border-color: transparent;
+}
+
+/* danger / danger-soft — note the focus ring swaps to the error glow. */
+.spy-btn[data-variant="danger"] {
+  background-color: var(--hf-color-button-destructive);
+  color: var(--hf-color-text-primary);
+  --spy-btn-hover-overlay: var(--hf-color-transparent-dark-20);
+}
+.spy-btn[data-variant="danger-soft"] {
+  background-color: var(--hf-color-state-error-bg);
+  color: var(--hf-color-state-error-fg);
+}
+.spy-btn[data-variant="danger"]:focus-visible,
+.spy-btn[data-variant="danger-soft"]:focus-visible {
+  box-shadow:
+    0 0 0 var(--hf-border-width-thick) var(--hf-color-background-primary),
+    0 0 0 var(--hf-space-100) var(--hf-color-state-error-glow);
+}
+
+/* success-soft / warning-soft — alpha fill + status text, hairline separator */
+.spy-btn[data-variant="success-soft"] {
+  background-color: var(--hf-color-state-success-bg);
+  color: var(--hf-color-state-success-fg);
+}
+.spy-btn[data-variant="warning-soft"] {
+  background-color: var(--hf-color-state-warning-bg);
+  color: var(--hf-color-state-warning-fg);
+}
+
+/* -- marketing-primary — the hero CTA ------------------------------- [C]
+   The most distinctive object in the system. Four layers:
+     1  lime fill
+     2  a vertical yellow gloss gradient (#ffff14, transparent -> opaque)
+     3  a 3px inset bottom edge in #829b19 — a darker lime, reading as the
+        thickness of a physical key
+     4  two stacked ambient shadows: 0 6px 4px black/25 and 0 32px 24px black/15
+   Pressing it removes the inset edge and drops the button 2px.            */
+.spy-btn[data-variant="marketing-primary"] {
+  background-color: var(--hf-color-button-brand);
+  background-image:
+    var(--hf-gradient-special-gloss-lime),
+    linear-gradient(90deg, var(--hf-color-button-brand) 0%, var(--hf-color-button-brand) 100%);
+  border: none;
+  color: var(--hf-color-text-inverse);
+  --spy-btn-hover-overlay: transparent;
+  box-shadow:
+    inset 0 -3px 0 0 #829b19,
+    0 var(--hf-space-150) var(--hf-space-100) 0 var(--hf-color-transparent-dark-25),
+    0 var(--hf-space-800) var(--hf-space-600) 0 var(--hf-color-transparent-dark-15);
+}
+.spy-btn[data-variant="marketing-primary"]:hover { filter: brightness(1.04); }
+.spy-btn[data-variant="marketing-primary"]:active {
+  transform: translateY(2px);
+  box-shadow:
+    inset 0 -1px 0 0 #829b19,
+    0 var(--hf-space-050) var(--hf-space-100) 0 var(--hf-color-transparent-dark-25);
+}
+
+/* marketing-secondary — same physicality, white key */
+.spy-btn[data-variant="marketing-secondary"] {
+  background-color: var(--hf-color-button-primary);
+  border: none;
+  color: var(--hf-color-text-inverse);
+  --spy-btn-hover-overlay: var(--hf-color-transparent-dark-10);
+  box-shadow:
+    inset 0 -3px 0 0 var(--hf-color-transparent-dark-32),
+    0 var(--hf-space-150) var(--hf-space-100) 0 var(--hf-color-transparent-dark-25),
+    0 var(--hf-space-800) var(--hf-space-600) 0 var(--hf-color-transparent-dark-15);
+}
+.spy-btn[data-variant="marketing-secondary"]:active { transform: translateY(2px); }
+
+/* marketing-tertiary / -ghost — frosted glass keys */
+.spy-btn[data-variant="marketing-tertiary"] {
+  background-color: var(--hf-color-transparent-light-05);
+  border: var(--hf-border-width-thin) solid var(--hf-color-border-default);
+  color: var(--hf-color-text-primary);
+  --spy-btn-hover-overlay: transparent;
+  box-shadow: inset 0 var(--hf-border-width-thick) 3px 0 var(--hf-color-transparent-light-05);
+  backdrop-filter: blur(var(--hf-space-300));
+}
+.spy-btn[data-variant="marketing-tertiary"]:hover {
+  background-color: var(--hf-color-transparent-light-20);
+  border-color: transparent;
+}
+.spy-btn[data-variant="marketing-ghost"] {
+  background-color: var(--hf-color-transparent-light-05);
+  border: none;
+  color: var(--hf-color-text-primary);
+  box-shadow: inset 0 var(--hf-border-width-thick) 3px 0 var(--hf-color-transparent-light-05);
+  backdrop-filter: blur(var(--hf-space-300));
+}
+
+/* -- Loading --------------------------------------------------------------- */
+.spy-btn[aria-busy="true"] .spy-btn-label { visibility: hidden; }
+.spy-btn[aria-busy="true"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 1em; height: 1em;
+  border-radius: var(--hf-radius-full);
+  border: var(--hf-border-width-medium) solid currentColor;
+  border-top-color: transparent;
+  animation: spy-spin var(--hf-duration-800) var(--hf-ease-linear) infinite;
+}
+@keyframes spy-spin { to { transform: rotate(360deg); } }
+
+/* -- Button group ---------------------------------------------------- [C] */
+.spy-btn-group { display: inline-flex; position: relative; max-width: 100%; }
+.spy-btn-group > .spy-btn { position: relative; }
+.spy-btn-group > .spy-btn:hover,
+.spy-btn-group > .spy-btn:focus-visible { z-index: 1; }
+.spy-btn-group[data-attached] > .spy-btn:not(:last-child) {
+  border-start-end-radius: 0; border-end-end-radius: 0;
+}
+.spy-btn-group[data-attached] > .spy-btn:not(:first-child) {
+  border-start-start-radius: 0; border-end-start-radius: 0;
+  margin-inline-start: calc(-1 * var(--hf-border-width-thin));
+}
+.spy-btn-group[data-spaced] { gap: var(--hf-space-200); }
+
+/* ---------------------------------------------------------------------------
+   APP-SCALE BUTTON LADDER                                               [C]
+   A second, older ladder still shipping inside the product shell. Heights run
+   16/24/32/40/48/56/64 with tighter padding and a semibold label at every
+   step. Kept because product density depends on the 16 and 24 steps, which
+   the primary ladder does not reach. Opt in per instance.
+   ------------------------------------------------------------------------ */
+.spy-btn[data-scale="app"] { font-weight: var(--hf-type-weight-semi-bold); }
+.spy-btn[data-scale="app"][data-size="xxs"] { height: 16px; min-width: 16px; gap: 4px; padding-inline: 4px;  border-radius: var(--hf-radius-050); font-size: 0.625rem; line-height: 0.875rem; --spy-btn-icon: 8px; }
+.spy-btn[data-scale="app"][data-size="xs"]  { height: 24px; min-width: 24px; gap: 4px; padding: 0 8px 0 6px; border-radius: var(--hf-radius-200); font-size: 0.625rem; line-height: 0.875rem; --spy-btn-icon: 14px; }
+.spy-btn[data-scale="app"][data-size="sm"]  { height: 32px; min-width: 32px; gap: 6px; padding-inline: 8px;  border-radius: var(--hf-radius-200); font-size: 0.75rem;  line-height: 1.125rem; --spy-btn-icon: 16px; }
+.spy-btn[data-scale="app"][data-size="md"]  { height: 40px; min-width: 40px; gap: 6px; padding-inline: 10px; border-radius: var(--hf-radius-250); font-size: 0.875rem; line-height: 1.25rem;  --spy-btn-icon: 18px; }
+.spy-btn[data-scale="app"][data-size="lg"]  { height: 48px; min-width: 48px; gap: 8px; padding-inline: 12px; border-radius: var(--hf-radius-300); font-size: 1rem;     line-height: 1.5rem;   --spy-btn-icon: 20px; }
+.spy-btn[data-scale="app"][data-size="xl"]  { height: 56px; min-width: 56px; gap: 8px; padding-inline: 14px; border-radius: 0.875rem;            font-size: 1.125rem; line-height: 1.75rem;  --spy-btn-icon: 24px; }
+.spy-btn[data-scale="app"][data-size="xxl"] { height: 64px; min-width: 64px; gap: 8px; padding-inline: 16px; border-radius: 0.875rem;            font-size: 1.125rem; line-height: 1.75rem;  --spy-btn-icon: 24px; }
+
+/* The app ladder's disabled treatment is a flat fill, not opacity.       [C] */
+.spy-btn[data-scale="app"]:disabled,
+.spy-btn[data-scale="app"][aria-disabled="true"] {
+  opacity: 1;
+  background-color: var(--hf-color-button-disabled);
+  color: var(--hf-color-text-disabled);
+  box-shadow: none;
+  filter: none;
+}
+.spy-btn[data-scale="app"]:disabled .spy-icon { color: var(--hf-color-icon-disabled); }
+
+/* ---------------------------------------------------------------------------
+   FIELD  (input · textarea · search · select trigger)                   [C]
+   Properties : size · invalid · disabled · prefix · suffix · multiline
+   States     : default · hover · focus-within · invalid · disabled
+
+   Notes carried over verbatim:
+     · the control has NO border. Depth comes from a 5%-white fill.
+     · focus is an INSET 1.5px ring, so the control never grows on focus
+     · invalid uses the same inset ring in red-600 and persists through focus
+     · hover is an ::after 5%-white overlay, not a fill swap
+     · placeholder is white/50 at opacity 1 (not a dimmed text colour)
+   ------------------------------------------------------------------------ */
+.spy-field { display: flex; flex-direction: column; gap: var(--hf-space-150); min-width: 0; }
+
+.spy-field-label {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: var(--hf-space-100);
+  padding-inline-end: var(--hf-space-200);
+  color: var(--hf-color-text-primary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-100);
+  line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium);
+  letter-spacing: var(--hf-type-letter-spacing-none);
+  transition: color var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-field-required { color: var(--hf-color-state-error-fg); }
+
+.spy-field-control {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: var(--hf-space-150);
+  width: 100%;
+  height: var(--hf-space-1000);            /* 40px */
+  padding-inline: var(--hf-space-300);     /* 12px */
+  border: none;
+  border-radius: var(--hf-radius-300);     /* 12px */
+  background-color: var(--hf-color-overlay-dim-soft);
+  color: var(--hf-color-icon-secondary);
+  cursor: text;
+  transition: box-shadow var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-field-control::after {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  border-radius: inherit; background-color: transparent;
+  transition: background-color var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-field-control:hover::after { background-color: var(--hf-color-overlay-hover); }
+.spy-field-control:focus-within {
+  outline: var(--hf-border-width-thick) solid transparent;
+  box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus);
+  overflow: hidden;
+}
+.spy-field-control[data-size="sm"] { height: var(--hf-space-800); padding-inline: var(--hf-space-200); border-radius: var(--hf-radius-250); }
+.spy-field-control[data-size="lg"] { height: var(--hf-space-1200); padding-inline: var(--hf-space-400); }
+.spy-field-control[data-shape="pill"] { border-radius: var(--hf-radius-full); }
+
+.spy-field-control[data-invalid],
+.spy-field-control[data-invalid]:focus-within {
+  box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-error);
+}
+.spy-field-control[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+.spy-field-control[data-disabled]::after { background-color: transparent; }
+
+.spy-field-input {
+  flex: 1 1 0;
+  width: 100%; min-width: 0;
+  height: var(--hf-space-400);
+  padding: 0;
+  border: none;
+  background: none;
+  outline: none;
+  resize: none;
+  color: var(--hf-color-text-primary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-regular);
+  letter-spacing: var(--hf-type-letter-spacing-none);
+}
+.spy-field-input::placeholder { color: var(--hf-color-text-on-overlay-secondary); opacity: 1; }
+.spy-field-input:disabled { cursor: not-allowed; }
+.spy-field-control[data-size="lg"] .spy-field-input { font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); }
+
+/* Affixes are square boxes at the sm icon step, so the label never shifts. */
+.spy-field-affix {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hf-space-500); height: var(--hf-space-500);
+  flex-shrink: 0;
+}
+.spy-field-affix > .spy-icon { --spy-icon-size: 100%; }
+
+/* Multiline grows downward from an 80px floor and top-aligns its content. */
+.spy-field-control[data-multiline] {
+  flex-direction: column;
+  align-items: flex-start;
+  height: auto;
+  min-height: var(--hf-space-2000);        /* 80px */
+  padding-block: var(--hf-space-200);
+}
+.spy-field-control[data-multiline] .spy-field-input { height: auto; min-height: var(--hf-space-1000); }
+
+.spy-field-description { color: var(--hf-color-text-tertiary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); }
+.spy-field-error { color: var(--hf-color-state-error-fg); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); }
+.spy-field-label[data-invalid] { color: var(--hf-color-state-error-fg); }
+
+/* Clear affordance inside a search / autocomplete field. */
+.spy-field-clear {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hf-space-500); height: var(--hf-space-500);
+  flex-shrink: 0; padding: 0;
+  border: none; border-radius: var(--hf-radius-100);
+  background: none; color: var(--hf-color-icon-secondary);
+  cursor: pointer; outline: none;
+  transition-property: color, background-color;
+  transition-duration: var(--hf-duration-130);
+}
+.spy-field-clear:hover { background-color: var(--hf-color-overlay-hover); color: var(--hf-color-icon-primary); }
+.spy-field-clear:focus-visible { box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus); }
+
+/* ---------------------------------------------------------------------------
+   SELECT                                                                [C]
+   Trigger reuses the field control. The chevron rotates on open with a
+   long-tail expo ease — a small thing, but it is what makes the menu feel
+   attached to the trigger rather than dropped on top of it.
+   ------------------------------------------------------------------------ */
+.spy-select-trigger {
+  cursor: pointer;
+  text-align: start;
+  appearance: none;
+  color: var(--hf-color-text-primary);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-regular);
+}
+.spy-select-trigger:focus-visible,
+.spy-select-trigger[data-open] {
+  outline: none;
+  box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus);
+}
+.spy-select-trigger[data-invalid][data-open],
+.spy-select-trigger[data-invalid]:focus-visible {
+  box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-error);
+}
+.spy-select-value { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spy-select-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hf-space-500); height: var(--hf-space-500); flex-shrink: 0;
+  color: var(--hf-color-icon-secondary);
+  transition: transform var(--hf-duration-180) var(--hf-ease-out-expo);
+}
+.spy-select-trigger[data-open] .spy-select-icon { transform: rotate(180deg); }
+
+/* ---------------------------------------------------------------------------
+   MENU / DROPDOWN / POPOVER                                             [C]
+   Surface = glass (cool-250 @ 75%) + 40px blur + a 1px hairline ring drawn
+   with box-shadow rather than a border, so the radius stays crisp.
+   Enter 180ms expo-out, exit 130ms ease-in — asymmetric on purpose.
+   ------------------------------------------------------------------------ */
+.spy-menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--hf-space-050);
+  min-width: 12rem;
+  max-width: 22rem;
+  padding: var(--hf-space-200);
+  border-radius: var(--hf-radius-300);
+  background-color: var(--hf-color-background-glass);
+  backdrop-filter: blur(var(--hf-space-1000));
+  box-shadow:
+    0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle),
+    var(--hf-shadow-overlay);
+  z-index: var(--hf-z-index-popover);
+  overflow: hidden;
+  outline: none;
+  transition: opacity var(--hf-duration-180) var(--hf-ease-out-expo);
+}
+.spy-menu[data-closed] { opacity: 0; }
+
+.spy-menu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--hf-space-200);
+  min-height: calc(var(--hf-space-800) + var(--hf-space-100)); /* 36px */
+  padding: var(--hf-space-200);
+  border: none;
+  border-radius: var(--hf-radius-200);
+  background-color: transparent;
+  color: var(--hf-color-text-primary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-500);
+  font-weight: var(--hf-type-weight-medium);
+  letter-spacing: var(--hf-type-letter-spacing-loose);  /* 0.1px */
+  text-align: start;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  transition-property: background-color, box-shadow, color;
+  transition-duration: var(--hf-duration-150);
+}
+.spy-menu-item:hover,
+.spy-menu-item[data-highlighted] { background-color: var(--hf-color-overlay-hover); }
+.spy-menu-item[data-selected] { background-color: var(--hf-color-overlay-hover); color: var(--hf-color-text-primary); }
+.spy-menu-item:focus-visible { box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus); }
+.spy-menu-item[data-disabled] { color: var(--hf-color-text-disabled); pointer-events: none; }
+.spy-menu-item[data-danger] { color: var(--hf-color-text-danger); }
+
+.spy-menu-item-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hf-space-500); height: var(--hf-space-500); flex-shrink: 0;
+  color: var(--hf-color-icon-primary);
+}
+.spy-menu-item-label { display: flex; flex-direction: column; gap: var(--hf-space-050); flex: 1 1 0; min-width: 0; }
+.spy-menu-item-description {
+  color: var(--hf-color-text-on-overlay-secondary);
+  font-size: var(--hf-type-size-100);
+  line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-regular);
+}
+/* Leading media tile — the pattern used for model pickers. */
+.spy-menu-item-media {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: calc(var(--hf-space-800) + var(--hf-space-100));  /* 36px */
+  height: calc(var(--hf-space-800) + var(--hf-space-100));
+  flex-shrink: 0; overflow: hidden;
+  border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
+  border-radius: var(--hf-radius-200);
+  background-color: var(--hf-color-background-secondary);
+  box-shadow: var(--hf-shadow-inset-tile-hairline);
+  color: var(--hf-color-icon-secondary);
+}
+.spy-menu-group-label {
+  display: flex; align-items: center; gap: var(--hf-space-200);
+  min-height: var(--hf-space-800);
+  padding: var(--hf-space-200);
+  color: var(--hf-color-text-on-overlay-secondary);
+  font-size: var(--hf-type-size-100);
+  line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium);
+}
+.spy-menu-separator {
+  height: var(--hf-border-width-thin);
+  margin: var(--hf-space-100) 0;
+  background-color: var(--hf-color-border-subtle);
+  border: none;
+}
+/* Trailing meta chip (shortcut / credit cost). 10px, wide tracking. */
+.spy-menu-meta {
+  display: inline-flex; align-items: center; gap: var(--hf-space-100);
+  flex-shrink: 0;
+  padding: var(--hf-space-050) var(--hf-space-100);
+  border-radius: var(--hf-radius-100);
+  background-color: var(--hf-color-transparent-light-05);
+  color: var(--hf-color-text-on-overlay-secondary);
+  font-size: var(--hf-type-size-050);
+  line-height: var(--hf-type-line-height-200);
+  letter-spacing: var(--hf-type-letter-spacing-wide);
+  white-space: nowrap;
+}
+
+/* ---------------------------------------------------------------------------
+   CHECKBOX · RADIO · SWITCH                                             [C]
+   All three separate the HIT TARGET from the drawn BOX: the target is one
+   step up the space scale from the box, so a 20px box gets a 24px target
+   without visual padding. The box border is 1.5px — the medium width, not
+   the hairline — which is what gives the controls their weight.
+   ------------------------------------------------------------------------ */
+.spy-checkbox,
+.spy-radio {
+  --spy-control-fill: var(--hf-color-icon-accent);
+  --spy-control-fg: var(--hf-color-icon-inverse);
+  --spy-control-hover-border: var(--hf-color-lime-900);
+  --spy-control-ring: var(--hf-color-transparent-lime-20);
+  --spy-control-target: var(--hf-space-600);   /* 24px */
+  --spy-control-box: var(--hf-space-500);      /* 20px */
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--spy-control-target); height: var(--spy-control-target);
+  flex-shrink: 0; padding: 0;
+  border: none; background-color: transparent;
+  color: var(--spy-control-fg);
+  cursor: pointer; outline: none; vertical-align: top;
+  transition-property: background-color, border-color, box-shadow, color;
+  transition-duration: var(--hf-duration-150);
+}
+.spy-checkbox { border-radius: var(--hf-radius-200); }
+.spy-radio { border-radius: var(--hf-radius-full); }
+
+.spy-checkbox[data-size="sm"], .spy-radio[data-size="sm"] { --spy-control-target: var(--hf-space-500); --spy-control-box: calc(var(--hf-space-500) - var(--hf-space-050)); }
+.spy-checkbox[data-size="lg"], .spy-radio[data-size="lg"] { --spy-control-target: var(--hf-space-700); --spy-control-box: var(--hf-space-600); }
+
+.spy-control-box {
+  display: flex; align-items: center; justify-content: center;
+  width: var(--spy-control-box); height: var(--spy-control-box);
+  border: var(--hf-border-width-medium) solid var(--hf-color-border-default);
+  background-color: transparent;
+  color: transparent;
+  transition-property: background-color, border-color, color;
+  transition-duration: var(--hf-duration-150);
+}
+.spy-checkbox .spy-control-box { border-radius: var(--hf-radius-150); }
+.spy-radio .spy-control-box { border-radius: var(--hf-radius-full); }
+
+.spy-checkbox:hover .spy-control-box,
+.spy-radio:hover .spy-control-box { border-color: var(--spy-control-hover-border); }
+
+/* Checked: the box floods. Radio keeps a transparent box and shows a dot. */
+.spy-checkbox[data-checked] .spy-control-box,
+.spy-checkbox[data-indeterminate] .spy-control-box {
+  background-color: var(--spy-control-fill);
+  border-color: var(--spy-control-fill);
+  color: var(--spy-control-fg);
+}
+.spy-radio[data-checked] .spy-control-box {
+  border-color: var(--spy-control-fill);
+  color: var(--spy-control-fill);
+  background-color: transparent;
+}
+.spy-control-indicator {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%; color: currentColor;
+}
+.spy-control-indicator > .spy-icon { --spy-icon-size: 70%; stroke-width: 2.5; }
+.spy-radio-dot {
+  width: 60%; height: 60%;
+  border-radius: var(--hf-radius-full);
+  background-color: currentColor;
+  opacity: 0;
+  transition-property: transform, opacity;
+  transition-duration: var(--hf-duration-normal);
+  transition-timing-function: var(--hf-ease-spring);
+}
+.spy-radio[data-checked] .spy-radio-dot { opacity: 1; }
+
+/* Focus ring sits OUTSIDE the target and repaints the target background to
+   the page colour, so the ring reads as a halo rather than a second box. */
+.spy-checkbox:focus-visible,
+.spy-radio:focus-visible {
+  background-color: var(--hf-color-background-primary);
+  outline: var(--hf-border-width-thick) solid transparent;
+  box-shadow: 0 0 0 var(--hf-border-width-thick) var(--spy-control-ring);
+}
+.spy-checkbox[data-disabled],
+.spy-radio[data-disabled] { cursor: not-allowed; }
+.spy-checkbox[data-disabled] .spy-control-box {
+  background-color: var(--hf-color-background-glass);
+  border-color: var(--hf-color-icon-disabled);
+  color: var(--hf-color-icon-disabled);
+}
+.spy-radio[data-disabled] .spy-control-box { border-color: var(--hf-color-icon-disabled); color: var(--hf-color-icon-disabled); }
+
+/* Status recolours — same geometry, different fill + ring */
+.spy-checkbox[data-variant="white"], .spy-radio[data-variant="white"] { --spy-control-fill: var(--hf-color-palette-white); --spy-control-hover-border: var(--hf-color-transparent-light-30); --spy-control-ring: var(--hf-color-transparent-light-20); }
+.spy-radio[data-variant="error"]   { --spy-control-fill: var(--hf-color-state-error-fg);   --spy-control-hover-border: var(--hf-color-state-error-fg);   --spy-control-ring: var(--hf-color-state-error-glow); }
+.spy-radio[data-variant="success"] { --spy-control-fill: var(--hf-color-state-success-fg); --spy-control-hover-border: var(--hf-color-state-success-fg); --spy-control-ring: var(--hf-color-state-success-glow); }
+.spy-radio[data-variant="warning"] { --spy-control-fill: var(--hf-color-state-warning-fg); --spy-control-hover-border: var(--hf-color-state-warning-fg); --spy-control-ring: var(--hf-color-state-warning-glow); }
+.spy-radio[data-variant="neutral"] { --spy-control-fill: var(--hf-color-background-secondary-strong); --spy-control-fg: var(--hf-color-text-primary); --spy-control-hover-border: var(--hf-color-border-strong); --spy-control-ring: var(--hf-color-transparent-dark-20); }
+
+/* Label rows: 12px gap, top-aligned so multi-line descriptions hang right. */
+.spy-control-label {
+  display: flex; align-items: flex-start; gap: var(--hf-space-300);
+  min-width: 0; color: var(--hf-color-text-primary); cursor: pointer;
+}
+.spy-control-label-text { display: flex; flex-direction: column; gap: var(--hf-space-100); flex: 1 1 0; min-width: 0; overflow-wrap: anywhere; }
+.spy-control-label[data-align="right"] { justify-content: space-between; }
+.spy-radio-group { display: flex; flex-direction: column; gap: var(--hf-space-300); }
+
+/* -- Switch --------------------------------------------------------- [C]
+   Track 28x16 with a 12px thumb and 2px padding (small); 40x20/16 (medium);
+   44x24/20 (default). Track transitions in 200ms, thumb in 260ms with a
+   swift ease — the thumb arrives a beat after the colour, which is what
+   makes it feel mechanical.                                                */
+.spy-switch {
+  --spy-switch-track-w: var(--hf-space-700);        /* 28px */
+  --spy-switch-track-h: var(--hf-space-400);        /* 16px */
+  --spy-switch-thumb: var(--hf-space-300);          /* 12px */
+  --spy-switch-pad: var(--hf-space-050);            /*  2px */
+  --spy-switch-track-bg: var(--hf-color-button-tertiary);
+  /* [C] Corrected against Mobbin capture #153: the checked track is the
+     SUCCESS green (#00c314), not the brand lime. Sampled #01c317 from the
+     shipped editor panel. The tint variant below is available where a panel
+     re-tints its controls. */
+  --spy-switch-track-bg-on: var(--hf-color-separator-success, #00c314);
+  --spy-switch-thumb-bg: var(--hf-color-button-primary);
+  --spy-switch-ring: var(--hf-color-transparent-lime-20);
+  position: relative;
+  display: inline-flex; align-items: center; flex-shrink: 0;
+  width: var(--spy-switch-track-w); height: var(--spy-switch-track-h);
+  padding: 0; border: none;
+  border-radius: var(--hf-radius-full);
+  background-color: var(--spy-switch-track-bg);
+  cursor: pointer; outline: none; overflow: hidden;
+  transition-property: background-color, box-shadow, opacity;
+  transition-duration: var(--hf-duration-normal);
+  transition-timing-function: var(--hf-ease-swift);
+}
+.spy-switch[data-size="medium"] { --spy-switch-track-w: var(--hf-space-1000); --spy-switch-track-h: var(--hf-space-500); --spy-switch-thumb: var(--hf-space-400); }
+.spy-switch[data-size="default"]{ --spy-switch-track-w: calc(var(--hf-space-1000) + var(--hf-space-100)); --spy-switch-track-h: var(--hf-space-600); --spy-switch-thumb: var(--hf-space-500); }
+.spy-switch-thumb {
+  position: absolute;
+  inset-inline-start: var(--spy-switch-pad);
+  width: var(--spy-switch-thumb); height: var(--spy-switch-thumb);
+  border-radius: var(--hf-radius-full);
+  background-color: var(--spy-switch-thumb-bg);
+  box-shadow: var(--hf-shadow-thumb-soft);
+  transition: translate var(--hf-duration-260) var(--hf-ease-swift),
+              box-shadow var(--hf-duration-260) var(--hf-ease-swift);
+}
+.spy-switch[data-checked] { background-color: var(--spy-switch-track-bg-on); }
+.spy-switch[data-checked] .spy-switch-thumb {
+  translate: calc(var(--spy-switch-track-w) - var(--spy-switch-thumb) - var(--spy-switch-pad) * 2) 0;
+  border: var(--hf-border-width-thin) solid var(--hf-color-transparent-dark-10);
+  box-shadow: var(--hf-shadow-thumb-strong), var(--hf-shadow-thumb-soft);
+}
+.spy-switch:active .spy-switch-thumb { scale: 1.14; }
+.spy-switch:focus-visible {
+  outline: var(--hf-border-width-thick) solid transparent;
+  box-shadow: 0 0 0 var(--hf-border-width-thick) var(--hf-color-background-primary),
+              0 0 0 var(--hf-space-100) var(--spy-switch-ring);
+}
+.spy-switch[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+.spy-switch[data-variant="tint"] { --spy-switch-track-bg-on: var(--q-tint); }
+.spy-switch[data-variant="brand"] { --spy-switch-track-bg-on: var(--hf-color-brand-primary); }
+
+/* ---------------------------------------------------------------------------
+   TOGGLE  (pressable icon/label button, used for tool modes)            [C]
+   Pressed state tints itself from --q-tint at 10% and recolours the label to
+   the tint — one variable re-skins the whole control.
+   ------------------------------------------------------------------------ */
+.spy-toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  height: var(--hf-space-1000); min-width: var(--hf-space-1000);
+  gap: var(--hf-space-200);
+  padding-inline: var(--hf-space-300);
+  border: none;
+  border-radius: var(--hf-radius-300);
+  background-color: transparent;
+  color: var(--hf-color-text-secondary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium);
+  cursor: pointer; user-select: none; outline: none;
+  transition-property: color, background-color;
+  transition-duration: var(--hf-duration-normal);
+}
+.spy-toggle > .spy-icon { --spy-icon-size: var(--hf-icon-md); }
+.spy-toggle:hover { background-color: var(--hf-color-overlay-hover); }
+.spy-toggle[data-pressed] {
+  background-color: color-mix(in oklch, var(--q-tint) 10%, transparent);
+  color: var(--q-tint);
+}
+.spy-toggle[data-size="sm"] { height: var(--hf-space-800); min-width: var(--hf-space-800); gap: var(--hf-space-100); padding-inline: var(--hf-space-200); }
+.spy-toggle[data-size="sm"] > .spy-icon { --spy-icon-size: var(--hf-icon-sm); }
+.spy-toggle[data-size="lg"] { height: var(--hf-space-1200); min-width: var(--hf-space-1200); padding-inline: var(--hf-space-400); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-500); }
+.spy-toggle[data-size="lg"] > .spy-icon { --spy-icon-size: var(--hf-icon-lg); }
+.spy-toggle:focus-visible { box-shadow: 0 0 0 var(--hf-border-width-thick) var(--hf-color-border-focus); }
+.spy-toggle[data-disabled] { opacity: 0.5; pointer-events: none; }
+
+/* ---------------------------------------------------------------------------
+   SLIDER                                                                [C]
+   12px hit track containing a 4px visual rail; 12px thumb in white; the
+   thumb's outline (not a shadow) is the brand separator colour.
+   ------------------------------------------------------------------------ */
+.spy-slider { position: relative; display: flex; align-items: center; width: 100%; }
+.spy-slider-track { position: relative; width: 100%; height: 12px; cursor: pointer; }
+.spy-slider-track::after {
+  content: ""; position: absolute; top: 50%; left: 0;
+  width: 100%; height: 4px; translate: 0 -50%;
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-border-default);
+}
+.spy-slider-fill {
+  position: absolute; top: 50%; left: 0; height: 4px; translate: 0 -50%;
+  border-radius: var(--hf-radius-full);
+  background-color: var(--q-tint);
+}
+.spy-slider-thumb {
+  position: absolute; top: 50%; translate: -50% -50%;
+  width: 12px; height: 12px;
+  border: none; padding: 0;
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-button-primary);
+  cursor: grab; outline: none;
+  transition: scale var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-slider-thumb:active { cursor: grabbing; scale: 1.15; }
+.spy-slider-thumb:focus-visible { outline: var(--hf-border-width-thick) solid var(--hf-color-border-focus); outline-offset: 2px; }
+.spy-slider[data-disabled] { opacity: 0.5; pointer-events: none; }
+
+/* ---------------------------------------------------------------------------
+   CHIP  (filter / selectable pill)                                      [C]
+   Fully-round, 1.5px bordered, transparent by default. Selected floods with
+   the accent and inverts the label. Hover moves the BORDER to lime-900 — a
+   very dark lime — rather than lightening it, which keeps hover quiet.
+   ------------------------------------------------------------------------ */
+.spy-chip {
+  --spy-chip-bg: transparent;
+  --spy-chip-fg: var(--hf-color-text-secondary);
+  --spy-chip-border: var(--hf-color-border-default);
+  --spy-chip-hover-bg: var(--hf-color-overlay-hover);
+  --spy-chip-hover-fg: var(--hf-color-text-primary);
+  --spy-chip-hover-border: var(--hf-color-lime-900);
+  --spy-chip-selected-bg: var(--hf-color-icon-accent);
+  --spy-chip-selected-fg: var(--hf-color-icon-inverse);
+  --spy-chip-ring: var(--hf-color-transparent-lime-20);
+  --spy-chip-h: var(--hf-space-700);        /* 28px */
+  --spy-chip-gap: var(--hf-space-100);
+  --spy-chip-px: var(--hf-space-300);
+  --spy-chip-icon: var(--hf-space-400);
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0; max-width: 100%;
+  height: var(--spy-chip-h); min-width: var(--spy-chip-h);
+  gap: var(--spy-chip-gap);
+  padding: 0 var(--spy-chip-px);
+  border: var(--hf-border-width-medium) solid var(--spy-chip-border);
+  border-radius: var(--hf-radius-full);
+  background-color: var(--spy-chip-bg);
+  color: var(--spy-chip-fg);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium);
+  text-align: center; white-space: nowrap;
+  cursor: pointer; user-select: none; outline: none; overflow: hidden;
+  transition-property: background-color, border-color, box-shadow, color;
+  transition-duration: var(--hf-duration-150);
+}
+.spy-chip > .spy-icon { --spy-icon-size: var(--spy-chip-icon); }
+.spy-chip:hover { background-color: var(--spy-chip-hover-bg); color: var(--spy-chip-hover-fg); border-color: var(--spy-chip-hover-border); }
+.spy-chip[data-selected] { background-color: var(--spy-chip-selected-bg); color: var(--spy-chip-selected-fg); border-color: var(--spy-chip-selected-bg); }
+.spy-chip:focus-visible { box-shadow: 0 0 0 var(--hf-border-width-thick) var(--spy-chip-ring); }
+.spy-chip[data-disabled] { opacity: 0.5; pointer-events: none; }
+
+.spy-chip[data-size="xxs"] { --spy-chip-h: var(--hf-space-500); --spy-chip-gap: var(--hf-space-050); --spy-chip-px: var(--hf-space-200); --spy-chip-icon: var(--hf-space-300); font-size: var(--hf-type-size-100); }
+.spy-chip[data-size="xs"]  { --spy-chip-h: var(--hf-space-600); --spy-chip-px: var(--hf-space-250); --spy-chip-icon: var(--hf-space-300); font-size: var(--hf-type-size-100); }
+.spy-chip[data-size="sm"]  { --spy-chip-h: var(--hf-space-700); }
+.spy-chip[data-size="md"]  { --spy-chip-h: var(--hf-space-800); --spy-chip-gap: var(--hf-space-150); --spy-chip-px: var(--hf-space-400); --spy-chip-icon: var(--hf-space-500); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-500); }
+
+.spy-chip[data-variant="error"]   { --spy-chip-hover-border: var(--hf-color-state-error-fg);   --spy-chip-selected-bg: var(--hf-color-state-error-fg);   --spy-chip-selected-fg: var(--hf-color-text-inverse); --spy-chip-ring: var(--hf-color-state-error-glow); }
+.spy-chip[data-variant="success"] { --spy-chip-hover-border: var(--hf-color-state-success-fg); --spy-chip-selected-bg: var(--hf-color-state-success-fg); --spy-chip-selected-fg: var(--hf-color-text-inverse); --spy-chip-ring: var(--hf-color-state-success-glow); }
+.spy-chip[data-variant="warning"] { --spy-chip-hover-border: var(--hf-color-state-warning-fg); --spy-chip-selected-bg: var(--hf-color-state-warning-fg); --spy-chip-selected-fg: var(--hf-color-text-inverse); --spy-chip-ring: var(--hf-color-state-warning-glow); }
+.spy-chip[data-variant="info"]    { --spy-chip-hover-border: var(--hf-color-state-info-fg);    --spy-chip-selected-bg: var(--hf-color-state-info-fg);    --spy-chip-selected-fg: var(--hf-color-text-inverse); --spy-chip-ring: var(--hf-color-state-info-bg); }
+.spy-chip[data-variant="neutral"] { --spy-chip-hover-border: var(--hf-color-border-strong);    --spy-chip-selected-bg: var(--hf-color-background-secondary-strong); --spy-chip-selected-fg: var(--hf-color-text-primary); --spy-chip-ring: var(--hf-color-transparent-dark-20); }
+
+/* ---------------------------------------------------------------------------
+   BADGE                                                                 [C]
+   The system's signature marker: Space Grotesk Bold, uppercase, 12px, 2px
+   radius, 14px tall — and SKEWED -10.89deg. The skew is on the surface only;
+   the text is counter-skewed back to upright. Do not round it, do not
+   un-skew it, do not set it in Inter. This one object carries most of the
+   brand's attitude.
+   ------------------------------------------------------------------------ */
+.spy-badge {
+  --spy-badge-bg: var(--hf-color-brand-blue);
+  --spy-badge-fg: var(--hf-color-text-primary);
+  --spy-badge-skew: -10.89deg;
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  height: var(--hf-type-line-height-200);      /* 14px */
+  min-width: var(--hf-space-800);              /* 32px */
+  vertical-align: middle;
+  color: var(--spy-badge-fg);
+}
+.spy-badge-surface {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--hf-space-050);
+  height: 100%;
+  min-width: var(--hf-space-800);
+  padding: 0 var(--hf-space-150) 0 var(--hf-space-100);
+  border-radius: var(--hf-radius-050);
+  background: var(--spy-badge-bg);
+  transform: skewX(var(--spy-badge-skew));
+  overflow: hidden;
+}
+.spy-badge-text {
+  display: block;
+  transform: skewX(calc(-1 * var(--spy-badge-skew)));
+  font-family: var(--hf-type-family-grotesk);
+  font-size: var(--hf-type-size-100);
+  font-weight: var(--hf-type-weight-bold);
+  line-height: 1;
+  letter-spacing: var(--hf-type-letter-spacing-none);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: currentColor;
+}
+.spy-badge[data-variant="lime"]        { --spy-badge-bg: var(--hf-color-brand-primary); --spy-badge-fg: var(--hf-color-text-inverse); }
+.spy-badge[data-variant="lime-subtle"] { --spy-badge-bg: var(--hf-color-transparent-lime-15); --spy-badge-fg: var(--hf-color-text-link); }
+.spy-badge[data-variant="pink"]        { --spy-badge-bg: var(--hf-gradient-badge-pink); }
+.spy-badge[data-variant="blue"]        { --spy-badge-bg: var(--hf-gradient-badge-blue); }
+.spy-badge[data-variant="purple"]      { --spy-badge-bg: var(--hf-gradient-badge-purple); }
+/* Unskewed variant for running text, where the skew would fight the baseline */
+.spy-badge[data-shape="square"] { --spy-badge-skew: 0deg; }
+
+/* ---------------------------------------------------------------------------
+   TAG  (non-interactive metadata label)                                 [I]
+   Derived from the dropdown meta chip and card overlay labels: 10px, wide
+   tracking, 4px radius, 5%-white fill. Distinct from CHIP (interactive) and
+   BADGE (promotional).
+   ------------------------------------------------------------------------ */
+.spy-tag {
+  display: inline-flex; align-items: center; gap: var(--hf-space-100);
+  padding: var(--hf-space-050) var(--hf-space-150);
+  border-radius: var(--hf-radius-100);
+  background-color: var(--hf-color-transparent-light-05);
+  color: var(--hf-color-text-on-overlay-secondary);
+  font-size: var(--hf-type-size-050);
+  line-height: var(--hf-type-line-height-200);
+  letter-spacing: var(--hf-type-letter-spacing-wide);
+  white-space: nowrap;
+}
+.spy-tag > .spy-icon { --spy-icon-size: var(--hf-space-300); }
+.spy-tag[data-variant="glass"] {
+  background-color: var(--hf-color-background-glass);
+  backdrop-filter: blur(var(--hf-space-200));
+  color: var(--hf-color-text-primary);
+}
+
+/* ---------------------------------------------------------------------------
+   TABS  /  SEGMENTED CONTROL                                            [C]
+   One component, two variants. `segment` wraps the list in a 10px-radius
+   trough and slides an 8px-radius indicator behind the active tab (the
+   indicator radius is deliberately one step tighter than the trough).
+   `line` drops the trough and draws a 2px rule under the active tab.
+   Resting tab colour is text-tertiary (#626262) — quite dim; hover goes to
+   BRAND, not to white.
+   ------------------------------------------------------------------------ */
+.spy-tabs {
+  --spy-tabs-accent: var(--q-tint);
+  --spy-tabs-tab-fg: var(--hf-color-text-tertiary);
+  --spy-tabs-tab-hover-fg: var(--hf-color-brand-primary);
+  --spy-tabs-indicator-bg: var(--hf-color-border-inverse);
+  --spy-tabs-indicator-fg: var(--hf-color-text-primary);
+  --spy-tabs-segment-radius: var(--hf-radius-250);
+  --spy-tabs-selected-radius: var(--hf-radius-200);
+  --spy-tabs-ring: var(--hf-color-transparent-lime-20);
+  --spy-tabs-duration: var(--hf-duration-normal);
+  --spy-tabs-ease: var(--hf-ease-out);
+  display: block; width: 100%;
+}
+.spy-tabs-list {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex; align-items: center;
+  max-width: 100%;
+  /* [I] the product caps the list at 100% and scrolls its nav rows behind a
+     mask; the same treatment is applied here so a long tab row degrades by
+     scrolling rather than by overflowing the page. */
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 20px), transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 20px), transparent 100%);
+}
+.spy-tabs-list::-webkit-scrollbar { display: none; }
+.spy-tabs-list[data-fill] { -webkit-mask-image: none; mask-image: none; overflow: visible; }
+.spy-tabs-tab {
+  position: relative;
+  z-index: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  padding: var(--hf-space-250) var(--hf-space-400);   /* 10 / 16 */
+  border: none;
+  background-color: transparent;
+  color: var(--spy-tabs-tab-fg);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium);
+  white-space: nowrap;
+  cursor: pointer; user-select: none; outline: none;
+  transition-property: background-color, border-color, box-shadow, color, opacity;
+  transition-duration: var(--spy-tabs-duration);
+  transition-timing-function: var(--spy-tabs-ease);
+}
+.spy-tabs-tab-content {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--hf-space-150);
+  min-width: 0;
+  padding-inline: var(--hf-space-150);
+  overflow: hidden;
+}
+.spy-tabs-tab > .spy-tabs-tab-content > .spy-icon { --spy-icon-size: var(--hf-icon-sm); }
+.spy-tabs-tab:hover { color: var(--spy-tabs-tab-hover-fg); }
+.spy-tabs-tab:focus-visible { box-shadow: inset 0 0 0 var(--hf-border-width-thick) var(--spy-tabs-ring); }
+.spy-tabs-tab[data-disabled] { color: var(--hf-color-text-disabled); pointer-events: none; }
+
+/* segment variant */
+.spy-tabs[data-variant="segment"] .spy-tabs-list {
+  gap: var(--hf-space-050);
+  padding: var(--hf-space-050);
+  border-radius: var(--spy-tabs-segment-radius);
+  background-color: var(--hf-color-overlay-dim-soft);
+  box-shadow: var(--hf-shadow-sheen);
+}
+.spy-tabs[data-variant="segment"] .spy-tabs-tab {
+  padding: var(--hf-space-150) var(--hf-space-300);
+  border-radius: var(--spy-tabs-selected-radius);
+}
+.spy-tabs[data-variant="segment"] .spy-tabs-tab[data-active] {
+  background-color: var(--spy-tabs-indicator-bg);
+  color: var(--hf-color-text-inverse);
+}
+
+/* line variant */
+.spy-tabs[data-variant="line"] .spy-tabs-list {
+  gap: var(--hf-space-100);
+  border-bottom: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
+}
+.spy-tabs[data-variant="line"] .spy-tabs-tab::after {
+  content: ""; position: absolute; inset-inline: var(--hf-space-150); bottom: -1px;
+  height: var(--hf-border-width-thick);
+  background-color: transparent;
+  transition: background-color var(--spy-tabs-duration) var(--spy-tabs-ease);
+}
+.spy-tabs[data-variant="line"] .spy-tabs-tab[data-active] { color: var(--spy-tabs-indicator-fg); }
+.spy-tabs[data-variant="line"] .spy-tabs-tab[data-active]::after { background-color: var(--spy-tabs-accent); }
+
+.spy-tabs-list[data-fill] { width: 100%; }
+.spy-tabs-list[data-fill] .spy-tabs-tab { flex: 1 1 0; min-width: 0; }
+.spy-tabs-panel {
+  padding-top: var(--hf-space-400);
+  color: var(--hf-color-text-primary);
+  outline: none;
+  animation: spy-tabs-panel-in var(--spy-tabs-duration) var(--spy-tabs-ease);
+}
+@keyframes spy-tabs-panel-in { from { opacity: 0; translate: 0 4px; } to { opacity: 1; translate: 0 0; } }
+
+/* ---------------------------------------------------------------------------
+   CARD  +  GLASS SURFACE                                                [C]
+   Card sections are all padded 20px with a 1px hairline splitting footer from
+   body. The glass surface is the system's premium container: 75%-opaque
+   cool-250, 40px blur, 1.6 saturate, and a two-sided inset rim — light on the
+   top-left, dark on the bottom-right — which is what reads as thickness.
+   ------------------------------------------------------------------------ */
+.spy-card {
+  display: flex; flex-direction: column;
+  min-width: 0;
+  border-radius: var(--hf-radius-400);
+  background-color: var(--hf-color-background-secondary);
+  color: var(--hf-color-text-primary);
+  overflow: hidden;
+}
+.spy-card[data-variant="outline"] {
+  background-color: transparent;
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle);
+}
+.spy-card[data-variant="raised"] { box-shadow: var(--hf-shadow-raised); }
+.spy-card-header { display: flex; align-items: center; justify-content: space-between; gap: var(--hf-space-300); padding: var(--hf-space-500); flex: none; }
+.spy-card-body   { padding: var(--hf-space-500); flex: auto; min-height: 0; }
+.spy-card-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--hf-space-300); padding: var(--hf-space-500); flex: none; border-top: var(--hf-border-width-thin) solid var(--hf-color-border-subtle); }
+.spy-card-title { font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-semi-bold); color: var(--hf-color-text-primary); margin: 0; }
+.spy-card-description { font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); letter-spacing: var(--hf-type-letter-spacing-loose); color: var(--hf-color-text-secondary); margin: 0; }
+
+.spy-glass {
+  --spy-glass-blur: var(--hf-space-1000);
+  --spy-glass-saturate: 1.6;
+  position: relative;
+  isolation: isolate;
+  display: flex; flex-direction: column;
+  min-width: 0;
+  border-radius: var(--hf-radius-600);
+  background-color: var(--hf-color-background-glass);
+  backdrop-filter: blur(var(--spy-glass-blur)) saturate(var(--spy-glass-saturate));
+  color: var(--hf-color-text-primary);
+  box-shadow:
+    inset var(--hf-border-width-thin) var(--hf-border-width-thin) 0 var(--hf-color-transparent-light-20),
+    inset calc(-1 * var(--hf-border-width-thin)) calc(-1 * var(--hf-border-width-thin)) 0 var(--hf-color-transparent-dark-15);
+  overflow: hidden;
+  transition-property: box-shadow, background-color;
+  transition-duration: var(--hf-duration-normal);
+  transition-timing-function: var(--hf-ease-out);
+}
+.spy-glass[data-interactive] { cursor: pointer; }
+.spy-glass[data-interactive]:hover { background-color: color-mix(in oklch, var(--hf-color-transparent-light-05), var(--hf-color-background-glass)); }
+.spy-glass[data-tinted] { background-color: color-mix(in oklch, var(--q-tint) 12%, var(--hf-color-background-glass)); }
+
+/* Media tile — the atom of every gallery in the product. */
+.spy-tile {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--spy-tile-ratio, 16 / 9);
+  border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
+  border-radius: var(--hf-radius-300);
+  background-color: var(--hf-color-background-secondary);
+  box-shadow: var(--hf-shadow-inset-tile);
+  overflow: hidden;
+}
+.spy-tile > img, .spy-tile > video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ---------------------------------------------------------------------------
+   DIVIDER                                                               [C]
+   ------------------------------------------------------------------------ */
+.spy-divider { height: var(--hf-border-width-thin); border: 0; background-color: var(--hf-color-divider-primary); margin: 0; }
+.spy-divider[data-variant="subtle"] { background-color: var(--hf-color-border-subtle); }
+.spy-divider[data-orientation="vertical"] { width: var(--hf-border-width-thin); height: auto; align-self: stretch; }
+
+/* ---------------------------------------------------------------------------
+   MODAL / DIALOG                                                        [C]
+   Glass panel, 24px radius, and — the detail that matters — only 8px of outer
+   padding. The internal regions (header 40px min, body, actions) do their own
+   padding, so the panel edge sits close to the content and the modal reads as
+   a stack of tiles rather than a padded box.
+   ------------------------------------------------------------------------ */
+.spy-modal-backdrop {
+  position: fixed; inset: 0;
+  z-index: var(--hf-z-index-overlay);
+  background-color: var(--hf-color-overlay-scrim);
+  transition: opacity var(--hf-duration-normal) var(--hf-ease-out);
+}
+.spy-modal-backdrop[data-closed] { opacity: 0; }
+.spy-modal {
+  position: fixed; top: 50%; left: 50%; translate: -50% -50%;
+  z-index: var(--hf-z-index-modal);
+  display: flex; flex-direction: column;
+  gap: var(--hf-space-200);
+  width: min(var(--q-modal-width), calc(100vw - var(--hf-space-800)));
+  max-height: calc(100dvh - var(--hf-space-1600));
+  padding: var(--hf-space-200);
+  border-radius: var(--hf-radius-600);
+  background-color: var(--hf-color-background-glass);
+  backdrop-filter: blur(var(--hf-space-1000));
+  box-shadow: var(--hf-shadow-modal);
+  outline: none; overflow: hidden;
+  transition: opacity var(--hf-duration-normal) var(--hf-ease-out);
+}
+.spy-modal[data-size="xs"] { --q-modal-width: var(--q-modal-width-xs); }
+.spy-modal[data-size="sm"] { --q-modal-width: var(--q-modal-width-sm); }
+.spy-modal[data-size="md"] { --q-modal-width: var(--q-modal-width-md); }
+.spy-modal[data-size="lg"] { --q-modal-width: var(--q-modal-width-lg); }
+.spy-modal[data-size="xl"] { --q-modal-width: var(--q-modal-width-xl); }
+.spy-modal[data-closed] { opacity: 0; }
+.spy-modal-header { display: flex; align-items: center; gap: var(--hf-space-100); min-height: var(--hf-space-1000); flex: none; overflow: hidden; }
+.spy-modal-title {
+  flex: 1 1 0; min-width: 0; min-height: var(--hf-space-1000);
+  display: flex; align-items: center;
+  margin: 0; padding: var(--hf-space-200);
+  color: var(--hf-color-text-primary);
+  font-size: var(--hf-type-size-300);
+  line-height: var(--hf-type-line-height-600);
+  font-weight: var(--hf-type-weight-semi-bold);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.spy-modal-description {
+  margin: 0; padding: 0 var(--hf-space-200);
+  color: var(--hf-color-text-secondary);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-500);
+  letter-spacing: var(--hf-type-letter-spacing-loose);
+}
+.spy-modal-body { display: flex; flex-direction: column; gap: var(--hf-space-200); flex: auto; width: 100%; min-height: 0; overflow: auto; }
+.spy-modal-workspace {
+  flex: auto; min-width: 0; min-height: 0; overflow: auto;
+  border-radius: var(--hf-radius-400);
+  background-color: var(--hf-color-transparent-light-05);
+  color: var(--hf-color-text-primary);
+}
+.spy-modal-actions { display: flex; align-items: center; gap: var(--hf-space-150); padding: var(--hf-space-100); margin-inline-start: auto; flex-shrink: 0; }
+.spy-modal-actions[data-full] { margin-inline-start: 0; flex: 1 1 0; padding: 0; }
+.spy-modal-actions[data-full] > * { flex: 1 1 0; }
+/* Pill search row used by the command/asset pickers. */
+.spy-modal-search {
+  display: flex; align-items: center; gap: var(--hf-space-200);
+  flex: 1 1 0; min-width: 0; min-height: var(--hf-space-1000);
+  padding: 0 var(--hf-space-300);
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-overlay-dim-soft);
+  color: var(--hf-color-icon-on-overlay-secondary);
+  transition: box-shadow var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-modal-search:focus-within { box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus); }
+
+/* ---------------------------------------------------------------------------
+   TOAST                                                                 [C]
+   Two shapes ship. `inline` is a compact 12px-radius bar on solid #1a1a1a
+   with a deep single shadow (0 24px 48px -12px black/40) — used for quick
+   confirmations. `stacked` is the glass 16px-radius card used for the
+   notification stack, where toasts overlap and the front one expands.
+   ------------------------------------------------------------------------ */
+.spy-toast-viewport {
+  position: fixed;
+  z-index: var(--hf-z-index-toast);
+  width: min(24rem, calc(100vw - var(--hf-space-800)));
+  display: flex; flex-direction: column; gap: var(--hf-space-200);
+  pointer-events: none;
+}
+.spy-toast-viewport > * { pointer-events: auto; }
+.spy-toast-viewport[data-position="bottom-right"] { right: var(--hf-space-400); bottom: var(--hf-space-400); }
+.spy-toast-viewport[data-position="top-right"]    { right: var(--hf-space-400); top: var(--hf-space-400); }
+.spy-toast-viewport[data-position="bottom-center"]{ left: 50%; translate: -50% 0; bottom: var(--hf-space-400); }
+
+.spy-toast {
+  position: relative;
+  display: flex; align-items: center;
+  gap: var(--hf-space-200);
+  min-height: var(--hf-space-1000);
+  max-width: 100%;
+  padding: var(--hf-space-250);
+  border-radius: var(--hf-radius-300);
+  background: var(--hf-color-grey-550);
+  color: var(--hf-color-text-primary);
+  font-size: var(--hf-type-size-100);
+  line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium);
+  box-shadow: 0 var(--hf-space-600) var(--hf-space-1200) calc(-1 * var(--hf-space-300)) var(--hf-color-transparent-dark-40);
+  user-select: none; outline: none;
+  transition: transform var(--hf-duration-180) var(--hf-ease-out-quart),
+              opacity var(--hf-duration-180) var(--hf-ease-out-quart);
+}
+.spy-toast[data-closed] { opacity: 0; }
+.spy-toast:focus-visible { outline: var(--hf-border-width-medium) solid var(--hf-color-border-focus); }
+.spy-toast[data-variant="stacked"] {
+  align-items: flex-start;
+  gap: var(--hf-space-300);
+  padding: var(--hf-space-300) var(--hf-space-400);
+  border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
+  border-radius: var(--hf-radius-400);
+  background-color: var(--hf-color-background-glass);
+  backdrop-filter: blur(var(--hf-space-1000));
+  box-shadow: var(--hf-shadow-overlay);
+}
+.spy-toast-icon { display: flex; align-items: center; justify-content: center; flex: none; height: var(--hf-type-line-height-500); color: var(--hf-color-text-secondary); }
+.spy-toast-icon[data-status="success"] { color: var(--hf-color-state-success-fg); }
+.spy-toast-icon[data-status="error"]   { color: var(--hf-color-state-error-fg); }
+.spy-toast-icon[data-status="warning"] { color: var(--hf-color-state-warning-fg); }
+.spy-toast-text { display: flex; flex-direction: column; gap: var(--hf-space-050); flex: auto; min-width: 0; }
+.spy-toast-title { margin: 0; color: var(--hf-color-text-primary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); font-weight: var(--hf-type-weight-medium); letter-spacing: var(--hf-type-letter-spacing-loose); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spy-toast-description { margin: 0; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); font-weight: var(--hf-type-weight-regular); max-height: calc(3 * var(--hf-type-line-height-300)); overflow: hidden; }
+/* Toast action is the INVERSE button — white on dark. High contrast on purpose. */
+.spy-toast-action {
+  flex: none; align-self: center;
+  padding: var(--hf-space-100) var(--hf-space-250);
+  border: none;
+  border-radius: var(--hf-radius-250);
+  background-color: var(--hf-color-background-inverse);
+  color: var(--hf-color-text-inverse);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium);
+  cursor: pointer;
+  transition: opacity var(--hf-duration-150) ease;
+}
+.spy-toast-action:hover { opacity: 0.85; }
+.spy-toast-close {
+  display: flex; align-items: center; justify-content: center; flex: none;
+  width: var(--hf-space-500); height: var(--hf-space-500);
+  border: none; border-radius: var(--hf-radius-full);
+  background: none; color: var(--hf-color-text-tertiary); cursor: pointer;
+  transition: background-color var(--hf-duration-150) var(--hf-ease-out), color var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-toast-close:hover { background-color: var(--hf-color-overlay-dim-soft); color: var(--hf-color-text-primary); }
+
+/* ---------------------------------------------------------------------------
+   TOOLTIP                                                               [C]
+   Inverted: white surface, dark label. 8px radius, 4px/6px padding, 12px
+   medium. Max width 288px. Enter 180ms expo, exit 130ms ease-in.
+   ------------------------------------------------------------------------ */
+.spy-tooltip {
+  position: relative;
+  width: max-content;
+  max-width: 18rem;
+  padding: var(--hf-space-100) var(--hf-space-150);
+  border-radius: var(--hf-radius-200);
+  background-color: var(--hf-color-background-inverse);
+  color: var(--hf-color-text-inverse);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-100);
+  line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium);
+  z-index: var(--hf-z-index-tooltip);
+  outline: none;
+  transition-property: opacity, transform;
+  transition-duration: var(--hf-duration-180);
+  transition-timing-function: var(--hf-ease-out-expo);
+}
+.spy-tooltip[data-closed] { opacity: 0; }
+.spy-tooltip-arrow {
+  position: absolute;
+  width: var(--hf-space-200); height: var(--hf-space-200);
+  background-color: var(--hf-color-background-inverse);
+  rotate: 45deg;
+}
+.spy-tooltip-arrow[data-side="top"]    { bottom: calc(-1 * var(--hf-space-050)); left: 50%; translate: -50% 0; }
+.spy-tooltip-arrow[data-side="bottom"] { top: calc(-1 * var(--hf-space-050)); left: 50%; translate: -50% 0; }
+
+/* ---------------------------------------------------------------------------
+   NAVIGATION (top bar)                                                  [C]
+   Bar min-height 52px, 8px/16px padding. Items are 28px tall (4/8 padding,
+   8px radius) at 14px medium with 0.1px tracking. Resting colour is a dim
+   grey; active is white; the "accent" item goes brand AND gets a text glow.
+   Action buttons are 36px squares with a 10px radius and an inset top sheen.
+   ------------------------------------------------------------------------ */
+.spy-nav {
+  display: flex; align-items: center;
+  gap: var(--hf-space-200);
+  width: 100%;
+  min-height: calc(var(--hf-space-1000) + var(--hf-space-300)); /* 52px */
+  padding: var(--hf-space-200) var(--hf-space-400);
+}
+.spy-nav-list { display: flex; align-items: center; gap: 0; margin: 0; padding: 0; list-style: none; }
+.spy-nav-item {
+  display: inline-flex; align-items: center;
+  gap: var(--hf-space-100);
+  padding: var(--hf-space-100) var(--hf-space-200);
+  border-radius: var(--hf-radius-200);
+  background-color: transparent;
+  color: var(--hf-color-text-tertiary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-500);
+  font-weight: var(--hf-type-weight-medium);
+  letter-spacing: var(--hf-type-letter-spacing-loose);
+  white-space: nowrap; text-decoration: none;
+  cursor: pointer; user-select: none;
+  transition: background-color var(--hf-duration-150) ease, color var(--hf-duration-150) ease;
+}
+.spy-nav-item:hover,
+.spy-nav-item[data-open] { background-color: var(--hf-color-overlay-hover); color: var(--hf-color-text-primary); }
+.spy-nav-item[data-active],
+.spy-nav-item[aria-current="page"] { color: var(--hf-color-text-primary); }
+.spy-nav-item[data-accent][data-active] { color: var(--hf-color-brand-primary); text-shadow: 0 0 8px var(--hf-color-brand-primary); }
+.spy-nav-item[data-disabled] { color: var(--hf-color-text-disabled); pointer-events: none; }
+
+.spy-nav-actions { display: flex; align-items: center; gap: var(--hf-space-300); margin-inline-start: auto; flex-shrink: 0; }
+.spy-nav-actions-group { display: flex; align-items: center; gap: var(--hf-space-100); }
+.spy-nav-actions-divider { width: 1px; height: 12px; background-color: var(--hf-color-transparent-light-15); flex: none; }
+.spy-nav-action {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--hf-space-100); flex: none;
+  height: 36px; min-width: 36px;
+  padding-inline: var(--hf-space-300);
+  border: none;
+  border-radius: var(--hf-radius-250);
+  background-color: var(--hf-color-transparent-light-05);
+  box-shadow: inset 0 var(--hf-border-width-medium) 3px var(--hf-color-transparent-light-05);
+  color: var(--hf-color-text-primary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-200);
+  font-weight: var(--hf-type-weight-medium);
+  cursor: pointer; white-space: nowrap; user-select: none;
+  transition: filter var(--hf-duration-150) ease;
+}
+.spy-nav-action[data-icon-only] { width: 36px; padding-inline: 0; }
+.spy-nav-action > .spy-icon { --spy-icon-size: var(--hf-icon-sm); }
+.spy-nav-action:hover { filter: brightness(0.8); }
+.spy-nav-action:active { filter: brightness(0.6); }
+.spy-nav-action:focus-visible { outline: var(--hf-border-width-medium) solid var(--hf-color-border-focus); outline-offset: 2px; }
+/* Unread marker: 6px dot with a 2px page-coloured ring so it reads on any bg */
+.spy-nav-dot {
+  position: absolute; top: -1px; right: 0;
+  width: 6px; height: 6px;
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-notification-unread);
+  box-shadow: 0 0 0 2px var(--hf-color-notification-unread-outline);
+}
+.spy-nav-wordmark { color: var(--hf-color-text-primary); font-size: 18px; font-weight: var(--hf-type-weight-bold); line-height: 1; white-space: nowrap; }
+/* Nav flyout panel — animates its own width and height with the emphasised ease */
+.spy-nav-popup {
+  box-sizing: border-box;
+  border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
+  border-radius: var(--hf-radius-600);
+  background-color: var(--hf-color-background-glass);
+  backdrop-filter: blur(var(--hf-space-1000));
+  color: var(--hf-color-text-primary);
+  overflow: hidden;
+  transition: width var(--hf-duration-slow) var(--hf-ease-emphasized),
+              height var(--hf-duration-slow) var(--hf-ease-emphasized),
+              opacity var(--hf-duration-normal) ease;
+}
+.spy-nav-menu { display: flex; align-items: flex-start; gap: var(--hf-space-100); padding: var(--hf-space-200); overflow: hidden; }
+.spy-nav-group { display: flex; flex-direction: column; gap: var(--hf-space-050); flex-shrink: 0; min-width: 12rem; }
+
+/* ---------------------------------------------------------------------------
+   SIDEBAR                                                               [C]
+   A floating panel, not a flush rail: 16px radius, its own elevated surface
+   (#18191c), a 1px inset hairline instead of a border, and it animates its
+   width in 220ms on collapse. Rows are 8px-radius with a 8px gap; hover is
+   the 5%-white overlay.
+   ------------------------------------------------------------------------ */
+.spy-sidebar {
+  --spy-sidebar-width: 17rem;
+  display: flex; flex-direction: column;
+  width: var(--spy-sidebar-width); height: 100%;
+  min-height: 0;
+  border: none;
+  border-radius: var(--hf-radius-400);
+  background-color: var(--hf-color-background-elevated-end);
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle);
+  color: var(--hf-color-text-primary);
+  overflow: hidden;
+  transition: width var(--hf-duration-220) var(--hf-ease-in-out);
+}
+.spy-sidebar[data-collapsed] { --spy-sidebar-width: 4rem; }
+.spy-sidebar-header { display: flex; align-items: center; gap: var(--hf-space-200); height: calc(var(--hf-space-1200) + var(--hf-space-100)); padding: var(--hf-space-200); flex: none; }
+.spy-sidebar-switcher {
+  display: flex; align-items: center; gap: var(--hf-space-200);
+  flex: 1 1 0; min-width: 0;
+  height: calc(var(--hf-space-600) + var(--hf-space-300));  /* 36px */
+  padding: var(--hf-space-150);
+  border: none; border-radius: var(--hf-radius-300);
+  background-color: transparent;
+  color: var(--hf-color-text-primary);
+  font: inherit; text-align: start; cursor: pointer; overflow: hidden;
+  transition: background-color var(--hf-duration-150) ease;
+}
+.spy-sidebar-switcher:hover { background-color: var(--hf-color-overlay-hover); }
+.spy-sidebar-switcher:focus-visible { outline: var(--hf-border-width-thick) solid transparent; box-shadow: inset 0 0 0 var(--hf-border-width-thick) var(--hf-color-border-focus); }
+.spy-sidebar-section { display: flex; flex-direction: column; gap: var(--hf-space-050); width: 100%; padding: var(--hf-space-200); flex: none; }
+.spy-sidebar-section-header { display: flex; align-items: center; gap: var(--hf-space-200); width: 100%; height: var(--hf-space-700); padding: var(--hf-space-150); flex: none; overflow: hidden; color: var(--hf-color-text-on-overlay-secondary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); font-weight: var(--hf-type-weight-medium); }
+.spy-sidebar-row {
+  position: relative;
+  display: flex; align-items: center; gap: var(--hf-space-200);
+  width: 100%;
+  min-height: calc(var(--hf-space-600) + var(--hf-space-300)); /* 36px */
+  padding: var(--hf-space-150);
+  border: none; border-radius: var(--hf-radius-200);
+  background-color: transparent;
+  color: var(--hf-color-text-primary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-500);
+  font-weight: var(--hf-type-weight-medium);
+  letter-spacing: var(--hf-type-letter-spacing-loose);
+  text-align: start; text-decoration: none; cursor: pointer; overflow: hidden;
+  transition: background-color var(--hf-duration-150) ease;
+}
+.spy-sidebar-row:hover { background-color: var(--hf-color-overlay-hover); }
+.spy-sidebar-row[data-active] { background-color: var(--hf-color-overlay-hover); color: var(--hf-color-text-primary); }
+.spy-sidebar-row:focus-visible { outline: var(--hf-border-width-thick) solid transparent; box-shadow: inset 0 0 0 var(--hf-border-width-thick) var(--hf-color-border-focus); }
+.spy-sidebar-row > .spy-icon { --spy-icon-size: var(--hf-icon-md); color: var(--hf-color-icon-secondary); }
+.spy-sidebar-truncate { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spy-sidebar-search {
+  display: flex; align-items: center; gap: var(--hf-space-200);
+  width: 100%;
+  min-height: calc(var(--hf-space-600) + var(--hf-space-300));
+  padding: var(--hf-space-150);
+  border-radius: var(--hf-radius-300);
+  background-color: var(--hf-color-overlay-hover);
+  color: var(--hf-color-icon-secondary);
+}
+.spy-sidebar-footer { display: flex; flex-direction: column; gap: var(--hf-space-200); padding: var(--hf-space-200); flex: none; }
+/* Project thumbnail: 24px, inset-tile shadow — the same recipe as media tiles */
+.spy-sidebar-thumb {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: var(--hf-space-600); height: var(--hf-space-600);
+  border-radius: var(--hf-radius-200);
+  background-color: var(--hf-color-transparent-light-05);
+  box-shadow: var(--hf-shadow-inset-tile-hairline);
+  color: var(--hf-color-icon-secondary);
+  overflow: hidden;
+}
+/* Row-trailing pin: hidden until the row is hovered, latched when pinned */
+.spy-sidebar-pin {
+  position: absolute; top: 50%; translate: 0 -50%;
+  inset-inline-end: var(--hf-space-150);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hf-space-500); height: var(--hf-space-500);
+  padding: 0; border: none; border-radius: var(--hf-radius-150);
+  background-color: transparent;
+  color: var(--hf-color-icon-tertiary);
+  cursor: pointer; opacity: 0;
+  transition: opacity var(--hf-duration-150) ease, color var(--hf-duration-150) ease, background-color var(--hf-duration-150) ease;
+}
+.spy-sidebar-row:hover .spy-sidebar-pin { opacity: 1; }
+.spy-sidebar-pin:hover { color: var(--hf-color-icon-primary); background-color: var(--hf-color-overlay-hover); }
+.spy-sidebar-pin[data-pinned] { opacity: 1; color: var(--hf-color-icon-primary); }
+
+/* Avatar + stacked collaborators (18px, -2px overlap) */
+.spy-avatar {
+  position: relative; display: inline-flex; flex: none; overflow: hidden;
+  width: var(--hf-space-600); height: var(--hf-space-600);
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-background-secondary-strong);
+  color: var(--hf-color-text-secondary);
+  align-items: center; justify-content: center;
+  font-size: var(--hf-type-size-100); font-weight: var(--hf-type-weight-medium);
+}
+.spy-avatar > img { width: 100%; height: 100%; object-fit: cover; }
+.spy-avatar[data-size="sm"] { width: 1.125rem; height: 1.125rem; }
+.spy-avatar[data-size="lg"] { width: var(--hf-space-800); height: var(--hf-space-800); }
+.spy-avatar-group { display: inline-flex; align-items: flex-start; isolation: isolate; }
+.spy-avatar-group > .spy-avatar { margin-inline-end: calc(-1 * var(--hf-space-050)); z-index: 2; }
+.spy-avatar-count {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  height: 1.125rem; min-width: var(--hf-space-500);
+  padding-inline: var(--hf-space-100);
+  border: var(--hf-border-width-thin) solid var(--hf-color-border-default);
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-transparent-light-10);
+  color: var(--hf-color-transparent-light-50);
+  font-size: var(--hf-type-size-050);
+  white-space: nowrap; z-index: 1;
+}
+
+/* ---------------------------------------------------------------------------
+   PROGRESS · LOADER · SKELETON                                          [C/I]
+   Track colour is background-tertiary (#2a2d32); the fill is --q-tint, so a
+   progress bar inside a tinted subtree recolours for free. Fill transitions
+   over 350ms with an in-out-circ ease, which is why long generations feel
+   like they accelerate through the middle.
+   The bar height / dot size / ring size slots are [I]: their token names ship
+   but their values are set per call site.
+   ------------------------------------------------------------------------ */
+.spy-progress {
+  --spy-progress-h: var(--hf-space-100);   /* 4px  [I] */
+  position: relative;
+  width: 100%;
+  height: var(--spy-progress-h);
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-background-tertiary);
+  overflow: hidden;
+}
+.spy-progress-fill {
+  position: absolute; inset-block: 0; left: 0;
+  border-radius: var(--hf-radius-full);
+  background-color: var(--q-tint);
+  transition: width var(--hf-duration-350) var(--hf-ease-in-out-circ);
+  will-change: width;
+}
+.spy-progress[data-indeterminate] .spy-progress-fill {
+  width: 40%;
+  animation: spy-progress-slide var(--hf-duration-1300) ease-in-out infinite;
+}
+@keyframes spy-progress-slide { 0% { left: -40%; } 100% { left: 100%; } }
+.spy-progress-steps { display: flex; align-items: center; gap: var(--hf-space-100); width: 100%; }
+.spy-progress-segment { position: relative; flex: auto; height: var(--spy-progress-h, var(--hf-space-100)); border-radius: var(--hf-radius-full); background-color: var(--hf-color-background-tertiary); overflow: hidden; }
+.spy-progress-center {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  color: var(--hf-color-text-primary);
+  font-size: var(--hf-type-size-100);
+  line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium);
+}
+.spy-progress-ring { position: relative; display: inline-flex; width: var(--hf-space-1000); height: var(--hf-space-1000); }
+.spy-progress-ring svg { transform: rotate(-90deg); }
+.spy-progress-ring circle { fill: none; stroke-width: 3; }
+.spy-progress-ring .spy-ring-track { stroke: var(--hf-color-background-tertiary); }
+.spy-progress-ring .spy-ring-fill { stroke: var(--q-tint); transition: stroke-dashoffset var(--hf-duration-350) var(--hf-ease-in-out-circ); }
+
+.spy-loader {
+  --spy-loader-size: var(--hf-space-800);
+  --spy-loader-dot: var(--hf-space-250);
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: var(--spy-loader-size); height: var(--spy-loader-size);
+  color: var(--q-tint);
+}
+.spy-loader-spinner { width: var(--spy-loader-size); height: var(--spy-loader-size); animation: spy-spin var(--hf-duration-800) var(--hf-ease-linear) infinite; }
+.spy-loader-dots { display: inline-flex; align-items: center; gap: var(--hf-space-100); }
+.spy-loader-dot { width: var(--spy-loader-dot); height: var(--spy-loader-dot); border-radius: var(--hf-radius-full); background-color: var(--q-tint); animation: spy-blink var(--hf-duration-1200) var(--hf-ease-linear) infinite; }
+.spy-loader-dot:nth-child(2) { animation-delay: 0.15s; }
+.spy-loader-dot:nth-child(3) { animation-delay: 0.3s; }
+@keyframes spy-blink { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+/* Shine loader — the placeholder used while a generation renders. */
+.spy-loader-shine {
+  position: relative;
+  border-radius: var(--hf-radius-300);
+  background-color: var(--hf-color-background-tertiary);
+  overflow: hidden;
+}
+.spy-loader-shine::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 35%, var(--hf-color-transparent-light-10) 50%, transparent 65%);
+  animation: spy-sweep var(--hf-duration-1400) var(--hf-ease-linear) infinite;
+}
+@keyframes spy-sweep { from { translate: -100% 0; } to { translate: 100% 0; } }
+
+/* Skeleton — note the shimmer runs VERTICALLY and darkens, it does not
+   sweep a light band horizontally.                                       [C] */
+.spy-skeleton { position: relative; background-color: #202227; border-radius: var(--hf-radius-200); overflow: hidden; }
+.spy-skeleton::after {
+  content: ""; position: absolute; top: 100%; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(transparent 0%, var(--hf-color-transparent-dark-20) 50%, transparent 100%);
+  animation: spy-shimmer-vertical 2s infinite;
+}
+@keyframes spy-shimmer-vertical { from { top: -100%; } to { top: 100%; } }
+.spy-skeleton[data-shape="text"] { height: var(--hf-space-400); border-radius: var(--hf-radius-100); }
+.spy-skeleton[data-shape="circle"] { border-radius: var(--hf-radius-full); }
+
+/* ---------------------------------------------------------------------------
+   TABLE                                                                  [I]
+   No table styling ships on the marketing surface. Built from the confirmed
+   row primitives instead: 36px row height, hairline row dividers, 12px
+   medium headers in the on-overlay-secondary colour, 5%-white hover — the
+   same recipe as sidebar rows and menu items, so it sits in the system.
+   ------------------------------------------------------------------------ */
+.spy-table-wrap { border-radius: var(--hf-radius-400); background-color: var(--hf-color-background-secondary); overflow: hidden; }
+.spy-table { width: 100%; border-collapse: collapse; font-family: var(--hf-type-family-secondary); }
+.spy-table th {
+  padding: var(--hf-space-200) var(--hf-space-300);
+  text-align: start;
+  color: var(--hf-color-text-on-overlay-secondary);
+  font-size: var(--hf-type-size-100);
+  line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium);
+  letter-spacing: var(--hf-type-letter-spacing-none);
+  border-bottom: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
+  white-space: nowrap;
+}
+.spy-table td {
+  height: calc(var(--hf-space-800) + var(--hf-space-100));  /* 36px */
+  padding: var(--hf-space-150) var(--hf-space-300);
+  color: var(--hf-color-text-primary);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-500);
+  letter-spacing: var(--hf-type-letter-spacing-loose);
+  border-bottom: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
+}
+.spy-table tbody tr { transition: background-color var(--hf-duration-150) ease; }
+.spy-table tbody tr:hover { background-color: var(--hf-color-overlay-hover); }
+.spy-table tbody tr[data-selected] { background-color: var(--hf-color-transparent-lime-10); }
+.spy-table tbody tr:last-child td { border-bottom: none; }
+.spy-table [data-align="end"] { text-align: end; }
+.spy-table [data-numeric] { font-variant-numeric: tabular-nums; }
+
+/* ---------------------------------------------------------------------------
+   LIST                                                                   [I]
+   ------------------------------------------------------------------------ */
+.spy-list { display: flex; flex-direction: column; gap: var(--hf-space-050); margin: 0; padding: 0; list-style: none; }
+.spy-list-item {
+  display: flex; align-items: center; gap: var(--hf-space-300);
+  min-height: calc(var(--hf-space-800) + var(--hf-space-100));
+  padding: var(--hf-space-200);
+  border-radius: var(--hf-radius-200);
+  color: var(--hf-color-text-primary);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-500);
+  transition: background-color var(--hf-duration-150) ease;
+}
+.spy-list-item[data-interactive] { cursor: pointer; }
+.spy-list-item[data-interactive]:hover { background-color: var(--hf-color-overlay-hover); }
+.spy-list-item-text { display: flex; flex-direction: column; gap: var(--hf-space-050); flex: 1 1 0; min-width: 0; }
+.spy-list-item-meta { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); }
+.spy-list[data-divided] .spy-list-item { border-radius: 0; border-bottom: var(--hf-border-width-thin) solid var(--hf-color-border-subtle); }
+.spy-list[data-divided] .spy-list-item:last-child { border-bottom: none; }
+
+/* ---------------------------------------------------------------------------
+   PAGINATION                                                             [I]
+   Assembled from the confirmed 32px icon-button and chip geometry.
+   ------------------------------------------------------------------------ */
+.spy-pagination { display: flex; align-items: center; gap: var(--hf-space-100); }
+.spy-pagination-item {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: var(--hf-space-800); height: var(--hf-space-800);
+  padding-inline: var(--hf-space-200);
+  border: none; border-radius: var(--hf-radius-200);
+  background-color: transparent;
+  color: var(--hf-color-text-secondary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-200);
+  font-weight: var(--hf-type-weight-medium);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer; outline: none;
+  transition: background-color var(--hf-duration-150) ease, color var(--hf-duration-150) ease;
+}
+.spy-pagination-item:hover { background-color: var(--hf-color-overlay-hover); color: var(--hf-color-text-primary); }
+.spy-pagination-item[data-active] { background-color: var(--hf-color-transparent-light-10); color: var(--hf-color-text-primary); }
+.spy-pagination-item[data-disabled] { color: var(--hf-color-text-disabled); pointer-events: none; }
+.spy-pagination-ellipsis { color: var(--hf-color-text-tertiary); padding-inline: var(--hf-space-100); }
+
+/* ---------------------------------------------------------------------------
+   EMPTY STATE  /  ERROR STATE                                            [I]
+   Uses the confirmed media-fallback recipe: elevated-start surface, centred
+   column, 16px padding, tertiary text.
+   ------------------------------------------------------------------------ */
+.spy-empty {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: var(--hf-space-200);
+  padding: var(--hf-space-1000) var(--hf-space-400);
+  border-radius: var(--hf-radius-400);
+  background-color: var(--hf-color-background-elevated-start);
+  color: var(--hf-color-text-tertiary);
+  text-align: center;
+}
+.spy-empty > .spy-icon { --spy-icon-size: var(--hf-space-800); color: var(--hf-color-icon-tertiary); }
+.spy-empty-title { color: var(--hf-color-text-primary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-semi-bold); margin: 0; }
+.spy-empty-description { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); margin: 0; max-width: 36ch; }
+.spy-empty[data-status="error"] > .spy-icon { color: var(--hf-color-state-error-fg); }
+.spy-empty[data-status="error"] .spy-empty-title { color: var(--hf-color-state-error-fg-soft); }
+
+/* Inline alert / banner */
+.spy-alert {
+  display: flex; align-items: flex-start; gap: var(--hf-space-200);
+  padding: var(--hf-space-300);
+  border-radius: var(--hf-radius-300);
+  background-color: var(--hf-color-transparent-light-05);
+  color: var(--hf-color-text-primary);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-500);
+}
+.spy-alert > .spy-icon { --spy-icon-size: var(--hf-icon-md); color: var(--hf-color-icon-secondary); }
+.spy-alert[data-status="error"]   { background-color: var(--hf-color-state-error-bg);   color: var(--hf-color-state-error-fg-soft); }
+.spy-alert[data-status="error"] > .spy-icon   { color: var(--hf-color-state-error-fg); }
+.spy-alert[data-status="success"] { background-color: var(--hf-color-state-success-bg); color: var(--hf-color-state-success-fg-soft); }
+.spy-alert[data-status="success"] > .spy-icon { color: var(--hf-color-state-success-fg); }
+.spy-alert[data-status="warning"] { background-color: var(--hf-color-state-warning-bg); color: var(--hf-color-state-warning-fg-soft); }
+.spy-alert[data-status="warning"] > .spy-icon { color: var(--hf-color-state-warning-fg); }
+.spy-alert[data-status="info"]    { background-color: var(--hf-color-state-info-bg);    color: var(--hf-color-state-info-fg-soft); }
+.spy-alert[data-status="info"] > .spy-icon    { color: var(--hf-color-state-info-fg); }
+
+/* ---------------------------------------------------------------------------
+   MEDIA  /  IMAGE + VIDEO CONTROLS                                      [C]
+   Overlays are gradient scrims (50% black -> transparent) pinned to the top
+   or bottom edge with 16px padding, and they are pointer-events:none with
+   their children re-enabled — so the media stays clickable between controls.
+   The fallback state sits on background-elevated-start.
+   ------------------------------------------------------------------------ */
+.spy-media {
+  position: relative; display: block;
+  width: 100%;
+  aspect-ratio: var(--spy-media-ratio, 16 / 9);
+  background-color: var(--hf-color-background-secondary);
+  overflow: hidden;
+}
+.spy-media > img, .spy-media > video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.spy-media[data-radius] { border-radius: var(--hf-radius-300); }
+.spy-media-overlay {
+  position: absolute;
+  display: flex; align-items: center; justify-content: center;
+  gap: var(--hf-space-200);
+  pointer-events: none;
+}
+.spy-media-overlay > * { pointer-events: auto; }
+.spy-media-overlay[data-place="center"] { inset: 0; }
+.spy-media-overlay[data-place="fill"]   { inset: 0; }
+.spy-media-overlay[data-place="top"] {
+  top: 0; left: 0; right: 0;
+  align-items: flex-start; justify-content: flex-start;
+  padding: var(--hf-space-400);
+  background-image: linear-gradient(to bottom, var(--hf-color-transparent-dark-50), transparent);
+}
+.spy-media-overlay[data-place="bottom"] {
+  bottom: 0; left: 0; right: 0;
+  align-items: flex-end; justify-content: flex-start;
+  padding: var(--hf-space-400);
+  background-image: linear-gradient(to top, var(--hf-color-transparent-dark-50), transparent);
+}
+.spy-media-fallback {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: var(--hf-space-200);
+  padding: var(--hf-space-400);
+  background-color: var(--hf-color-background-elevated-start);
+  color: var(--hf-color-text-tertiary);
+  text-align: center;
+}
+/* Playback scrubber — the slider rail over a dark scrim */
+.spy-media-scrub { position: relative; width: 100%; height: 4px; border-radius: var(--hf-radius-full); background-color: var(--hf-color-transparent-light-20); cursor: pointer; }
+.spy-media-scrub-fill { position: absolute; inset-block: 0; left: 0; border-radius: var(--hf-radius-full); background-color: var(--hf-color-text-primary); }
+.spy-media-time { color: var(--hf-color-text-primary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); font-variant-numeric: tabular-nums; }
+/* Glass control cluster that floats over media */
+.spy-media-controls {
+  display: inline-flex; align-items: center; gap: var(--hf-space-100);
+  padding: var(--hf-space-100);
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-background-glass);
+  backdrop-filter: blur(var(--hf-space-200));
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle);
+}
+
+/* ---------------------------------------------------------------------------
+   DIAL  (radial / linear parameter control)                             [C]
+   40px tall track, 10px radius, hairline border. Used for strength, guidance
+   and duration in the generation panels.
+   ------------------------------------------------------------------------ */
+.spy-dial { position: relative; height: var(--hf-space-1000); }
+.spy-dial-track {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
+  border-radius: var(--hf-radius-250);
+  background: none; outline: none;
+  cursor: pointer; user-select: none; touch-action: none;
+  overflow: visible;
+}
+
+/* ---------------------------------------------------------------------------
+   PROMPT COMPOSER                                                        [I]
+   The product's central object, assembled entirely from confirmed atoms:
+   a multiline field control (5%-white fill, 12px radius, inset focus ring)
+   with a toolbar row of toggles and chips, and a brand submit button pinned
+   to the trailing edge. Composition is inferred; every value inside it is
+   confirmed.
+   ------------------------------------------------------------------------ */
+.spy-composer {
+  display: flex; flex-direction: column;
+  gap: var(--hf-space-200);
+  padding: var(--hf-space-200);
+  border-radius: var(--hf-radius-400);
+  background-color: var(--hf-color-overlay-dim-soft);
+  box-shadow: var(--hf-shadow-sheen);
+  transition: box-shadow var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-composer:focus-within { box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus); }
+.spy-composer-input {
+  width: 100%; min-height: var(--hf-space-1400);
+  padding: var(--hf-space-200);
+  border: none; background: none; outline: none; resize: none;
+  color: var(--hf-color-text-primary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-300);
+  line-height: var(--hf-type-line-height-700);
+  letter-spacing: var(--hf-tracking-body);
+}
+.spy-composer-input::placeholder { color: var(--hf-color-text-on-overlay-secondary); opacity: 1; }
+.spy-composer-toolbar { display: flex; align-items: center; gap: var(--hf-space-150); flex-wrap: wrap; }
+.spy-composer-toolbar-end { margin-inline-start: auto; display: flex; align-items: center; gap: var(--hf-space-150); }
+.spy-composer-attachments { display: flex; align-items: center; gap: var(--hf-space-150); flex-wrap: wrap; }
+.spy-composer-attachment {
+  position: relative;
+  width: var(--hf-space-1200); height: var(--hf-space-1200);
+  border-radius: var(--hf-radius-200);
+  background-color: var(--hf-color-background-secondary);
+  box-shadow: var(--hf-shadow-inset-tile-hairline);
+  overflow: hidden;
+}
+.spy-composer-attachment > img { width: 100%; height: 100%; object-fit: cover; }
+.spy-composer-attachment-remove {
+  position: absolute; top: var(--hf-space-050); right: var(--hf-space-050);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hf-space-400); height: var(--hf-space-400);
+  border: none; border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-transparent-dark-60);
+  color: var(--hf-color-text-primary);
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------------------
+   ACCORDION                                                              [I]
+   ------------------------------------------------------------------------ */
+.spy-accordion { display: flex; flex-direction: column; }
+.spy-accordion-item { border-bottom: var(--hf-border-width-thin) solid var(--hf-color-border-subtle); }
+.spy-accordion-trigger {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--hf-space-300);
+  width: 100%;
+  min-height: var(--hf-space-1200);
+  padding: var(--hf-space-300) 0;
+  border: none; background: none;
+  color: var(--hf-color-text-primary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-300);
+  line-height: var(--hf-type-line-height-600);
+  font-weight: var(--hf-type-weight-medium);
+  text-align: start; cursor: pointer; outline: none;
+}
+.spy-accordion-trigger > .spy-icon { color: var(--hf-color-icon-secondary); transition: transform var(--hf-duration-180) var(--hf-ease-out-expo); }
+.spy-accordion-item[data-open] .spy-accordion-trigger > .spy-icon { transform: rotate(180deg); }
+.spy-accordion-panel { padding-bottom: var(--hf-space-400); color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-700); }
+.spy-accordion-item:not([data-open]) .spy-accordion-panel { display: none; }
+
+/* ---------------------------------------------------------------------------
+   VISUALLY HIDDEN
+   ------------------------------------------------------------------------ */
+.spy-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+/* --- [hidden] must win over the component's own display value ------------- */
+[hidden] { display: none !important; }
+
+/* ===========================================================================
+   MOBBIN ADDENDUM
+   Components confirmed from the 557-screen capture set — surfaces that live
+   behind auth and so could not be reached in the live audit.
+   ======================================================================== */
+
+/* ---------------------------------------------------------------------------
+   ICON TILE                                                              [C]
+   A rounded-square colour chip holding a glyph, 28px at a 8px radius. Used
+   down the settings nav (one colour per destination) and as the lead element
+   of a notice row. The colour is decorative and per-item, not semantic.
+   ------------------------------------------------------------------------ */
+.spy-icon-tile {
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  width: var(--hf-space-700); height: var(--hf-space-700);   /* 28px */
+  border-radius: var(--hf-radius-200);
+  background-color: var(--hf-color-background-secondary-strong);
+  color: var(--hf-color-icon-primary);
+  box-shadow: var(--hf-shadow-sheen);
+}
+.spy-icon-tile > .spy-icon { --spy-icon-size: var(--hf-icon-sm); }
+.spy-icon-tile[data-size="lg"] { width: var(--hf-space-800); height: var(--hf-space-800); border-radius: var(--hf-radius-250); }
+.spy-icon-tile[data-tone="brand"]   { background-color: var(--hf-color-brand-primary); color: var(--hf-color-text-inverse); }
+.spy-icon-tile[data-tone="pink"]    { background-color: var(--hf-color-brand-pink); color: var(--hf-color-text-primary); }
+.spy-icon-tile[data-tone="purple"]  { background-color: var(--hf-color-purple-600); color: var(--hf-color-text-primary); }
+.spy-icon-tile[data-tone="orange"]  { background-color: var(--hf-color-orange-600); color: var(--hf-color-text-primary); }
+.spy-icon-tile[data-tone="blue"]    { background-color: var(--hf-color-blue-500); color: var(--hf-color-text-primary); }
+.spy-icon-tile[data-tone="success"] { background-color: var(--hf-color-state-success-fg); color: var(--hf-color-text-inverse); }
+
+/* ---------------------------------------------------------------------------
+   COUNT                                                                  [C]
+   The neutral pill that follows a section title ("Usage history  99").
+   Sampled #212528 — the control surface, not a white overlay.
+   ------------------------------------------------------------------------ */
+.spy-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: var(--hf-space-600);
+  height: var(--hf-space-500);
+  padding-inline: var(--hf-space-150);
+  border-radius: var(--hf-radius-150);
+  background-color: var(--hf-color-background-secondary-strong);
+  color: var(--hf-color-text-secondary);
+  font-size: var(--hf-type-size-100);
+  font-weight: var(--hf-type-weight-medium);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------------------
+   NOTICE ROW                                                             [C]
+   Icon tile + title + description + trailing action, inside a nested card.
+   The pattern the product uses for account-level prompts ("Auto-refill is
+   disabled  →  Set-up & Enable"). Distinct from ALERT, which is status-
+   coloured and has no action slot.
+   ------------------------------------------------------------------------ */
+.spy-notice {
+  display: flex; align-items: center; gap: var(--hf-space-300);
+  padding: var(--hf-space-300) var(--hf-space-400);
+  border-radius: var(--hf-radius-300);
+  background-color: var(--hf-color-transparent-light-05);
+}
+.spy-notice-text { display: flex; flex-direction: column; gap: 2px; flex: 1 1 0; min-width: 0; }
+.spy-notice-title { color: var(--hf-color-text-primary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-semi-bold); }
+.spy-notice-description { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
+.spy-notice > .spy-btn { flex-shrink: 0; }
+
+/* ---------------------------------------------------------------------------
+   PARAMETER PANEL                                                        [C]
+   The editor's right-hand rail — the densest object in the product.
+   Structure, in order: header (icon · title · close), one or more collapsible
+   sections, a run of parameter rows, then a pinned footer action bar.
+   Panel surface is page-primary (#131517), not the card surface: it floats
+   over the canvas rather than sitting in the page.
+   ------------------------------------------------------------------------ */
+.spy-panel {
+  display: flex; flex-direction: column;
+  width: 26rem; max-width: 100%;
+  border-radius: var(--hf-radius-500);
+  background-color: var(--hf-surface-panel, var(--hf-color-background-primary));
+  box-shadow:
+    inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle),
+    var(--hf-shadow-overlay);
+  overflow: hidden;
+}
+.spy-panel-header {
+  display: flex; align-items: center; gap: var(--hf-space-200);
+  flex: none;
+  padding: var(--hf-space-400);
+  color: var(--hf-color-text-primary);
+  font-size: var(--hf-type-size-500);
+  line-height: var(--hf-type-line-height-800);
+  font-weight: var(--hf-type-weight-semi-bold);
+}
+.spy-panel-header > .spy-icon { --spy-icon-size: var(--hf-icon-md); color: var(--hf-color-icon-primary); }
+.spy-panel-header-title { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spy-panel-body { flex: auto; min-height: 0; overflow-y: auto; padding: 0 var(--hf-space-300) var(--hf-space-300); display: flex; flex-direction: column; gap: var(--hf-space-300); }
+
+/* Collapsible section: an uppercase 11px label with a rotating chevron, in a
+   nested container one step up from the panel surface. */
+.spy-panel-section {
+  border-radius: var(--hf-radius-300);
+  background-color: var(--hf-color-transparent-light-05);
+  overflow: hidden;
+}
+.spy-panel-section-header {
+  display: flex; align-items: center; gap: var(--hf-space-200);
+  width: 100%;
+  padding: var(--hf-space-300);
+  border: none; background: none;
+  color: var(--hf-color-text-secondary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-100);
+  font-weight: var(--hf-type-weight-medium);
+  letter-spacing: var(--hf-type-letter-spacing-wide);
+  text-transform: uppercase;
+  text-align: start; cursor: pointer;
+}
+.spy-panel-section-header > .spy-icon { --spy-icon-size: var(--hf-icon-sm); transition: transform var(--hf-duration-180) var(--hf-ease-out-expo); }
+.spy-panel-section:not([data-open]) .spy-panel-section-header > .spy-icon { transform: rotate(-90deg); }
+.spy-panel-section:not([data-open]) .spy-panel-section-body { display: none; }
+.spy-panel-section-body { padding: 0 var(--hf-space-300) var(--hf-space-300); }
+
+/* Parameter row: chevron · label · info · control. 56px, hairline divided. */
+.spy-param-row {
+  display: flex; align-items: center; gap: var(--hf-space-200);
+  width: 100%;
+  min-height: var(--hf-space-1400);           /* 56px */
+  padding: var(--hf-space-200) var(--hf-space-300);
+  border: none;
+  border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-primary);
+  background: none;
+  color: var(--hf-color-text-primary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-300);
+  line-height: var(--hf-type-line-height-600);
+  text-align: start;
+}
+.spy-param-row:last-child { border-bottom: none; }
+.spy-param-row > .spy-icon:first-child { --spy-icon-size: var(--hf-icon-sm); color: var(--hf-color-icon-tertiary); }
+.spy-param-label { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: var(--hf-space-150); overflow: hidden; }
+.spy-param-info { --spy-icon-size: var(--hf-icon-sm); color: var(--hf-color-icon-tertiary); flex-shrink: 0; }
+.spy-param-value { color: var(--hf-color-text-secondary); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+
+/* Footer action bar: pinned, 48px controls, primary takes the remaining width */
+.spy-panel-footer {
+  display: flex; align-items: center; gap: var(--hf-space-200);
+  flex: none;
+  padding: var(--hf-space-300) var(--hf-space-400) var(--hf-space-400);
+}
+.spy-panel-footer > [data-grow] { flex: 1 1 0; }
+
+/* ---------------------------------------------------------------------------
+   PRESET GRID                                                            [C]
+   Three columns of 4:3 thumbnails with a caption below. Selected state is a
+   2px lime ring PLUS a lime circular check badge centred on the thumbnail —
+   both, not either. The "none" option is a dark tile with a slashed glyph.
+   ------------------------------------------------------------------------ */
+.spy-preset-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--hf-space-200); }
+.spy-preset {
+  display: flex; flex-direction: column; gap: var(--hf-space-150);
+  padding: 0; border: none; background: none;
+  color: var(--hf-color-text-primary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-100);
+  line-height: var(--hf-type-line-height-300);
+  cursor: pointer; text-align: center;
+}
+.spy-preset-thumb {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--hf-radius-250);
+  background-color: var(--hf-color-background-secondary-strong);
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--hf-color-icon-tertiary);
+  transition: box-shadow var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-preset-thumb > img { width: 100%; height: 100%; object-fit: cover; }
+.spy-preset:hover .spy-preset-thumb { box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-strong); }
+.spy-preset[data-selected] .spy-preset-thumb { box-shadow: inset 0 0 0 var(--hf-border-width-thick) var(--hf-color-border-focus); }
+.spy-preset[data-selected] .spy-preset-thumb::after {
+  content: "";
+  position: absolute; inset: 0; margin: auto;
+  width: var(--hf-space-600); height: var(--hf-space-600);
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-brand-primary);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23131517' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5.25 12.5 4.5 4.25 9-9.5'/%3E%3C/svg%3E");
+  background-size: 68%; background-position: center; background-repeat: no-repeat;
+}
+.spy-preset-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spy-preset[data-selected] .spy-preset-label { color: var(--hf-color-text-primary); }
+
+/* ---------------------------------------------------------------------------
+   FLOATING TOOL BAR                                                      [C]
+   A pill container of pill tools that floats over the work surface. The
+   container is the card surface; the active tool is one step lighter and may
+   carry a badge. Tools are 48px with a full radius and icon + label.
+   ------------------------------------------------------------------------ */
+.spy-toolbar {
+  display: inline-flex; align-items: center; gap: var(--hf-space-100);
+  max-width: 100%;
+  padding: var(--hf-space-150);
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-surface-card, var(--hf-color-background-secondary));
+  box-shadow:
+    inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle),
+    var(--hf-shadow-overlay);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.spy-toolbar::-webkit-scrollbar { display: none; }
+.spy-tool {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--hf-space-200);
+  flex-shrink: 0;
+  height: var(--hf-space-1200);                /* 48px */
+  padding-inline: var(--hf-space-400);
+  border: none;
+  border-radius: var(--hf-radius-full);
+  background-color: transparent;
+  color: var(--hf-color-text-primary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-300);
+  line-height: var(--hf-type-line-height-600);
+  font-weight: var(--hf-type-weight-medium);
+  white-space: nowrap; cursor: pointer; outline: none;
+  transition: background-color var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-tool > .spy-icon { --spy-icon-size: var(--hf-icon-md); color: var(--hf-color-icon-secondary); }
+.spy-tool:hover { background-color: var(--hf-color-overlay-hover); }
+.spy-tool[data-active] { background-color: var(--hf-color-transparent-light-10); }
+.spy-tool[data-active] > .spy-icon { color: var(--hf-color-icon-primary); }
+.spy-tool:focus-visible { box-shadow: 0 0 0 var(--hf-border-width-thick) var(--hf-color-border-focus); }
+
+/* ---------------------------------------------------------------------------
+   STEPPER (vertical)                                                     [I]
+   The wizard rail used by the multi-step studios. Numbered dots that fill
+   with the tint once complete, connected by a hairline.
+   ------------------------------------------------------------------------ */
+.spy-stepper { display: flex; flex-direction: column; gap: 0; }
+.spy-step { position: relative; display: flex; align-items: flex-start; gap: var(--hf-space-300); padding-bottom: var(--hf-space-500); }
+.spy-step:last-child { padding-bottom: 0; }
+.spy-step::before {
+  content: ""; position: absolute; left: calc(var(--hf-space-300) - 0.5px); top: var(--hf-space-600);
+  bottom: 0; width: var(--hf-border-width-thin);
+  background-color: var(--hf-color-divider-primary);
+}
+.spy-step:last-child::before { display: none; }
+.spy-step-dot {
+  position: relative; z-index: 1; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hf-space-600); height: var(--hf-space-600);
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-background-secondary-strong);
+  color: var(--hf-color-text-secondary);
+  font-size: var(--hf-type-size-100);
+  font-weight: var(--hf-type-weight-medium);
+  font-variant-numeric: tabular-nums;
+}
+.spy-step[data-state="done"] .spy-step-dot { background-color: var(--q-tint); color: var(--hf-color-text-inverse); }
+.spy-step[data-state="active"] .spy-step-dot { background-color: transparent; color: var(--q-tint); box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--q-tint); }
+.spy-step-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding-top: 2px; }
+.spy-step-title { color: var(--hf-color-text-primary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); font-weight: var(--hf-type-weight-medium); }
+.spy-step-description { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); }
+.spy-step[data-state="todo"] .spy-step-title { color: var(--hf-color-text-tertiary); }
+
+/* ---------------------------------------------------------------------------
+   TABLE — upgraded to confirmed geometry                                 [C]
+   From the usage-history table: 64px rows, dividers at 8% white, a 13px
+   secondary header whose filterable columns carry a chevron, a two-tone date
+   cell (date primary, time secondary), values in tabular figures with a
+   dotted underline where a tooltip is attached, and positive deltas in green.
+   ------------------------------------------------------------------------ */
+.spy-table td { height: var(--hf-space-1600); }             /* 64px */
+.spy-table th, .spy-table td { border-bottom-color: var(--hf-color-divider-primary); }
+.spy-table th { font-size: 0.8125rem; }                      /* 13px */
+.spy-table-filter {
+  display: inline-flex; align-items: center; gap: var(--hf-space-100);
+  border: none; background: none; padding: 0;
+  color: inherit; font: inherit; cursor: pointer;
+}
+.spy-table-filter > .spy-icon { --spy-icon-size: var(--hf-icon-sm); }
+.spy-table-value {
+  font-weight: var(--hf-type-weight-semi-bold);
+  font-variant-numeric: tabular-nums;
+  text-decoration: underline dotted var(--hf-color-border-strong);
+  text-underline-offset: 4px;
+}
+.spy-table-value[data-delta="positive"] { color: var(--hf-color-state-success-fg); }
+.spy-table-time { color: var(--hf-color-text-secondary); }
+.spy-table-footer {
+  display: flex; align-items: center; gap: var(--hf-space-300);
+  padding: var(--hf-space-300) var(--hf-space-400);
+  border-top: var(--hf-border-width-thin) solid var(--hf-color-divider-primary);
+}
+.spy-table-footer > [data-center] { flex: 1 1 0; text-align: center; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); }
