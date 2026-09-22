@@ -131,7 +131,7 @@ a.doc-rail-level:hover { color: var(--q-tint-text); }
 
 .doc-stats { display: flex; flex-wrap: wrap; gap: var(--hf-space-1000); margin-top: var(--hf-space-800); }
 .doc-stat { display: flex; flex-direction: column; gap: 2px; }
-.doc-stat strong { font-family: var(--hf-type-family-grotesk); font-size: var(--hf-type-size-900); font-weight: var(--hf-type-weight-bold); letter-spacing: var(--hf-tracking-display); color: var(--hf-color-text-primary); }
+.doc-stat strong { font-family: var(--hf-type-family-grotesk); font-size: var(--hf-type-size-900); font-weight: var(--hf-type-weight-display); letter-spacing: var(--hf-tracking-display); color: var(--hf-color-text-primary); }
 .doc-stat span { font-size: var(--hf-type-size-100); color: var(--hf-color-text-tertiary); letter-spacing: var(--hf-type-letter-spacing-wide); text-transform: uppercase; }
 
 /* The column owns the gutters now, so the old container inside it must not

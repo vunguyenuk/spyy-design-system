@@ -7,7 +7,7 @@
 <meta name="description" content="Colour, type, space, radius, border, elevation, icons, motion and layout tokens for the Spyy design system.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Asta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="components.css">
 <link rel="stylesheet" href="patterns.css">
@@ -59,12 +59,11 @@
       <span class="doc-ev" data-ev="c">Confirmed</span>
       <h3 class="spy-h6 doc-sub">Families</h3>
       <ul class="doc-defs">
-        <li><strong>Inter Display</strong><span>primary — headings, display</span></li>
-        <li><strong>Inter</strong><span>secondary — all UI text, labels, body</span></li>
-        <li><strong>Space Grotesk</strong><span>accent — badges, special labels, always uppercase</span></li>
-        <li><strong>IBM Plex Mono</strong><span>mono — code, seeds, parameters</span></li>
+        <li><strong>Archivo Black</strong><span>display — the page header and h1 to h3, and badges. One weight only.</span></li>
+        <li><strong>Asta Sans</strong><span>text — body copy, labels, and h4 down</span></li>
+        <li><strong>No third face</strong><span>the mono role resolves to Asta Sans with tabular figures</span></li>
       </ul>
-      <p class="spy-caption-m spy-text-secondary doc-note">Weights shipped: 400 / 500 / 600 / 700 / 900. Body text is 400; every control label is 500 or 600; only display and badges go above.</p>
+      <p class="spy-caption-m spy-text-secondary doc-note">Asta Sans ships 400 / 500 / 600 / 700 / 800 / 900. Body text is 400; every control label is 500 or 600. Archivo Black ships one weight and it is already black — asking for 700 makes the browser smear the outline, so anything in the display face is set at 400 and no other value. There is no monospace: code, token names and hex values use the text face with tabular figures, so they still form a column.</p>
     </div>
     <div class="doc-panel">
       <span class="doc-ev" data-ev="c">Confirmed</span>

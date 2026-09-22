@@ -50,9 +50,10 @@ Two variables re-skin everything: `data-theme` swaps the semantic layer, and `--
 switches, progress, toggles, tabs, gauges, option cards, tier pips and processing frames. Set the
 tint on any subtree to recolour that region — the mechanism the reference system uses to re-skin a whole surface in one line.
 
-Fonts: two faces, Space Grotesk for display headers and Inter for body copy and ordinary headings,
-plus IBM Plex Mono for code. All three are on Google Fonts. The display face is a stand-in: the
-marketing header it is meant to match has not been identified yet, and swapping it is one token.
+Fonts: exactly two faces and no third. **Archivo Black** for display headers (h1–h3 and badges),
+**Asta Sans** for everything else. Both on Google Fonts. Archivo Black ships one weight, so anything
+in the display face is set at 400. There is no monospace — the mono role resolves to Asta Sans with
+tabular figures, so token names and hex values still line up. See `EVIDENCE.md` §17.4.
 
 ## How it was built
 

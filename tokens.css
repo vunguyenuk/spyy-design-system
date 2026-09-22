@@ -317,19 +317,22 @@
   --hf-icon-xl: 1.75rem;  /* 28px */
 
   /* -- Typography: families -------------------------------------------- [C] */
-  /* TWO faces, and only two. [A] on the display face: the marketing header
-     it is meant to match could not be read off the source site, so Space
-     Grotesk stands in at the right weight and width until it is identified.
-     Swapping it is this one line.
+  /* TWO faces, and only two.
        display   — page and section headers only
        text      — body copy AND ordinary headings
        mono      — code, tokens, measurements                                */
-  --hf-type-family-display-base: "Space Grotesk";
-  --hf-type-family-text-base: "Inter";
-  --hf-type-family-mono-base: "IBM Plex Mono";
+  --hf-type-family-display-base: "Archivo Black";
+  --hf-type-family-text-base: "Asta Sans";
 
-  --hf-type-family-display: "Space Grotesk", "Inter", system-ui, sans-serif;
-  --hf-type-family-text: "Inter", system-ui, sans-serif;
+  --hf-type-family-display: "Archivo Black", "Arial Black", system-ui, sans-serif;
+  --hf-type-family-text: "Asta Sans", system-ui, sans-serif;
+
+  /* There is no third face. The mono slot is kept as a ROLE, because plenty of
+     rules ask for it, but it now resolves to the text face with tabular
+     figures turned on. Token names and hex values stay in a column; a block of
+     code loses its fixed advance width, which is the cost of two faces. To put
+     a monospace back, this is the only line that changes.               [I] */
+  --hf-type-family-mono-base: var(--hf-type-family-text-base);
 
   /* The old four-slot names, now pointing at the two real faces so that no
      component had to be rewritten. primary and secondary are both text;
@@ -340,7 +343,7 @@
   --hf-type-family-primary: var(--hf-type-family-text);
   --hf-type-family-secondary: var(--hf-type-family-text);
   --hf-type-family-grotesk: var(--hf-type-family-display);
-  --hf-type-family-mono: "IBM Plex Mono", "Space Mono", ui-monospace, monospace;
+  --hf-type-family-mono: var(--hf-type-family-text);
 
   /* -- Typography: weights --------------------------------------------- [C] */
   --hf-type-weight-regular: 400;
@@ -348,6 +351,12 @@
   --hf-type-weight-semi-bold: 600;
   --hf-type-weight-bold: 700;
   --hf-type-weight-black: 900;
+
+  /* Archivo Black ships ONE weight, and that weight is already black. Asking
+     for 700 or 900 makes the browser synthesise a faux-bold by smearing the
+     outline, which on a face this heavy turns counters into mud. Anything set
+     in the display face uses this weight and no other.                  [C] */
+  --hf-type-weight-display: 400;
 
   /* -- Typography: letter spacing -------------------------------------- [C] */
   --hf-type-letter-spacing-tight: -0.075rem;

@@ -61,10 +61,10 @@ body {
 .spy-h6 { font: var(--hf-type-weight-semi-bold) var(--text-h6)/var(--text-h6--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-body); margin: 0; }
 .spy-h5 { font: var(--hf-type-weight-semi-bold) var(--text-h5)/var(--text-h5--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-display); margin: 0; }
 .spy-h4 { font: var(--hf-type-weight-bold) var(--text-h4)/var(--text-h4--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-display); margin: 0; }
-.spy-h3 { font: var(--hf-type-weight-bold) var(--text-h3)/var(--text-h3--line-height) var(--hf-type-family-display); letter-spacing: var(--hf-tracking-display); margin: 0; }
-.spy-h2 { font: var(--hf-type-weight-bold) var(--text-h2)/var(--text-h2--line-height) var(--hf-type-family-display); letter-spacing: var(--hf-tracking-display); margin: 0; }
-.spy-h1 { font: var(--hf-type-weight-bold) var(--text-h1)/var(--text-h1--line-height) var(--hf-type-family-display); letter-spacing: var(--hf-tracking-display); margin: 0; }
-.spy-display { font: var(--hf-type-weight-black) var(--text-display)/var(--text-display--line-height) var(--hf-type-family-display); letter-spacing: var(--hf-tracking-display); margin: 0; }
+.spy-h3 { font: var(--hf-type-weight-display) var(--text-h3)/var(--text-h3--line-height) var(--hf-type-family-display); letter-spacing: var(--hf-tracking-display); margin: 0; }
+.spy-h2 { font: var(--hf-type-weight-display) var(--text-h2)/var(--text-h2--line-height) var(--hf-type-family-display); letter-spacing: var(--hf-tracking-display); margin: 0; }
+.spy-h1 { font: var(--hf-type-weight-display) var(--text-h1)/var(--text-h1--line-height) var(--hf-type-family-display); letter-spacing: var(--hf-tracking-display); margin: 0; }
+.spy-display { font: var(--hf-type-weight-display) var(--text-display)/var(--text-display--line-height) var(--hf-type-family-display); letter-spacing: var(--hf-tracking-display); margin: 0; }
 
 /* Caps styles always carry -4% tracking. Confirmed across every caps token. */
 .spy-caps {
@@ -73,7 +73,7 @@ body {
   font-weight: var(--hf-type-weight-bold);
 }
 .spy-mono { font-family: var(--hf-type-family-mono); }
-.spy-grotesk { font-family: var(--hf-type-family-grotesk); }
+.spy-grotesk { font-family: var(--hf-type-family-grotesk); font-weight: var(--hf-type-weight-display); }
 
 .spy-text-secondary { color: var(--hf-color-text-secondary); }
 .spy-text-tertiary  { color: var(--hf-color-text-tertiary); }
@@ -1005,7 +1005,7 @@ body {
 
 /* ---------------------------------------------------------------------------
    BADGE                                                                 [C]
-   The system's signature marker: Space Grotesk Bold, uppercase, 12px, 2px
+   The system's signature marker: the display face, uppercase, 12px, 2px
    radius, 14px tall — and SKEWED -10.89deg. The skew is on the surface only;
    the text is counter-skewed back to upright. Do not round it, do not
    un-skew it, do not set it in Inter. This one object carries most of the
@@ -1039,7 +1039,7 @@ body {
   transform: skewX(calc(-1 * var(--spy-badge-skew)));
   font-family: var(--hf-type-family-grotesk);
   font-size: var(--hf-type-size-100);
-  font-weight: var(--hf-type-weight-bold);
+  font-weight: var(--hf-type-weight-display);
   line-height: 1;
   letter-spacing: var(--hf-type-letter-spacing-none);
   text-transform: uppercase;
@@ -2344,3 +2344,20 @@ body {
   border-top: var(--hf-border-width-thin) solid var(--hf-color-divider-primary);
 }
 .spy-table-footer > [data-center] { flex: 1 1 0; text-align: center; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); }
+
+/* ---------------------------------------------------------------------------
+   THE MONO ROLE WITHOUT A MONO FACE                                      [I]
+   The system ships two faces and no third. Everything that used to ask for a
+   monospace still asks for the mono role; the role now resolves to the text
+   face with tabular figures and lining numerals on, so token names and hex
+   values still form a column. Letter-spacing is opened very slightly, which
+   is what most of the monospace legibility at small sizes actually came from.
+   ------------------------------------------------------------------------ */
+.spy-mono,
+code, kbd, samp, pre,
+[class*="mono"] {
+  font-family: var(--hf-type-family-mono);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1, "calt" 0;
+  letter-spacing: 0.01em;
+}

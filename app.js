@@ -253,7 +253,7 @@ function renderTypeSpecimen() {
     host.appendChild(row);
   });
   const caps = el('div', { style: 'margin-top:28px;display:flex;flex-direction:column;gap:16px' });
-  caps.appendChild(el('span', { class: 'doc-state-label' }, 'Space Grotesk · uppercase · -4% tracking'));
+  caps.appendChild(el('span', { class: 'doc-state-label' }, 'display face · uppercase · -4% tracking'));
   caps.appendChild(el('div', { class: 'spy-grotesk spy-caps', style: 'font-size:var(--hf-type-size-800);line-height:1.1' }, 'Sign up and get your extra discount'));
   caps.appendChild(el('span', { class: 'doc-state-label' }, 'IBM Plex Mono · parameters and seeds'));
   caps.appendChild(el('div', { class: 'spy-mono spy-text-secondary', style: 'font-size:var(--hf-type-size-200)' }, 'seed 44127 · cfg 3.5 · 1920x1080 · 24fps'));
