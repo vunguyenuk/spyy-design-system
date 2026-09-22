@@ -230,3 +230,6 @@ code {
    every width. Let each specimen row scroll rather than widen the page. */
 #render-type-specimen > div { overflow-x: auto; scrollbar-width: none; }
 #render-type-specimen > div::-webkit-scrollbar { display: none; }
+
+/* grid rows must not stretch a panel that clips its own overflow */
+#account .doc-grid-2 { align-items: start; }
