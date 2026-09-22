@@ -108,7 +108,7 @@ a.doc-rail-level:hover { color: var(--q-tint-text); }
 
 /* -- content --------------------------------------------------------------- */
 .doc-lede { padding-block: var(--hf-space-1600) var(--hf-space-1000); }
-.doc-lede h1 { max-width: 20ch; }
+.doc-lede h1 { max-width: 22ch; }
 .doc-lede-text { max-width: var(--doc-measure); margin: var(--hf-space-400) 0 var(--hf-space-600); }
 .doc-legend { display: flex; flex-wrap: wrap; align-items: center; gap: var(--hf-space-250) var(--hf-space-500); }
 /* each badge stays with the sentence that explains it — the legend wraps
