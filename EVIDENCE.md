@@ -512,3 +512,27 @@ are exempt under WCAG 1.4.3 and it matches the source.
 3:1. Run per theme, per page. Current state: **0 findings on all five pages in the light theme**
 apart from intentionally-dim disabled controls and two gradient-backed elements the compositor
 cannot read.
+
+---
+
+## 15. The component API table
+
+`components.html#api` lists every `data-*` property each base component accepts and every state it
+responds to. It is **extracted from `components.css`**, not written by hand: a script parses each
+selector, collects the attribute matchers and pseudo-classes attached to a given base class, and
+emits the rows. So a variant listed there is a variant that has a selector; the docs cannot claim a
+property the CSS does not implement.
+
+If `components.css` changes, re-run the extraction rather than editing `COMPONENT_API` in `app.js`.
+
+Two conventions the table makes visible, both taken from Higgsfield rather than chosen:
+
+- **The browser owns hover, active and focus; the app owns selected, checked, open and disabled.**
+  Higgsfield never mirrors a pointer state into an attribute — there is no `data-hovered`. States
+  that outlive the pointer are attributes; states that do not are pseudo-classes.
+- **Loading is `aria-busy`, error is `data-invalid` on the control.** The first is already standard
+  and Higgsfield uses it; the second means the label and the message both read the flag from one
+  place instead of each being set independently.
+
+Components with no `data-*` property and no interactive state (`.spy-card-title`, `.spy-panel-body`,
+the type-scale helpers) are not listed — they take content, not configuration.

@@ -825,6 +825,52 @@
   </div>
 </section>
 
+<section class="doc-section" id="api" data-nav="States &amp; props">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">States &amp; properties</h2>
+    <p class="spy-body-s spy-text-secondary">
+      The whole component API in one table: every <code>data-*</code> property each base component
+      accepts, and every state it responds to. It is extracted from <code>components.css</code>
+      rather than written by hand, so it cannot drift from what the CSS actually implements — if a
+      variant is listed here, a selector for it exists.
+    </p>
+  </header>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Property reference</h3>
+    <div class="spy-table-wrap">
+      <table class="spy-table">
+        <thead><tr><th>Group</th><th>Base</th><th>Properties</th><th>States</th></tr></thead>
+        <tbody id="render-component-api"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">How the API is shaped</h3>
+    <div class="doc-grid-2">
+      <div class="doc-panel">
+        <h3 class="spy-h6 doc-sub" style="margin-top:0">One class, then properties</h3>
+        <ul class="doc-defs">
+          <li><strong>The class names the thing</strong><span><code>.spy-btn</code> is a button. There is no <code>.spy-btn--brand-sm-icon</code>.</span></li>
+          <li><strong><code>data-variant</code> is what it means</strong><span>brand, danger, ghost, outline. Changes colour and weight, never geometry.</span></li>
+          <li><strong><code>data-size</code> is how big</strong><span>Changes height, padding, icon size and type step together — never one of them alone.</span></li>
+          <li><strong>Booleans have no value</strong><span><code>data-icon-only</code>, <code>data-full-width</code>, <code>data-selected</code>, <code>data-disabled</code>. Present or absent.</span></li>
+        </ul>
+      </div>
+      <div class="doc-panel">
+        <h3 class="spy-h6 doc-sub" style="margin-top:0">State, and who owns it</h3>
+        <ul class="doc-defs">
+          <li><strong>The browser owns hover, active and focus</strong><span>Never mirrored into a data attribute — <code>:focus-visible</code>, not <code>data-focused</code>.</span></li>
+          <li><strong>You own selected, checked, open and disabled</strong><span>These outlive the pointer, so they are properties you set.</span></li>
+          <li><strong>Loading is <code>aria-busy</code></strong><span>Because it is already a standard. The label hides and a spinner takes its place in the same box, so nothing reflows.</span></li>
+          <li><strong>Error is <code>data-invalid</code> on the control</strong><span>The label and the message read it from there; you set it in one place.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <div class="spy-modal-backdrop" data-modal-backdrop hidden></div>

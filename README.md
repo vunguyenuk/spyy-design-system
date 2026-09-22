@@ -10,7 +10,7 @@ Four levels. Each answers a different question, and the answer at one level bind
 | | | |
 |---|---|---|
 | **Foundations** | `foundations.html` | What are the raw decisions? Colour, type, space, radius, border, elevation, icons, motion, layout. |
-| **Components** | `components.html` | What is the smallest usable piece? Primitives with every state. |
+| **Components** | `components.html` | What is the smallest usable piece? 44 primitives with every state, plus a property reference extracted from the CSS itself. |
 | **Patterns** | `patterns.html` | How does spyy say this? Scoring, confidence, async scans, attribution, pickers, results, editor, account, composer — and a states & properties matrix for all of them. |
 | **Templates** | `templates.html` | What does the screen look like? Four screens, one per step of the flow. |
 

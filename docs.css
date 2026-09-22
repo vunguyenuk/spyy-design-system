@@ -377,3 +377,14 @@ code {
 .doc-state-cell > div > .spy-source,
 .doc-state-cell > div > .spy-chip,
 .doc-state-cell > div > .spy-badge { align-self: flex-start; }
+
+/* The component API table: a class name must never break across lines, or it
+   reads as two different selectors. The property column takes the slack. */
+#api .spy-table td:nth-child(1),
+#api .spy-table td:nth-child(2) { white-space: nowrap; vertical-align: top; }
+#api .spy-table td:nth-child(3),
+#api .spy-table td:nth-child(4) { vertical-align: top; }
+#api .spy-table td:nth-child(3) code { display: inline-block; margin-block: 1px; }
+@media (max-width: 60rem) {
+  #api .spy-table td:nth-child(2) { white-space: normal; overflow-wrap: anywhere; }
+}
