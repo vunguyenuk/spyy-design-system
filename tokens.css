@@ -507,6 +507,17 @@
   --hf-color-button-disabled: #292b2c;
 
   /* Overlays */
+  /* Neutral fills — the quiet tinted surfaces underneath chips, code blocks,
+     tracks, tiles and count badges. Higgsfield paints them with WHITE alpha
+     because its product is dark; on a light surface the same fill is
+     invisible, so the semantic layer owns them and the light block flips them
+     to black alpha. Anything painted OVER generated media keeps the raw
+     white-alpha primitive instead, because media is dark in both themes.
+     [C] dark values, transcribed · [I] light values, derived              */
+  --hf-color-fill-subtle: var(--hf-color-transparent-light-05);
+  --hf-color-fill-default: var(--hf-color-transparent-light-10);
+  --hf-color-fill-strong: var(--hf-color-transparent-light-20);
+
   --hf-color-overlay-hover: var(--hf-color-transparent-light-05);
   --hf-color-overlay-dim-soft: var(--hf-color-transparent-light-05);
   --hf-color-overlay-dim-strong: var(--hf-color-transparent-light-20);
@@ -611,6 +622,10 @@
   --hf-color-button-secondary: var(--hf-color-grey-100);
   --hf-color-button-tertiary: var(--hf-color-grey-150);
   --hf-color-button-disabled: #e4e4e4;
+
+  --hf-color-fill-subtle: var(--hf-color-transparent-dark-05);
+  --hf-color-fill-default: var(--hf-color-transparent-dark-10);
+  --hf-color-fill-strong: var(--hf-color-transparent-dark-20);
 
   --hf-color-overlay-hover: var(--hf-color-transparent-dark-05);
   --hf-color-overlay-dim-soft: var(--hf-color-transparent-dark-05);

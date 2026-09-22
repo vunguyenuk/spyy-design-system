@@ -536,3 +536,67 @@ Two conventions the table makes visible, both taken from Higgsfield rather than 
 
 Components with no `data-*` property and no interactive state (`.spy-card-title`, `.spy-panel-body`,
 the type-scale helpers) are not listed — they take content, not configuration.
+
+---
+
+## 16. The reference site's own layout
+
+Nothing in this section is part of the design system. It records how the site that *displays* the
+system is laid out, because the first version of it did not hold up.
+
+### 16.1 What was wrong
+
+Navigation was two horizontal strips — five level tabs in the masthead, then a scrolling row of
+section links under it. That meant: you could only see the sections of the page you were already on;
+jumping from a component to the pattern that uses it took two clicks and a scroll; on a phone both
+strips became side-scrollers, which hide their own contents; and the content column ran the full
+window width, so prose lines reached 140 characters on a wide screen.
+
+### 16.2 What it is now
+
+The structure reference documentation sites converge on, for reasons that apply here too:
+
+| | |
+|---|---|
+| **Top bar** | brand, current level, a filter over the whole system (`/` focuses it), theme switch |
+| **Left rail** | every section of every level, always. 44 entries, 6 groups, identical on all five pages — only the active marker moves |
+| **Content column** | one measure for prose (`--doc-measure`, 68ch), full column for specimens |
+
+The rail is built from a single manifest in `shell.js`, so the five pages cannot disagree about what
+exists. A scroll-spy marks the section in view. Below 64rem the rail becomes a drawer over a scrim,
+because a 44-item list cannot share a phone screen with content.
+
+Three consequences worth stating, since they are the point:
+
+- **Any section is one click from any other.** The Templates page can send you to the pattern it
+  used and the pattern can send you to the component it is built from, without going up a level.
+- **Prose has a fixed measure.** The section head, the lede and the callouts are capped; only
+  specimen grids use the full column. A line of body text does not get longer because the window did.
+- **The section title steps up the ladder.** It was one step above its own subsections and read
+  flat; it now takes `--text-h4`, so the page has three legible levels of heading instead of two.
+
+### 16.3 The bug the restyle exposed: white fills on a white surface
+
+Higgsfield paints its quiet surfaces — the tint under a chip, a code block, a progress track, a
+count badge, an icon tile — with **white alpha**, because the product is dark. Components were
+reading those primitives directly (`--hf-color-transparent-light-05/10/20`), which violates the
+system's own rule that a component reads only the semantic layer. In the dark theme it is invisible
+as a mistake. In the light theme, white-on-white made 37 of those surfaces disappear.
+
+Added a semantic fill ladder, flipped in the light block:
+
+| Token | Dark `[C]` | Light `[I]` |
+|---|---|---|
+| `--hf-color-fill-subtle` | white 5% | black 5% |
+| `--hf-color-fill-default` | white 10% | black 10% |
+| `--hf-color-fill-strong` | white 20% | black 20% |
+
+37 declarations across `components.css`, `patterns.css` and `docs.css` were moved onto it. Two
+groups deliberately keep the raw white-alpha primitive, and a detector script checks that only these
+remain: the **alpha-ladder specimens** on the Foundations page, which exist to show the primitive
+itself, and anything painted **over generated media** (the scrubber, the result-card overlays),
+because media is dark in both themes.
+
+The method: render each page in the light theme and report every element whose computed background
+is `rgba(255,255,255,α)` with `0 < α < 1`. Text-contrast checking would never have caught this — the
+text was perfectly readable, it was the surface underneath it that had vanished.

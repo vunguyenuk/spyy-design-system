@@ -552,23 +552,6 @@ function renderPickerGrid() {
   }
 }
 
-function renderNav() {
-  const host = $('#doc-nav-links'); if (!host) return;
-  host.innerHTML = '';
-  const sections = $$('.doc-section[data-nav]');
-  sections.forEach(sec => host.appendChild(el('a', { class: 'spy-nav-item', href: '#' + sec.id }, sec.dataset.nav)));
-  const links = $$('.doc-nav-inner .spy-nav-item');
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (!e.isIntersecting) return;
-      links.forEach(l => l.removeAttribute('data-active'));
-      const m = links.find(l => l.getAttribute('href') === '#' + e.target.id);
-      if (m) m.setAttribute('data-active', '');
-    });
-  }, { rootMargin: '-120px 0px -70% 0px' });
-  sections.forEach(s => obs.observe(s));
-}
-
 /* --------------------------------------------------------------- BEHAVIOUR */
 function wireTheme() {
   const set = (theme) => {
@@ -1440,6 +1423,5 @@ function renderAll() {
 }
 renderAll();
 wireTheme();
-renderNav();
 wireInteractions();
 })();

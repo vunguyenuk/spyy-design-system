@@ -76,6 +76,16 @@ against the result (`GAPS.md`) and the Patterns and Templates levels were built 
 3. **The grey ramp leans blue, borders are alpha-white, elevation is an inset sheen.** Swap any of the
    three and the look goes, however correct the rest is.
 
+## Browsing it
+
+One rail lists every section of every level — 44 entries, identical on all five pages — so the
+Templates page can send you to the pattern it used and the pattern to the component it is built
+from, without going up a level first. The filter in the top bar covers the whole system; `/` focuses
+it. On a phone the rail becomes a drawer.
+
+Prose has a fixed measure and specimens get the full column, so a line of body text does not get
+longer because the window did.
+
 ## Two things about the light theme
 
 It is derived, not transcribed, and deriving it surfaced a real bug in the dark build: ink tokens
