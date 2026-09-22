@@ -913,6 +913,56 @@
   </div>
 </section>
 
+<section class="doc-section" id="states" data-nav="States & props">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">States &amp; properties</h2>
+    <p class="spy-body-s spy-text-secondary">
+      Every pattern’s full surface in one place — what it takes, what it can be, and what it looks like
+      in each state. Components on the previous level document their own states; this page covers only
+      the patterns introduced here.
+    </p>
+  </header>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Live state matrices</h3>
+    <div class="doc-state-grid" id="render-pattern-states"></div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Property reference</h3>
+    <div class="spy-table-wrap">
+      <table class="spy-table">
+        <thead><tr><th>Pattern</th><th>Properties</th><th>States</th><th>Serves</th></tr></thead>
+        <tbody id="render-props-table"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Rules the patterns share</h3>
+    <div class="doc-grid-2">
+      <div class="doc-panel">
+        <h3 class="spy-h6 doc-sub" style="margin-top:0">Colour discipline</h3>
+        <ul class="doc-defs">
+          <li><strong>Tint means “this is the thing”</strong><span>Selected, filled, active, on. Never severity.</span></li>
+          <li><strong>Status colour means severity</strong><span>Only on verdicts, coverage status, impact chips and a value that is genuinely a warning. Never on a bar.</span></li>
+          <li><strong>Confidence is never a colour</strong><span>It is a separate line in the tertiary colour, because confidence and value answer different questions.</span></li>
+          <li><strong>One calibration per screen</strong><span>If two score sets appear together they share the gradient scale; two scales on one screen means neither is readable.</span></li>
+        </ul>
+      </div>
+      <div class="doc-panel">
+        <h3 class="spy-h6 doc-sub" style="margin-top:0">Interaction</h3>
+        <ul class="doc-defs">
+          <li><strong>Focus is always the component focus ring</strong><span>2px page-coloured gap + 4px tint, or an inset 1.5px ring inside a field. Patterns never invent their own.</span></li>
+          <li><strong>Hover on a transparent surface is 5% white</strong><span>Rows, cards, candidates and option cards all use the one overlay.</span></li>
+          <li><strong>Selection doubles up when the target is small</strong><span>Preset tiles and preset-sized targets take a ring <em>and</em> a mark; a chip or an option card takes a border and a colour change.</span></li>
+          <li><strong>Pending is a sweep, not a spinner</strong><span>Inside a row or track. Spinners are for whole regions, in the processing frame’s badge.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 </main>
 
 <script src="icons.js"></script>

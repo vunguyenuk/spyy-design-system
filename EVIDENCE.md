@@ -419,3 +419,96 @@ the meaning. spyy's results are **not** equal: an attributed creative and an unc
 distinguishable at a glance in the same grid. The result card therefore carries a status chip that
 Higgsfield's asset cards do not have. It uses the confirmed chip component at its smallest size, so
 the addition is to the *composition*, not to the visual language.
+
+---
+
+## 14. The light theme, and what it cost
+
+The dark theme is transcribed. The light theme is **derived** — Higgsfield ships no light build of
+the product chrome, only light marketing pages — so everything in this section is `[I]` unless it
+says otherwise. It was validated by compositing every text node against its real painted background
+across all five pages at 1440px and re-measuring the contrast ratio.
+
+### 14.1 The bug the audit found: ink that flipped when its surface did not
+
+`--hf-color-text-inverse` flips with the theme (near-black on dark, white on light) because the
+surface it normally sits on flips too. But a **tint fill does not flip** — lime-500 is lime-500 in
+both themes. Every component that painted a lime fill and then asked for `text-inverse` came out
+white-on-lime in the light theme: **1.17:1**. That hit the brand button, the marketing-primary
+button, the lime badge, the selected chip, the brand icon tile, the completed step dot, the
+"Confident" gauge verdict and the scanning badge.
+
+Fix — two theme-constant ink tokens, deliberately **not** redefined under `[data-theme="light"]`:
+
+| Token | Value | For |
+|---|---|---|
+| `--hf-color-text-on-tint` | `grey-550` `#1a1a1a` | lime, teal, green, amber fills |
+| `--hf-color-text-on-tint-inverse` | `grey-050` `#ffffff` | pink, blue fills |
+
+The semantic status fills needed no such token: `--hf-color-state-*-fg` already darkens in the light
+theme (green-500 → green-700, yellow-500 → yellow-800), so `text-inverse` tracks it correctly.
+
+### 14.2 Tint as type is not tint as paint
+
+A second class of failure: the tint used to **set type**, not to fill. Eyebrows, active nav items,
+the pressed toggle label, the selected option label and caption, section-head icons, the level index
+and problem id on the docs chrome — all lime-on-white at 1.07–1.17:1.
+
+Added `--q-tint-text`, which is the tint itself on dark and a darkened mix on light:
+
+```css
+:root              { --q-tint-text: var(--q-tint); }
+[data-theme=light] { --q-tint-text: color-mix(in oklab, var(--q-tint) 62%, #000000); }
+```
+
+The mix keeps this tint-agnostic, so the Marketing pink and the Supercomputer teal darken the same
+way when `--q-tint` is switched. This follows a rule the DS already had: `--hf-color-border-focus`
+is lime-500 on dark and **lime-700** on light, for exactly this reason. Components that *paint* with
+the tint still use `--q-tint`; only ones that set type in it use `--q-tint-text`.
+
+### 14.3 Cascade order — the addendum outranked the light block
+
+`:root` and `[data-theme="light"]` carry identical specificity (0,1,0), so the later one wins. The
+Mobbin addendum at the end of `tokens.css` is a `:root` block, which meant it silently overrode the
+light theme for every token it declared. The four product surfaces stayed `#0f1113`–`#23262a` in
+light mode, so the template screens rendered dark chrome with light-theme ink. The light values for
+those surfaces now live in a `[data-theme="light"]` block **after** the addendum, with a comment
+saying why it has to be there.
+
+### 14.4 Derived light values
+
+| Token | Dark | Light | Why |
+|---|---|---|---|
+| `--hf-surface-app` | `#0f1113` `[C]` | `#ffffff` | the dark ramp mirrored at the same relative steps |
+| `--hf-surface-panel` | `#131517` `[C]` | `#fafafa` | " |
+| `--hf-surface-card` | `#1c1e20` `[C]` | `#f4f4f4` | " |
+| `--hf-surface-control` | `#23262a` `[C]` | `#eaeaea` | " |
+| `--hf-color-skeleton` | `#202227` `[C]` | `#e4e4e4` | promoted from a literal in `components.css` to a token |
+| `--hf-color-text-disabled` | `#484e56` `[C]` | `grey-250` `#7f7f7f` | grey-150 was 1.24:1 on white — unreadable even for a disabled control |
+| `--hf-color-state-warning-fg-soft` | `yellow-500` `[C]` | `yellow-900` | yellow-800 was 2.87:1 on white |
+
+Two elements keep theme-constant ink because they sit on something that never flips: the result
+card's duration chip (a 60% black scrim over media) and the processing badge in its `done` state
+(a green fill).
+
+### 14.5 What was left alone on purpose
+
+Higgsfield's confirmed `--hf-color-text-tertiary` is `#626262`, which measures **2.4–2.8:1** on the
+product's own dark surfaces — below WCAG AA for body text. It carries captions, metadata, helper
+text and placeholder text throughout the product.
+
+It was not changed. The brief is explicit that accuracy beats interpretation, and this is a
+transcribed value, not a derived one. It is recorded here as a property of the source system so the
+team can decide deliberately. The light theme's tertiary is a *derived* value, so it was allowed to
+land at a readable `#7f7f7f`.
+
+Disabled text and 50%-opacity controls also sit below 3:1 in both themes. That is intended — they
+are exempt under WCAG 1.4.3 and it matches the source.
+
+### 14.6 Method
+
+`contrast.mjs` walks every element with a text child, composites the full background stack
+(including alpha layers) down to the root, applies inherited opacity, and reports anything under
+3:1. Run per theme, per page. Current state: **0 findings on all five pages in the light theme**
+apart from intentionally-dim disabled controls and two gradient-backed elements the compositor
+cannot read.

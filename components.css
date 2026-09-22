@@ -241,7 +241,7 @@ body {
 /* brand — the lime pill. Press feedback is a filter, so the token stays one. */
 .spy-btn[data-variant="brand"] {
   background-color: var(--hf-color-button-brand);
-  color: var(--hf-color-text-inverse);
+  color: var(--hf-color-text-on-tint);
   --spy-btn-hover-overlay: transparent;
 }
 .spy-btn[data-variant="brand"]:hover { filter: brightness(0.8); }
@@ -342,7 +342,7 @@ body {
     var(--hf-gradient-special-gloss-lime),
     linear-gradient(90deg, var(--hf-color-button-brand) 0%, var(--hf-color-button-brand) 100%);
   border: none;
-  color: var(--hf-color-text-inverse);
+  color: var(--hf-color-text-on-tint);
   --spy-btn-hover-overlay: transparent;
   box-shadow:
     inset 0 -3px 0 0 #829b19,
@@ -903,7 +903,7 @@ body {
 .spy-toggle:hover { background-color: var(--hf-color-overlay-hover); }
 .spy-toggle[data-pressed] {
   background-color: color-mix(in oklch, var(--q-tint) 10%, transparent);
-  color: var(--q-tint);
+  color: var(--q-tint-text);
 }
 .spy-toggle[data-size="sm"] { height: var(--hf-space-800); min-width: var(--hf-space-800); gap: var(--hf-space-100); padding-inline: var(--hf-space-200); }
 .spy-toggle[data-size="sm"] > .spy-icon { --spy-icon-size: var(--hf-icon-sm); }
@@ -957,7 +957,7 @@ body {
   --spy-chip-hover-fg: var(--hf-color-text-primary);
   --spy-chip-hover-border: var(--hf-color-lime-900);
   --spy-chip-selected-bg: var(--hf-color-icon-accent);
-  --spy-chip-selected-fg: var(--hf-color-icon-inverse);
+  --spy-chip-selected-fg: var(--hf-color-text-on-tint);
   --spy-chip-ring: var(--hf-color-transparent-lime-20);
   --spy-chip-h: var(--hf-space-700);        /* 28px */
   --spy-chip-gap: var(--hf-space-100);
@@ -1041,7 +1041,7 @@ body {
   white-space: nowrap;
   color: currentColor;
 }
-.spy-badge[data-variant="lime"]        { --spy-badge-bg: var(--hf-color-brand-primary); --spy-badge-fg: var(--hf-color-text-inverse); }
+.spy-badge[data-variant="lime"]        { --spy-badge-bg: var(--hf-color-brand-primary); --spy-badge-fg: var(--hf-color-text-on-tint); }
 .spy-badge[data-variant="lime-subtle"] { --spy-badge-bg: var(--hf-color-transparent-lime-15); --spy-badge-fg: var(--hf-color-text-link); }
 .spy-badge[data-variant="pink"]        { --spy-badge-bg: var(--hf-gradient-badge-pink); }
 .spy-badge[data-variant="blue"]        { --spy-badge-bg: var(--hf-gradient-badge-blue); }
@@ -1476,7 +1476,7 @@ body {
 .spy-nav-item[data-open] { background-color: var(--hf-color-overlay-hover); color: var(--hf-color-text-primary); }
 .spy-nav-item[data-active],
 .spy-nav-item[aria-current="page"] { color: var(--hf-color-text-primary); }
-.spy-nav-item[data-accent][data-active] { color: var(--hf-color-brand-primary); text-shadow: 0 0 8px var(--hf-color-brand-primary); }
+.spy-nav-item[data-accent][data-active] { color: var(--q-tint-text); text-shadow: 0 0 8px var(--hf-color-brand-primary); }
 .spy-nav-item[data-disabled] { color: var(--hf-color-text-disabled); pointer-events: none; }
 
 .spy-nav-actions { display: flex; align-items: center; gap: var(--hf-space-300); margin-inline-start: auto; flex-shrink: 0; }
@@ -1703,7 +1703,7 @@ body {
   position: relative;
   display: inline-flex; align-items: center; justify-content: center; flex: none;
   width: var(--spy-loader-size); height: var(--spy-loader-size);
-  color: var(--q-tint);
+  color: var(--q-tint-text);
 }
 .spy-loader-spinner { width: var(--spy-loader-size); height: var(--spy-loader-size); animation: spy-spin var(--hf-duration-800) var(--hf-ease-linear) infinite; }
 .spy-loader-dots { display: inline-flex; align-items: center; gap: var(--hf-space-100); }
@@ -1727,7 +1727,7 @@ body {
 
 /* Skeleton — note the shimmer runs VERTICALLY and darkens, it does not
    sweep a light band horizontally.                                       [C] */
-.spy-skeleton { position: relative; background-color: #202227; border-radius: var(--hf-radius-200); overflow: hidden; }
+.spy-skeleton { position: relative; background-color: var(--hf-color-skeleton); border-radius: var(--hf-radius-200); overflow: hidden; }
 .spy-skeleton::after {
   content: ""; position: absolute; top: 100%; left: 0;
   width: 100%; height: 100%;
@@ -2047,7 +2047,7 @@ body {
 }
 .spy-icon-tile > .spy-icon { --spy-icon-size: var(--hf-icon-sm); }
 .spy-icon-tile[data-size="lg"] { width: var(--hf-space-800); height: var(--hf-space-800); border-radius: var(--hf-radius-250); }
-.spy-icon-tile[data-tone="brand"]   { background-color: var(--hf-color-brand-primary); color: var(--hf-color-text-inverse); }
+.spy-icon-tile[data-tone="brand"]   { background-color: var(--hf-color-brand-primary); color: var(--hf-color-text-on-tint); }
 .spy-icon-tile[data-tone="pink"]    { background-color: var(--hf-color-brand-pink); color: var(--hf-color-text-primary); }
 .spy-icon-tile[data-tone="purple"]  { background-color: var(--hf-color-purple-600); color: var(--hf-color-text-primary); }
 .spy-icon-tile[data-tone="orange"]  { background-color: var(--hf-color-orange-600); color: var(--hf-color-text-primary); }
@@ -2284,8 +2284,8 @@ body {
   font-weight: var(--hf-type-weight-medium);
   font-variant-numeric: tabular-nums;
 }
-.spy-step[data-state="done"] .spy-step-dot { background-color: var(--q-tint); color: var(--hf-color-text-inverse); }
-.spy-step[data-state="active"] .spy-step-dot { background-color: transparent; color: var(--q-tint); box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--q-tint); }
+.spy-step[data-state="done"] .spy-step-dot { background-color: var(--q-tint); color: var(--hf-color-text-on-tint); }
+.spy-step[data-state="active"] .spy-step-dot { background-color: transparent; color: var(--q-tint-text); box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--q-tint); }
 .spy-step-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding-top: 2px; }
 .spy-step-title { color: var(--hf-color-text-primary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); font-weight: var(--hf-type-weight-medium); }
 .spy-step-description { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); }

@@ -626,7 +626,7 @@
   --hf-color-state-success-fg-soft: var(--hf-color-green-600);
   --hf-color-state-warning-bg: var(--hf-color-yellow-100);
   --hf-color-state-warning-fg: var(--hf-color-yellow-900);
-  --hf-color-state-warning-fg-soft: var(--hf-color-yellow-800);
+  --hf-color-state-warning-fg-soft: var(--hf-color-yellow-900);  /* -800 is 2.87:1 on white */
   --hf-color-state-info-bg: var(--hf-color-blue-100);
   --hf-color-state-info-fg: var(--hf-color-blue-600);
   --hf-color-state-info-fg-soft: var(--hf-color-blue-500);
@@ -687,6 +687,11 @@
      rather than the brand colour. Sampled #01c317 in the shipped editor.  [C] */
   --hf-color-separator-success: #00c314;
 
+  /* Skeleton fill, sampled from the shipped loading states. Kept as its own
+     token because it is not on the surface ramp — it is a hair darker than
+     surface-control so a skeleton reads as absent content, not as a tile. [C] */
+  --hf-color-skeleton: #202227;
+
   /* The four surfaces the whole product is actually built from. Every region
      sampled across the capture set returned one of these.                 [C] */
   --hf-surface-app: #0f1113;       /* the settings / library page floor      */
@@ -694,9 +699,53 @@
   --hf-surface-card: #1c1e20;      /* cards, toolbars, active rows           */
   --hf-surface-control: #23262a;   /* secondary buttons, count badges        */
 
+  /* Ink for anything FILLED with the brand lime or a product tint.          [C]
+     --hf-color-text-inverse flips with the theme because the surface it sits
+     on flips too (white-on-dark becomes dark-on-white). A tint fill does NOT
+     flip — lime-500 is lime-500 in both themes — so its ink must not either.
+     This is the one text token deliberately left out of the light block.
+     Confirmed: Higgsfield's lime button carries #1a1a1a ink on the dark
+     product and on the white marketing pages alike.                          */
+  --hf-color-text-on-tint: var(--hf-color-grey-550);
+
+  /* Its counterpart, for a tint dark enough to need white ink — the Marketing
+     pink, for one. Also theme-constant, for the same reason.            [C] */
+  --hf-color-text-on-tint-inverse: var(--hf-color-grey-050);
+
+  /* Tint used as TEXT. On the dark product it is the tint itself; the light
+     block below darkens it. Components that PAINT with the tint keep using
+     --q-tint; only ones that SET TYPE in it use this.                   [C] */
+  --q-tint-text: var(--q-tint);
+
   /* Product tints. The same components re-skin per surface via --q-tint. [C]
      Confirmed by three differently-tinted surfaces in the capture set.       */
   --q-tint-default: var(--hf-color-lime-500);   /* core product            */
   --q-tint-marketing: var(--hf-color-pink-500); /* Marketing Studio        */
   --q-tint-compute: #35c6a8;                    /* Supercomputer (approx)  */
+}
+
+/* Light counterpart of the addendum. It has to live here, after the :root
+   block above: [data-theme="light"] and :root carry the same specificity, so
+   whichever comes last wins — an earlier light block would be overridden.
+   [I] Higgsfield ships no light build of the app chrome, so the four surfaces
+   are the dark ramp mirrored on the light ramp at the same relative steps:
+   floor lightest, then panel, card, control. The tints and the success green
+   are NOT repeated here — they are the same colour in both themes.          */
+[data-theme="light"] {
+  --hf-surface-app: var(--hf-color-grey-050);      /* #ffffff */
+  --hf-surface-panel: #fafafa;
+  --hf-surface-card: var(--hf-color-grey-100);     /* #f4f4f4 */
+  --hf-surface-control: #eaeaea;
+
+  /* Skeleton on light, derived at the same distance from the light ramp. [I] */
+  --hf-color-skeleton: #e4e4e4;
+
+  /* Tint used as TEXT (not as a fill) has to darken on a light background:
+     lime-500 on white is 1.17:1. The mix keeps this tint-agnostic, so the
+     Marketing pink and Supercomputer teal darken the same way.          [I] */
+  --q-tint-text: color-mix(in oklab, var(--q-tint) 62%, #000000);
+
+  /* Disabled text derived at grey-150 is 1.24:1 on white — far below the
+     3:1 that even a disabled control needs to stay readable.            [I] */
+  --hf-color-text-disabled: var(--hf-color-grey-250);
 }

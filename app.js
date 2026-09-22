@@ -762,10 +762,12 @@ function renderUsageRows() {
   });
 }
 
+// The ink is a theme-constant token, not text-inverse: a tint is the same
+// colour in both themes, so the label on top of it must not flip.
 const TINTS = [
-  ['Core product', 'var(--hf-color-lime-500)', 'lime-500 · #d1fe17', 'var(--hf-color-text-inverse)'],
-  ['Marketing Studio', 'var(--hf-color-pink-500)', 'pink-500 · #ff005b', 'var(--hf-color-text-primary)'],
-  ['Supercomputer', '#35c6a8', 'teal · approximate', 'var(--hf-color-text-inverse)'],
+  ['Core product', 'var(--hf-color-lime-500)', 'lime-500 · #d1fe17', 'var(--hf-color-text-on-tint)'],
+  ['Marketing Studio', 'var(--hf-color-pink-500)', 'pink-500 · #ff005b', 'var(--hf-color-text-on-tint-inverse)'],
+  ['Supercomputer', '#35c6a8', 'teal · approximate', 'var(--hf-color-text-on-tint)'],
 ];
 function renderTints() {
   const host = $('#render-tints'); if (!host) return;
@@ -980,7 +982,7 @@ function coverageRows(host) {
     const r = el('div', { class: 'spy-coverage-row' });
     const ico = state === 'done' ? 'check' : state === 'running' ? 'refresh' : state === 'failed' ? 'warning' : 'minus';
     r.innerHTML =
-      `<span class="spy-coverage-name"><span class="spy-source" data-source="${src}"><span class="spy-source-dot"></span>${name}</span></span>
+      `<span class="spy-coverage-name"><span class="spy-source" data-source="${src}"><span class="spy-source-dot"></span><span>${name}</span></span></span>
        <span class="spy-coverage-count">${count}</span>
        <span class="spy-coverage-status" data-state="${state}">${icon(ico, 'xs')}${statusText}</span>`;
     host.appendChild(r);
@@ -1226,7 +1228,121 @@ function renderProduct() {
   renderRail('t3-rail', 1);
   renderRail('t4-rail', 4);
   renderRecentScans();
+  renderPropsTable();
+  renderPatternStates();
   paintGauges();
+}
+
+
+/* --------------------------------------------- RENDER: states & properties */
+const PROP_TABLE = [
+  ['Metric row', 'label · value 0–100 · tone · confidence · pending',
+   'default · pending · zero (—)', 'P3 P4'],
+  ['Headline score', 'label · value · denominator · scale fill',
+   'default · pending', 'P3'],
+  ['Score gauge', 'value 0–100 · verdict · size md/sm · suffix · verdictLabel',
+   'good · fair · bad · empty', 'P1 P3'],
+  ['Stat', 'value · label · delta up/down · align',
+   'default · with delta', 'P7'],
+  ['Verdict row', 'verdict keep/modify/remove · label · reasons[] · count',
+   'default · hover · focus · expanded', 'P3'],
+  ['Evidence panel', 'tone for/against · title · claim · list[] · thumbs[]',
+   'default', 'P3'],
+  ['Ranked item', 'index · title · detail · impact high/medium/low',
+   'default', 'P3'],
+  ['Classification row', 'icon · label · values[] · tone tint',
+   'default', 'P3'],
+  ['Candidate', 'avatar · name · handle · source · confidence · confidence low',
+   'default · hover · selected · focus · low-confidence', 'P1'],
+  ['Option card', 'icon · label · caption · selected · disabled',
+   'default · hover · selected · focus · disabled', 'P4'],
+  ['Navigator row', 'label · value · trailing slot',
+   'default · hover · focus', 'P4'],
+  ['Source badge', 'source meta/tiktok/appstore/youtube/landing · label',
+   'default', 'P2'],
+  ['Coverage row', 'source · name · count · state',
+   'done · running · partial · failed · skipped', 'P2'],
+  ['Tier indicator', 'depth 1–4 · label',
+   'default', 'P4'],
+  ['Processing frame', 'state · badge label',
+   'running · done · failed', 'P6'],
+  ['Placement row', 'source · where · first seen · last seen · live',
+   'default · live', 'P5'],
+  ['Result card', 'media · duration · source · tier · attributed',
+   'default · hover (actions) · focus-within · uncertain', 'P2 P4 P5'],
+  ['Dropzone', 'icon · title · hint',
+   'default · hover · drag-over', '—'],
+];
+
+function renderPropsTable() {
+  const host = $('#render-props-table'); if (!host) return;
+  host.innerHTML = '';
+  PROP_TABLE.forEach(([name, props, states, serves]) => {
+    const tr = el('tr');
+    tr.innerHTML =
+      `<td>${name}</td>
+       <td class="spy-text-secondary"><code>${props.replace(/ · /g, '</code> <code>')}</code></td>
+       <td class="spy-text-secondary">${states}</td>
+       <td>${serves === '—' ? '<span class="spy-text-tertiary">—</span>' : serves.split(' ').map(s => `<span class="doc-serves">${s}</span>`).join(' ')}</td>`;
+    host.appendChild(tr);
+  });
+}
+
+function renderPatternStates() {
+  const host = $('#render-pattern-states'); if (!host) return;
+  host.innerHTML = '';
+  const cell = (label, html) => {
+    const c = el('div', { class: 'doc-state-cell' });
+    c.appendChild(el('span', { class: 'doc-state-label' }, label));
+    const w = el('div', { style: 'display:flex;flex-direction:column;gap:10px' });
+    w.innerHTML = html;
+    c.appendChild(w);
+    return c;
+  };
+  const opt = (attrs, label) =>
+    `<div class="spy-options"><button class="spy-option" ${attrs}>${icon('video')}<span>${label}</span></button></div>`;
+  const cov = (state, text, ico) =>
+    `<span class="spy-coverage-status" data-state="${state}">${icon(ico, 'xs')}${text}</span>`;
+
+  host.appendChild(cell('Option — default', opt('', 'TikTok')));
+  host.appendChild(cell('Option — selected', opt('data-selected', 'TikTok')));
+  // the specimen paints the real :focus-visible recipe (2px page colour, then
+  // 4px tint) rather than an approximation — it must match .spy-option exactly.
+  host.appendChild(cell('Option — focus', opt('style="box-shadow:0 0 0 2px var(--hf-color-background-primary),0 0 0 4px var(--hf-color-border-focus)"', 'TikTok')));
+  host.appendChild(cell('Option — disabled', opt('data-disabled', 'TikTok')));
+
+  host.appendChild(cell('Coverage states',
+    cov('done', 'Complete', 'check') + cov('running', 'Running', 'refresh') +
+    cov('partial', 'Partial', 'minus') + cov('failed', 'Rate limited', 'warning') +
+    cov('skipped', 'Skipped', 'minus')));
+
+  host.appendChild(cell('Metric — default',
+    `<div class="spy-metric"><div class="spy-metric-head"><span class="spy-metric-label">Hook strength</span><span class="spy-metric-value">91</span></div><div class="spy-metric-track"><div class="spy-metric-fill" style="width:91%"></div></div></div>`));
+  host.appendChild(cell('Metric — warning value',
+    `<div class="spy-metric"><div class="spy-metric-head"><span class="spy-metric-label">Brand safety</span><span class="spy-metric-value" data-tone="warning">38</span></div><div class="spy-metric-track"><div class="spy-metric-fill" style="width:38%"></div></div></div>`));
+  host.appendChild(cell('Metric — pending',
+    `<div class="spy-metric" data-pending><div class="spy-metric-head"><span class="spy-metric-label">App Store link</span><span class="spy-metric-value">—</span></div><div class="spy-metric-track"></div></div>`));
+
+  host.appendChild(cell('Tier 1 → 4',
+    [1,2,3,4].map(d =>
+      `<span class="spy-tier"><span class="spy-tier-pips">${[1,2,3,4].map(i => `<span class="spy-tier-pip"${i<=d?' data-on':''}></span>`).join('')}</span></span>`).join('')));
+
+  host.appendChild(cell('Placement — live / ended',
+    `<div class="spy-placement" style="border:none;padding:0"><span class="spy-placement-where"><span class="spy-source" data-source="meta"><span class="spy-source-dot"></span><span>Meta · Feed</span></span><span class="spy-live-dot"></span></span></div>
+     <div class="spy-placement" style="border:none;padding:0"><span class="spy-placement-where"><span class="spy-source" data-source="tiktok"><span class="spy-source-dot"></span><span>TikTok</span></span></span></div>`));
+
+  host.appendChild(cell('Impact levels',
+    `<span class="spy-impact" data-level="high">High impact</span>
+     <span class="spy-impact" data-level="medium">Medium</span>
+     <span class="spy-impact" data-level="low">Low</span>`));
+
+  host.appendChild(cell('Gauge verdicts',
+    `<div style="display:flex;gap:12px">
+       <div class="spy-gauge" data-size="sm" data-verdict="good" data-value="94"></div>
+       <div class="spy-gauge" data-size="sm" data-verdict="fair" data-value="62"></div>
+       <div class="spy-gauge" data-size="sm" data-verdict="bad" data-value="28"></div>
+     </div>`));
+  paintGauges(host);
 }
 
 /* -------------------------------------------------------------------- BOOT */

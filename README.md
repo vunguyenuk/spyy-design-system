@@ -11,7 +11,7 @@ Four levels. Each answers a different question, and the answer at one level bind
 |---|---|---|
 | **Foundations** | `foundations.html` | What are the raw decisions? Colour, type, space, radius, border, elevation, icons, motion, layout. |
 | **Components** | `components.html` | What is the smallest usable piece? Primitives with every state. |
-| **Patterns** | `patterns.html` | How does spyy say this? Scoring, confidence, async scans, attribution, pickers, results. |
+| **Patterns** | `patterns.html` | How does spyy say this? Scoring, confidence, async scans, attribution, pickers, results, editor, account, composer — and a states & properties matrix for all of them. |
 | **Templates** | `templates.html` | What does the screen look like? Four screens, one per step of the flow. |
 
 If a template needs something that is not in Patterns, that is a gap in Patterns — not a licence to
@@ -75,6 +75,22 @@ against the result (`GAPS.md`) and the Patterns and Templates levels were built 
    means difference. Argued in full in `GAPS.md` §3.1.
 3. **The grey ramp leans blue, borders are alpha-white, elevation is an inset sheen.** Swap any of the
    three and the look goes, however correct the rest is.
+
+## Two things about the light theme
+
+It is derived, not transcribed, and deriving it surfaced a real bug in the dark build: ink tokens
+that flip with the theme were being used on **tint fills, which don't flip**. A lime button asked
+for `--hf-color-text-inverse` and got white-on-lime at 1.17:1 the moment the theme changed. Two
+theme-constant tokens now carry that ink (`--hf-color-text-on-tint`, `--hf-color-text-on-tint-inverse`),
+and a third (`--q-tint-text`) carries the tint when it is used to set type rather than to paint.
+`EVIDENCE.md` §14 has the full account, including the cascade-order trap that let the Mobbin
+addendum silently override the entire light theme.
+
+The other thing: Higgsfield's own `text-tertiary` (`#626262`) measures 2.4–2.8:1 on the product's
+dark surfaces, below WCAG AA, and it carries most of the captions and metadata in the product. It
+was **left alone** — it is a transcribed value and the brief puts accuracy above interpretation. The
+light theme's tertiary is derived, so it was allowed to land at a readable `#7f7f7f`. Decide on the
+dark one deliberately rather than inheriting it by accident.
 
 ## Known gaps
 

@@ -24,7 +24,9 @@
 .spy-page-header-text { flex: 1 1 24rem; min-width: 0; display: flex; flex-direction: column; gap: var(--hf-space-200); }
 .spy-page-title { margin: 0; font-family: var(--hf-type-family-primary); font-size: var(--hf-type-size-1000); line-height: var(--hf-type-line-height-1100); font-weight: var(--hf-type-weight-bold); letter-spacing: var(--hf-tracking-display); color: var(--hf-color-text-primary); }
 .spy-page-subtitle { margin: 0; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-700); max-width: 68ch; }
-.spy-page-actions { display: flex; align-items: center; gap: var(--hf-space-200); flex-shrink: 0; margin-inline-start: auto; }
+/* shrink:0 keeps the actions at full size beside the title on wide screens;
+   max-width:100% lets them wrap onto their own line instead of spilling. */
+.spy-page-actions { display: flex; align-items: center; gap: var(--hf-space-200); flex-wrap: wrap; flex-shrink: 0; max-width: 100%; margin-inline-start: auto; }
 
 /* Keyboard hint chip — ⌘ K in the nav search.                            [C] */
 .spy-kbd {
@@ -160,7 +162,7 @@
   font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300);
   font-weight: var(--hf-type-weight-medium);
 }
-.spy-gauge[data-verdict="good"] .spy-gauge-verdict { background-color: var(--hf-color-brand-primary); color: var(--hf-color-text-inverse); }
+.spy-gauge[data-verdict="good"] .spy-gauge-verdict { background-color: var(--hf-color-brand-primary); color: var(--hf-color-text-on-tint); }
 .spy-gauge[data-verdict="fair"] .spy-gauge-verdict { background-color: var(--hf-color-state-warning-bg); color: var(--hf-color-state-warning-fg-soft); }
 .spy-gauge[data-verdict="bad"]  .spy-gauge-verdict { background-color: var(--hf-color-state-error-bg); color: var(--hf-color-state-error-fg-soft); }
 .spy-gauge[data-size="sm"] { --spy-gauge-size: 6rem; --spy-gauge-stroke: 10; }
@@ -202,6 +204,7 @@
 }
 .spy-verdict:last-child { border-bottom: none; }
 .spy-verdict:hover { background-color: var(--hf-color-overlay-hover); }
+.spy-verdict:focus-visible { outline: none; box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus); }
 .spy-verdict-icon {
   display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
   width: var(--hf-space-600); height: var(--hf-space-600);
@@ -255,7 +258,7 @@
    quote, impact chip. Composed from list rows and chips; no new visual.
    ------------------------------------------------------------------------ */
 .spy-ranked { display: flex; flex-direction: column; }
-.spy-ranked-item { display: flex; align-items: flex-start; gap: var(--hf-space-300); padding: var(--hf-space-300) 0; border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-primary); }
+.spy-ranked-item { display: flex; align-items: flex-start; flex-wrap: wrap; gap: var(--hf-space-300); padding: var(--hf-space-300) 0; border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-primary); }
 .spy-ranked-item:last-child { border-bottom: none; }
 .spy-ranked-index {
   display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
@@ -266,8 +269,8 @@
   font-size: var(--hf-type-size-100); font-weight: var(--hf-type-weight-medium);
   font-variant-numeric: tabular-nums;
 }
-.spy-ranked-title { flex: 0 0 11rem; color: var(--hf-color-text-primary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-medium); }
-.spy-ranked-detail { flex: 1 1 0; min-width: 0; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); }
+.spy-ranked-title { flex: 1 1 11rem; color: var(--hf-color-text-primary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-medium); }
+.spy-ranked-detail { flex: 1 1 14rem; min-width: 0; overflow-wrap: anywhere; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); }
 .spy-impact {
   flex-shrink: 0;
   display: inline-flex; align-items: center;
@@ -287,10 +290,10 @@
    chips. Read-only metadata — if a value is editable it is a Field, not this.
    ------------------------------------------------------------------------ */
 .spy-classify { display: flex; flex-direction: column; gap: var(--hf-space-100); }
-.spy-classify-row { display: flex; align-items: center; gap: var(--hf-space-300); min-height: var(--hf-space-800); }
+.spy-classify-row { display: flex; align-items: center; gap: var(--hf-space-300); min-height: var(--hf-space-800); flex-wrap: wrap; }
 .spy-classify-row > .spy-icon { --spy-icon-size: var(--hf-icon-sm); color: var(--hf-color-icon-tertiary); flex-shrink: 0; }
-.spy-classify-label { flex: 0 0 9rem; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
-.spy-classify-values { flex: 1 1 0; min-width: 0; display: flex; flex-wrap: wrap; gap: var(--hf-space-150); }
+.spy-classify-label { flex: 1 1 9rem; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
+.spy-classify-values { flex: 1 1 12rem; min-width: 0; display: flex; flex-wrap: wrap; gap: var(--hf-space-150); }
 .spy-classify-value {
   display: inline-flex; align-items: center;
   height: var(--hf-space-600);
@@ -300,7 +303,7 @@
   color: var(--hf-color-text-primary);
   font-size: var(--hf-type-size-200); line-height: 1;
 }
-.spy-classify-value[data-tone="tint"] { background-color: color-mix(in oklch, var(--q-tint) 18%, transparent); color: var(--q-tint); }
+.spy-classify-value[data-tone="tint"] { background-color: color-mix(in oklch, var(--q-tint) 18%, transparent); color: var(--q-tint-text); }
 
 /* ---------------------------------------------------------------------------
    OPTION CARD                                                       [C] · P4
@@ -331,9 +334,16 @@
 }
 .spy-option > .spy-icon { --spy-icon-size: var(--hf-icon-lg); color: var(--hf-color-icon-secondary); }
 .spy-option:hover { border-color: var(--hf-color-border-strong); color: var(--hf-color-text-primary); }
-.spy-option[data-selected] { border-color: var(--q-tint); color: var(--q-tint); }
-.spy-option[data-selected] > .spy-icon { color: var(--q-tint); }
-.spy-option:focus-visible { box-shadow: 0 0 0 var(--hf-border-width-thick) var(--hf-color-transparent-lime-20); }
+.spy-option[data-selected] { border-color: var(--q-tint-text); color: var(--q-tint-text); }
+.spy-option[data-selected] > .spy-icon { color: var(--q-tint-text); }
+/* the one focus ring: 2px of page colour, then 4px of tint. Same recipe as
+   .spy-btn — patterns never invent their own. [C] */
+.spy-option:focus-visible {
+  outline: var(--hf-border-width-thick) solid transparent;
+  box-shadow:
+    0 0 0 var(--hf-border-width-thick) var(--hf-color-background-primary),
+    0 0 0 var(--hf-space-100) var(--hf-color-border-focus);
+}
 .spy-option[data-disabled] { opacity: 0.5; pointer-events: none; }
 .spy-option-caption { color: var(--hf-color-text-tertiary); font-size: var(--hf-type-size-100); }
 
@@ -379,6 +389,10 @@
   font-weight: var(--hf-type-weight-medium);
   white-space: nowrap;
 }
+/* the badge is used in dense rows (coverage, evidence, ranked lists) where it
+   can be squeezed below its natural width: it truncates rather than spilling. */
+.spy-source { min-width: 0; overflow: hidden; }
+.spy-source > span:last-child { overflow: hidden; text-overflow: ellipsis; }
 .spy-source-dot { width: var(--hf-space-200); height: var(--hf-space-200); border-radius: var(--hf-radius-full); flex-shrink: 0; background-color: var(--spy-source-color, var(--hf-color-text-tertiary)); }
 .spy-source[data-source="meta"]     { --spy-source-color: #0064e0; }
 .spy-source[data-source="tiktok"]   { --spy-source-color: #25f4ee; }
@@ -395,14 +409,17 @@
    ------------------------------------------------------------------------ */
 .spy-coverage { display: flex; flex-direction: column; }
 .spy-coverage-row {
-  display: flex; align-items: center; gap: var(--hf-space-300);
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: var(--hf-space-200) var(--hf-space-300);
   min-height: var(--hf-space-1400);
   padding: var(--hf-space-250) 0;
   border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-primary);
 }
 .spy-coverage-row:last-child { border-bottom: none; }
-.spy-coverage-name { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: var(--hf-space-250); color: var(--hf-color-text-primary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); }
-.spy-coverage-count { flex-shrink: 0; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); font-variant-numeric: tabular-nums; }
+.spy-coverage-name { flex: 1 1 8rem; min-width: 0; display: flex; align-items: center; gap: var(--hf-space-250); overflow: hidden; color: var(--hf-color-text-primary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); }
+.spy-coverage-name > .spy-source { min-width: 0; overflow: hidden; }
+.spy-coverage-name > .spy-source > span:last-child { overflow: hidden; text-overflow: ellipsis; }
+.spy-coverage-count { flex: 0 1 auto; min-width: 0; margin-inline-start: auto; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .spy-coverage-status {
   flex-shrink: 0;
   display: inline-flex; align-items: center; gap: var(--hf-space-150);
@@ -442,7 +459,8 @@
   position: relative;
   border: var(--hf-border-width-thick) solid var(--q-tint);
   border-radius: var(--hf-radius-400);
-  padding: var(--hf-space-600) var(--hf-space-400) var(--hf-space-400);
+  /* top padding must clear the 32px badge that notches into the corner */
+  padding: var(--hf-space-1000) var(--hf-space-400) var(--hf-space-400);
   background-color: var(--hf-color-background-primary);
 }
 .spy-processing-badge {
@@ -452,13 +470,13 @@
   padding-inline: var(--hf-space-300);
   border-radius: var(--hf-radius-400) 0 var(--hf-radius-300) 0;
   background-color: var(--q-tint);
-  color: var(--hf-color-text-inverse);
+  color: var(--hf-color-text-on-tint);
   font-size: var(--hf-type-size-200); line-height: 1;
   font-weight: var(--hf-type-weight-medium);
 }
 .spy-processing-badge > .spy-icon { --spy-icon-size: var(--hf-icon-sm); animation: spy-spin var(--hf-duration-1000) var(--hf-ease-linear) infinite; }
 .spy-processing[data-state="done"]   { border-color: var(--hf-color-state-success-fg); }
-.spy-processing[data-state="done"]   .spy-processing-badge { background-color: var(--hf-color-state-success-fg); }
+.spy-processing[data-state="done"]   .spy-processing-badge { background-color: var(--hf-color-state-success-fg); color: var(--hf-color-text-inverse); }
 .spy-processing[data-state="done"]   .spy-processing-badge > .spy-icon { animation: none; }
 .spy-processing[data-state="failed"] { border-color: var(--hf-color-state-error-fg); }
 .spy-processing[data-state="failed"] .spy-processing-badge { background-color: var(--hf-color-state-error-fg); color: var(--hf-color-text-primary); }
@@ -487,7 +505,12 @@
 }
 .spy-candidate:hover { border-color: var(--hf-color-border-strong); }
 .spy-candidate[data-selected] { border-color: var(--q-tint); background-color: color-mix(in oklch, var(--q-tint) 8%, transparent); }
-.spy-candidate:focus-visible { box-shadow: 0 0 0 var(--hf-border-width-thick) var(--hf-color-transparent-lime-20); }
+.spy-candidate:focus-visible {
+  outline: var(--hf-border-width-thick) solid transparent;
+  box-shadow:
+    0 0 0 var(--hf-border-width-thick) var(--hf-color-background-primary),
+    0 0 0 var(--hf-space-100) var(--hf-color-border-focus);
+}
 .spy-candidate-avatar {
   flex-shrink: 0;
   width: var(--hf-space-1200); height: var(--hf-space-1200);
@@ -565,6 +588,7 @@
 }
 .spy-result:hover .spy-result-actions,
 .spy-result:focus-within .spy-result-actions { opacity: 1; translate: 0 0; }
+.spy-result:focus-within .spy-result-media { box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus); }
 .spy-result-top { position: absolute; inset-inline: var(--hf-space-200); top: var(--hf-space-200); display: flex; align-items: flex-start; justify-content: space-between; gap: var(--hf-space-200); }
 .spy-result-duration {
   display: inline-flex; align-items: center;
@@ -572,7 +596,9 @@
   border-radius: var(--hf-radius-150);
   background-color: var(--hf-color-transparent-dark-60);
   backdrop-filter: blur(var(--hf-space-200));
-  color: var(--hf-color-text-primary);
+  /* sits on a 60% black scrim over media, which does not flip with the theme,
+     so the ink does not either. */
+  color: var(--hf-color-text-on-tint-inverse);
   font-size: var(--hf-type-size-100); line-height: 1; font-variant-numeric: tabular-nums;
 }
 .spy-result-foot { display: flex; flex-direction: column; gap: var(--hf-space-150); min-width: 0; }
@@ -620,6 +646,23 @@
 /* Section card — the repeating container on analysis screens.             [C] */
 .spy-section-card { border-radius: var(--hf-radius-400); background-color: var(--hf-color-background-secondary); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle); padding: var(--hf-space-500); display: flex; flex-direction: column; gap: var(--hf-space-400); }
 .spy-section-head { display: flex; align-items: center; gap: var(--hf-space-250); }
-.spy-section-head > .spy-icon { --spy-icon-size: var(--hf-icon-md); color: var(--q-tint); }
+.spy-section-head > .spy-icon { --spy-icon-size: var(--hf-icon-md); color: var(--q-tint-text); }
 .spy-section-title { flex: 1 1 0; min-width: 0; color: var(--hf-color-text-primary); font-size: var(--hf-type-size-400); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-semi-bold); }
 .spy-section-action { flex-shrink: 0; }
+
+/* ---------------------------------------------------------------------------
+   NARROW-COLUMN TEXT SAFETY                                              [I]
+   Product copy in these patterns is real data — URLs, handles, ad IDs — which
+   can exceed a phone-width column as a single unbreakable token. Higgsfield
+   shows no such string in its own captures, so this is an inferred guard, not
+   a transcribed rule: prose in dense patterns breaks inside a word rather than
+   painting outside its row. Sizes, spacing and colours are untouched.
+   ------------------------------------------------------------------------ */
+.spy-verdict-reasons li,
+.spy-evidence-quote,
+.spy-evidence-meta,
+.spy-placement-where,
+.spy-notice-description,
+.spy-candidate-meta,
+.spy-result-meta,
+.spy-coverage-name { overflow-wrap: anywhere; }
