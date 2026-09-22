@@ -5,7 +5,7 @@
    colour, radius, duration or type size.
 
    Each pattern names the product requirement it serves (P1–P7 from the brief)
-   and the Higgsfield capture it was derived from.
+   and the the reference system capture it was derived from.
    ========================================================================= */
 
 /* ---------------------------------------------------------------------------
@@ -48,7 +48,7 @@
    full-width 4px track beneath — not a grid of bordered cards.
 
    One rule, taken from the source and worth keeping: every bar is the same
-   colour. Higgsfield does not colour bars by value. With six-plus dimensions,
+   colour. The reference system does not colour bars by value. With six-plus dimensions,
    per-bar colour makes the eye read severity where the data means difference.
    Severity, when it is real, goes on the VALUE via data-tone.
    ------------------------------------------------------------------------ */
@@ -374,7 +374,7 @@
 
 /* ---------------------------------------------------------------------------
    SOURCE BADGE                                                      [C] · P2
-   Higgsfield gives every model its own colour token (--color-mcp-model-*) and
+   The reference system gives every model its own colour token (--color-mcp-model-*) and
    renders it as a small tile. spyy's sources are the same kind of thing:
    a fixed, small set that must be recognisable at a glance in a dense list.
    ------------------------------------------------------------------------ */
@@ -443,15 +443,15 @@
    a filled fourth pip means multimodal ran on that video.
    ------------------------------------------------------------------------ */
 .spy-tier { display: inline-flex; align-items: center; gap: var(--hf-space-250); }
-.spy-tier-pips { display: inline-flex; gap: 3px; }
-.spy-tier-pip { width: var(--hf-space-300); height: var(--hf-space-150); border-radius: 1px; background-color: var(--hf-color-fill-default); }
+.spy-tier-pips { display: inline-flex; gap: var(--hf-space-050); }   /* was 3px, off the scale */
+.spy-tier-pip { width: var(--hf-space-300); height: var(--hf-space-150); border-radius: var(--hf-radius-full); background-color: var(--hf-color-fill-default); }
 .spy-tier-pip[data-on] { background-color: var(--q-tint); }
 .spy-tier-label { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); white-space: nowrap; }
 
 /* ---------------------------------------------------------------------------
    PROCESSING FRAME                                                  [C] · P6
    Capture #501. A 2px tint outline around the work area with a status pill
-   notched into its top-left corner. This is Higgsfield's answer to "something
+   notched into its top-left corner. This is the reference system's answer to "something
    is happening here, in this region" — far better than a page spinner when
    results stream in, because the rest of the page stays usable.
    ------------------------------------------------------------------------ */
@@ -479,7 +479,7 @@
 .spy-processing[data-state="done"]   .spy-processing-badge { background-color: var(--hf-color-state-success-fg); color: var(--hf-color-text-inverse); }
 .spy-processing[data-state="done"]   .spy-processing-badge > .spy-icon { animation: none; }
 .spy-processing[data-state="failed"] { border-color: var(--hf-color-state-error-fg); }
-.spy-processing[data-state="failed"] .spy-processing-badge { background-color: var(--hf-color-state-error-fg); color: var(--hf-color-text-primary); }
+.spy-processing[data-state="failed"] .spy-processing-badge { background-color: var(--hf-color-state-error-fg); color: var(--hf-color-text-inverse); }
 .spy-processing[data-state="failed"] .spy-processing-badge > .spy-icon { animation: none; }
 
 /* ---------------------------------------------------------------------------
@@ -574,7 +574,7 @@
    RESULT CARD + GRID                                                    [C]
    The scan output. Media tile, hover action rail, and a footer carrying the
    source, tier and dates. Hover reveals actions rather than always showing
-   them, which is how every Higgsfield gallery behaves.
+   them, which is how every the reference system gallery behaves.
    ------------------------------------------------------------------------ */
 .spy-results { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr)); gap: var(--hf-space-400); }
 .spy-result { display: flex; flex-direction: column; gap: var(--hf-space-250); }
@@ -653,7 +653,7 @@
 /* ---------------------------------------------------------------------------
    NARROW-COLUMN TEXT SAFETY                                              [I]
    Product copy in these patterns is real data — URLs, handles, ad IDs — which
-   can exceed a phone-width column as a single unbreakable token. Higgsfield
+   can exceed a phone-width column as a single unbreakable token. The reference system
    shows no such string in its own captures, so this is an inferred guard, not
    a transcribed rule: prose in dense patterns breaks inside a word rather than
    painting outside its row. Sizes, spacing and colours are untouched.

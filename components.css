@@ -1,6 +1,6 @@
 /* ============================================================================
    SPYY DESIGN SYSTEM — Component layer
-   Geometry, colour and state behaviour reverse-engineered from higgsfield.ai.
+   Geometry, colour and state behaviour reverse-engineered from a shipped reference product.
 
    Architecture
      .spy-<component>            base component
@@ -54,13 +54,17 @@ body {
 .spy-body-m    { font: var(--hf-type-weight-regular) var(--text-body-m)/var(--text-body-m--line-height) var(--hf-type-family-secondary); letter-spacing: var(--hf-tracking-body); }
 .spy-body-l    { font: var(--hf-type-weight-regular) var(--text-body-l)/var(--text-body-l--line-height) var(--hf-type-family-secondary); letter-spacing: var(--hf-tracking-body); }
 
+/* TWO faces. display for the page-level headers (display, h1, h2, h3) and
+   text for everything smaller, including h4-h6 and all body copy. A heading
+   is not automatically a "header": h4 and below sit inside running text and
+   belong to the text face, or the page starts to look like a poster. */
 .spy-h6 { font: var(--hf-type-weight-semi-bold) var(--text-h6)/var(--text-h6--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-body); margin: 0; }
 .spy-h5 { font: var(--hf-type-weight-semi-bold) var(--text-h5)/var(--text-h5--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-display); margin: 0; }
 .spy-h4 { font: var(--hf-type-weight-bold) var(--text-h4)/var(--text-h4--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-display); margin: 0; }
-.spy-h3 { font: var(--hf-type-weight-bold) var(--text-h3)/var(--text-h3--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-display); margin: 0; }
-.spy-h2 { font: var(--hf-type-weight-bold) var(--text-h2)/var(--text-h2--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-display); margin: 0; }
-.spy-h1 { font: var(--hf-type-weight-bold) var(--text-h1)/var(--text-h1--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-display); margin: 0; }
-.spy-display { font: var(--hf-type-weight-black) var(--text-display)/var(--text-display--line-height) var(--hf-type-family-primary); letter-spacing: var(--hf-tracking-display); margin: 0; }
+.spy-h3 { font: var(--hf-type-weight-bold) var(--text-h3)/var(--text-h3--line-height) var(--hf-type-family-display); letter-spacing: var(--hf-tracking-display); margin: 0; }
+.spy-h2 { font: var(--hf-type-weight-bold) var(--text-h2)/var(--text-h2--line-height) var(--hf-type-family-display); letter-spacing: var(--hf-tracking-display); margin: 0; }
+.spy-h1 { font: var(--hf-type-weight-bold) var(--text-h1)/var(--text-h1--line-height) var(--hf-type-family-display); letter-spacing: var(--hf-tracking-display); margin: 0; }
+.spy-display { font: var(--hf-type-weight-black) var(--text-display)/var(--text-display--line-height) var(--hf-type-family-display); letter-spacing: var(--hf-tracking-display); margin: 0; }
 
 /* Caps styles always carry -4% tracking. Confirmed across every caps token. */
 .spy-caps {
@@ -95,7 +99,7 @@ body {
 
 /* ---------------------------------------------------------------------------
    ICON
-   Spec (confirmed from Higgsfield's SVGs):
+   Spec (confirmed from the reference system's SVGs):
      24x24 viewBox · outline · stroke-width 1.5 · stroke=currentColor
      fill=none · round caps on organic paths, square caps on geometric ones
      paths land on .25 offsets of the 24 grid (e.g. 6.25 / 17.75)
@@ -127,7 +131,7 @@ body {
    Properties : variant · size · iconOnly · fullWidth · loading · disabled
    States     : default · hover · active · focus-visible · disabled · loading
 
-   Structural notes carried over verbatim from Higgsfield:
+   Structural notes carried over verbatim from the reference system:
      · display is inline-grid + grid-auto-flow:column + place-content:center
        (not flex) so a single label centres optically without line-height math
      · a 2px transparent border is always reserved, so outline variants never
@@ -227,7 +231,7 @@ body {
 .spy-btn[data-size="lg"] {
   height: var(--hf-space-1400); min-width: var(--hf-space-1400);
   gap: var(--hf-space-200); padding: var(--hf-space-400) var(--hf-space-500);
-  border-radius: 0.875rem;
+  border-radius: var(--hf-radius-400);   /* was 14px, the one value off the scale */
   font-size: var(--hf-type-size-500); line-height: var(--hf-type-line-height-800);
   font-weight: var(--hf-type-weight-semi-bold); letter-spacing: var(--hf-type-letter-spacing-slight);
   --spy-btn-icon: var(--hf-icon-lg);
@@ -304,7 +308,8 @@ body {
 /* danger / danger-soft — note the focus ring swaps to the error glow. */
 .spy-btn[data-variant="danger"] {
   background-color: var(--hf-color-button-destructive);
-  color: var(--hf-color-text-primary);
+  /* red-600 is dark in both themes, so the label does not flip with them. */
+  color: var(--hf-color-text-on-tint-inverse);
   --spy-btn-hover-overlay: var(--hf-color-transparent-dark-20);
 }
 .spy-btn[data-variant="danger-soft"] {
@@ -428,13 +433,13 @@ body {
    the primary ladder does not reach. Opt in per instance.
    ------------------------------------------------------------------------ */
 .spy-btn[data-scale="app"] { font-weight: var(--hf-type-weight-semi-bold); }
-.spy-btn[data-scale="app"][data-size="xxs"] { height: 16px; min-width: 16px; gap: 4px; padding-inline: 4px;  border-radius: var(--hf-radius-050); font-size: 0.625rem; line-height: 0.875rem; --spy-btn-icon: 8px; }
+.spy-btn[data-scale="app"][data-size="xxs"] { height: 16px; min-width: 16px; gap: 4px; padding-inline: 4px;  border-radius: var(--hf-radius-100); font-size: 0.625rem; line-height: 0.875rem; --spy-btn-icon: 8px; }
 .spy-btn[data-scale="app"][data-size="xs"]  { height: 24px; min-width: 24px; gap: 4px; padding: 0 8px 0 6px; border-radius: var(--hf-radius-200); font-size: 0.625rem; line-height: 0.875rem; --spy-btn-icon: 14px; }
 .spy-btn[data-scale="app"][data-size="sm"]  { height: 32px; min-width: 32px; gap: 6px; padding-inline: 8px;  border-radius: var(--hf-radius-200); font-size: 0.75rem;  line-height: 1.125rem; --spy-btn-icon: 16px; }
 .spy-btn[data-scale="app"][data-size="md"]  { height: 40px; min-width: 40px; gap: 6px; padding-inline: 10px; border-radius: var(--hf-radius-250); font-size: 0.875rem; line-height: 1.25rem;  --spy-btn-icon: 18px; }
 .spy-btn[data-scale="app"][data-size="lg"]  { height: 48px; min-width: 48px; gap: 8px; padding-inline: 12px; border-radius: var(--hf-radius-300); font-size: 1rem;     line-height: 1.5rem;   --spy-btn-icon: 20px; }
-.spy-btn[data-scale="app"][data-size="xl"]  { height: 56px; min-width: 56px; gap: 8px; padding-inline: 14px; border-radius: 0.875rem;            font-size: 1.125rem; line-height: 1.75rem;  --spy-btn-icon: 24px; }
-.spy-btn[data-scale="app"][data-size="xxl"] { height: 64px; min-width: 64px; gap: 8px; padding-inline: 16px; border-radius: 0.875rem;            font-size: 1.125rem; line-height: 1.75rem;  --spy-btn-icon: 24px; }
+.spy-btn[data-scale="app"][data-size="xl"]  { height: 56px; min-width: 56px; gap: 8px; padding-inline: 14px; border-radius: var(--hf-radius-400); font-size: 1.125rem; line-height: 1.75rem;  --spy-btn-icon: 24px; }
+.spy-btn[data-scale="app"][data-size="xxl"] { height: 64px; min-width: 64px; gap: 8px; padding-inline: 16px; border-radius: var(--hf-radius-400); font-size: 1.125rem; line-height: 1.75rem;  --spy-btn-icon: 24px; }
 
 /* The app ladder's disabled treatment is a flat fill, not opacity.       [C] */
 .spy-btn[data-scale="app"]:disabled,
@@ -1079,7 +1084,7 @@ body {
    trough and slides an 8px-radius indicator behind the active tab (the
    indicator radius is deliberately one step tighter than the trough).
    `line` drops the trough and draws a 2px rule under the active tab.
-   Resting tab colour is text-tertiary (#626262) — quite dim; hover goes to
+   Resting tab colour is text-tertiary — quite dim; hover goes to
    BRAND, not to white.
    ------------------------------------------------------------------------ */
 .spy-tabs {
@@ -1148,7 +1153,10 @@ body {
   padding: var(--hf-space-050);
   border-radius: var(--spy-tabs-segment-radius);
   background-color: var(--hf-color-overlay-dim-soft);
-  box-shadow: var(--hf-shadow-sheen);
+  /* No sheen here. The inset highlight is an elevation cue for a panel; on a
+     control 32px tall it reads as a gradient down the track instead. Flat
+     fill plus one hairline, so both halves of the switch are the same tone. */
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle);
 }
 .spy-tabs[data-variant="segment"] .spy-tabs-tab {
   padding: var(--hf-space-150) var(--hf-space-300);
@@ -1653,7 +1661,7 @@ body {
 
 /* ---------------------------------------------------------------------------
    PROGRESS · LOADER · SKELETON                                          [C/I]
-   Track colour is background-tertiary (#2a2d32); the fill is --q-tint, so a
+   Track colour is background-tertiary; the fill is --q-tint, so a
    progress bar inside a tinted subtree recolours for free. Fill transitions
    over 350ms with an in-out-circ ease, which is why long generations feel
    like they accelerate through the middle.
@@ -1986,6 +1994,8 @@ body {
   background-color: var(--hf-color-transparent-dark-60);
   color: var(--hf-color-text-primary);
   cursor: pointer;
+  /* 16px is the mark; the target is padded out to 24 so it can be hit. */
+  min-width: var(--hf-space-600); min-height: var(--hf-space-600);
 }
 
 /* ---------------------------------------------------------------------------
@@ -2057,7 +2067,7 @@ body {
 /* ---------------------------------------------------------------------------
    COUNT                                                                  [C]
    The neutral pill that follows a section title ("Usage history  99").
-   Sampled #212528 — the control surface, not a white overlay.
+   Sampled from the control surface, not a white overlay.
    ------------------------------------------------------------------------ */
 .spy-count {
   display: inline-flex; align-items: center; justify-content: center;
@@ -2303,8 +2313,18 @@ body {
 .spy-table th { font-size: 0.8125rem; }                      /* 13px */
 .spy-table-filter {
   display: inline-flex; align-items: center; gap: var(--hf-space-100);
-  border: none; background: none; padding: 0;
+  border: none; background: none;
+  /* A column header is a sort control. It looks like a label, so the hit area
+     has to be built in: 24px tall, negative-margined so the row does not grow. */
+  min-height: var(--hf-space-600);
+  padding-inline: var(--hf-space-150); margin-inline: calc(-1 * var(--hf-space-150));
+  border-radius: var(--hf-radius-100);
   color: inherit; font: inherit; cursor: pointer;
+}
+.spy-table-filter:hover { background-color: var(--hf-color-overlay-hover); }
+.spy-table-filter:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--hf-border-width-thick) var(--hf-color-border-focus);
 }
 .spy-table-filter > .spy-icon { --spy-icon-size: var(--hf-icon-sm); }
 .spy-table-value {

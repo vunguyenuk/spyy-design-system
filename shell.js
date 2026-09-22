@@ -112,7 +112,7 @@ foot.className = 'doc-footer';
 foot.innerHTML = `
   <div class="doc-footer-inner">
     <p class="spy-caption-l spy-text-secondary">
-      Spyy Design System · reverse-engineered from higgsfield.ai, then fitted to the spyy brief.
+      Spyy Design System · audited from shipped products, then fitted to the spyy brief.
       <code>tokens.css</code> + <code>components.css</code> + <code>patterns.css</code> are standalone.
       Provenance in <code>EVIDENCE.md</code>, scope in <code>GAPS.md</code>.
     </p>

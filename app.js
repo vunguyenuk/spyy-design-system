@@ -749,8 +749,8 @@ function renderUsageRows() {
 // colour in both themes, so the label on top of it must not flip.
 const TINTS = [
   ['Core product', 'var(--hf-color-lime-500)', 'lime-500 · #d1fe17', 'var(--hf-color-text-on-tint)'],
-  ['Marketing Studio', 'var(--hf-color-pink-500)', 'pink-500 · #ff005b', 'var(--hf-color-text-on-tint-inverse)'],
-  ['Supercomputer', '#35c6a8', 'teal · approximate', 'var(--hf-color-text-on-tint)'],
+  ['a second surface', 'var(--hf-color-pink-500)', 'pink-500 · #ff005b', 'var(--hf-color-text-on-tint-inverse)'],
+  ['a third surface', '#35c6a8', 'teal · approximate', 'var(--hf-color-text-on-tint)'],
 ];
 function renderTints() {
   const host = $('#render-tints'); if (!host) return;
@@ -1112,7 +1112,7 @@ function renderTintSwitch() {
   const host = $('#render-tintswitch'); if (!host) return;
   const tints = [['Lime — audited brand', 'var(--hf-color-lime-500)'],
                  ['Purple — closest to the mockup', 'var(--hf-color-purple-600)'],
-                 ['Magenta — Marketing Studio', 'var(--hf-color-pink-500)']];
+                 ['Magenta — a second surface', 'var(--hf-color-pink-500)']];
   host.innerHTML = '';
   tints.forEach(([label, v], i) => {
     const b = el('button', { type: 'button', title: label, style: `background:${v}` });

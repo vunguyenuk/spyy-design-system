@@ -3,7 +3,7 @@
 
    Two sources, two jobs:
      GEOMETRY  — spacing, radius, border, elevation, motion, layout, and the
-                 responsive type ladder — is Higgsfield's, audited 2026-09-22.
+                 responsive type ladder — is transcribed, audited 2026-09-22.
      COLOUR and TYPE FAMILY are ManyChat's, audited 2026-09-22 from the
                  product stylesheet at app.manychat.com. See MANYCHAT-AUDIT.md.
 
@@ -86,14 +86,16 @@
   --hf-color-green-1000: #001407;  --hf-color-green-1100: #000d05;
   --hf-color-green-1200: #000803;
 
-  /* lime - accent (olive here, not a highlight) */
-  --hf-color-lime-050: #e9ffc8;  --hf-color-lime-100: #c0e682;
-  --hf-color-lime-200: #a5ca66;  --hf-color-lime-300: #8eb14d;
-  --hf-color-lime-400: #749631;  --hf-color-lime-500: #5a7a03;
-  --hf-color-lime-600: #4b6700;  --hf-color-lime-700: #374c00;
-  --hf-color-lime-800: #233200;  --hf-color-lime-900: #121c00;
-  --hf-color-lime-1000: #0c1200;  --hf-color-lime-1100: #080c00;
-  --hf-color-lime-1200: #050700;
+  /* lime - THE BRAND. The one colour kept from the previous source, because
+     it is the product's signature and nothing in the new palette replaces a
+     highlight-yellow-green. Everything around it is the new palette.    [C] */
+  --hf-color-lime-050: #fdfff5;  --hf-color-lime-100: #fbffec;
+  --hf-color-lime-200: #f6ffd1;  --hf-color-lime-300: #eeffa7;
+  --hf-color-lime-400: #e1fe68;  --hf-color-lime-500: #d1fe17;
+  --hf-color-lime-600: #b2d814;  --hf-color-lime-700: #8ead10;
+  --hf-color-lime-800: #6d840c;  --hf-color-lime-900: #4f6109;
+  --hf-color-lime-1000: #344006;  --hf-color-lime-1100: #1f2603;
+  --hf-color-lime-1200: #111402;
 
   /* yellow - warning */
   --hf-color-yellow-050: #fff2e0;  --hf-color-yellow-100: #fddb9b;
@@ -153,21 +155,24 @@
   --hf-color-purple-alpha-90: #7f53e0e6;
   --hf-color-purple-alpha-100: #7f53e0;
 
-  /* The brand-alpha names components already reference, now pointing at
-     the blue and purple ladders. Aliased rather than renamed so that no
-     component below the semantic layer has to move.                  [I] */
-  --hf-color-lime-alpha-05: var(--hf-color-blue-alpha-05);
-  --hf-color-lime-alpha-10: var(--hf-color-blue-alpha-10);
-  --hf-color-lime-alpha-15: var(--hf-color-blue-alpha-15);
-  --hf-color-lime-alpha-20: var(--hf-color-blue-alpha-20);
-  --hf-color-lime-alpha-30: var(--hf-color-blue-alpha-30);
-  --hf-color-lime-alpha-40: var(--hf-color-blue-alpha-40);
-  --hf-color-lime-alpha-50: var(--hf-color-blue-alpha-50);
-  --hf-color-lime-alpha-60: var(--hf-color-blue-alpha-60);
-  --hf-color-lime-alpha-70: var(--hf-color-blue-alpha-70);
-  --hf-color-lime-alpha-80: var(--hf-color-blue-alpha-80);
-  --hf-color-lime-alpha-90: var(--hf-color-blue-alpha-90);
-  --hf-color-lime-alpha-100: var(--hf-color-blue-alpha-100);
+  /* One magenta wash, for the media backdrops only.                  [I] */
+  --hf-color-magenta-alpha: #ab3ec166;
+
+  /* Alpha ladder for the brand green.                                  [C] */
+  --hf-color-lime-alpha-05: #d1fe170d;
+  --hf-color-lime-alpha-10: #d1fe171a;
+  --hf-color-lime-alpha-15: #d1fe1726;
+  --hf-color-lime-alpha-20: #d1fe1733;
+  --hf-color-lime-alpha-30: #d1fe174d;
+  --hf-color-lime-alpha-40: #d1fe1766;
+  --hf-color-lime-alpha-50: #d1fe1780;
+  --hf-color-lime-alpha-60: #d1fe1799;
+  --hf-color-lime-alpha-70: #d1fe17b2;
+  --hf-color-lime-alpha-80: #d1fe17cc;
+  --hf-color-lime-alpha-90: #d1fe17e5;
+  --hf-color-lime-alpha-100: #d1fe17;
+
+  /* pink-alpha is the secondary tint ladder.                          [I] */
   --hf-color-pink-alpha-05: var(--hf-color-purple-alpha-05);
   --hf-color-pink-alpha-10: var(--hf-color-purple-alpha-10);
   --hf-color-pink-alpha-15: var(--hf-color-purple-alpha-15);
@@ -310,14 +315,29 @@
   --hf-icon-xl: 1.75rem;  /* 28px */
 
   /* -- Typography: families -------------------------------------------- [C] */
-  --hf-type-family-primary-base: "Inter Display";
-  --hf-type-family-secondary-base: "Inter";
-  --hf-type-family-grotesk-base: "Space Grotesk";
+  /* TWO faces, and only two. [A] on the display face: the marketing header
+     it is meant to match could not be read off the source site, so Space
+     Grotesk stands in at the right weight and width until it is identified.
+     Swapping it is this one line.
+       display   — page and section headers only
+       text      — body copy AND ordinary headings
+       mono      — code, tokens, measurements                                */
+  --hf-type-family-display-base: "Space Grotesk";
+  --hf-type-family-text-base: "Inter";
   --hf-type-family-mono-base: "IBM Plex Mono";
 
-  --hf-type-family-primary: "Inter Display", "Inter", system-ui, sans-serif;
-  --hf-type-family-secondary: "Inter", system-ui, sans-serif;
-  --hf-type-family-grotesk: "Space Grotesk", system-ui, sans-serif;
+  --hf-type-family-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --hf-type-family-text: "Inter", system-ui, sans-serif;
+
+  /* The old four-slot names, now pointing at the two real faces so that no
+     component had to be rewritten. primary and secondary are both text;
+     grotesk is the display face.                                        [I] */
+  --hf-type-family-primary-base: var(--hf-type-family-text-base);
+  --hf-type-family-secondary-base: var(--hf-type-family-text-base);
+  --hf-type-family-grotesk-base: var(--hf-type-family-display-base);
+  --hf-type-family-primary: var(--hf-type-family-text);
+  --hf-type-family-secondary: var(--hf-type-family-text);
+  --hf-type-family-grotesk: var(--hf-type-family-display);
   --hf-type-family-mono: "IBM Plex Mono", "Space Mono", ui-monospace, monospace;
 
   /* -- Typography: weights --------------------------------------------- [C] */
@@ -354,7 +374,7 @@
   --hf-type-size-1400: 3.5rem;
 
   /* -- Elevation ------------------------------------------------------- [C]
-     Higgsfield's elevation is not a drop-shadow ladder. Every raised surface
+     The reference system's elevation is not a drop-shadow ladder. Every raised surface
      carries a 2px inset top sheen (light hitting the top edge) plus a soft
      ambient shadow. This is the signature of the system.                     */
   --hf-shadow-sheen:
@@ -486,7 +506,7 @@
 
 /* ---------------------------------------------------------------------------
    TIER 2 — SEMANTICS · DARK (the shipped theme)                          [C]
-   Every value below is Higgsfield's own role -> primitive mapping.
+   Every value below is the reference system's own role -> primitive mapping.
    ------------------------------------------------------------------------ */
 :root,
 [data-theme="dark"] {
@@ -520,12 +540,12 @@
   /* Text */
   --hf-color-text-primary: var(--hf-color-grey-050);     /* #ffffff */
   --hf-color-text-secondary: var(--hf-color-grey-300);   /* #828282 */
-  --hf-color-text-tertiary: var(--hf-color-grey-325);    /* #626262 */
+  --hf-color-text-tertiary: var(--hf-color-grey-250);   /* -325 measured 2.55:1 on the dark ground */
   --hf-color-text-inverse: var(--hf-color-grey-550);     /* #1a1a1a */
-  --hf-color-text-disabled: var(--hf-color-shade-100);    /* #484e56 */
+  --hf-color-text-disabled: var(--hf-color-grey-325);   /* shade-100 measured 1.39:1 */
   --hf-color-text-brand: var(--hf-color-lime-500);
   --hf-color-text-link: var(--hf-color-lime-500);
-  --hf-color-text-danger: var(--hf-color-red-600);
+  --hf-color-text-danger: var(--hf-color-red-300);   /* -600 measured 2.37:1 on the dark ground */
   --hf-color-text-success: var(--hf-color-green-500);
   --hf-color-text-warning: var(--hf-color-yellow-700);
   --hf-color-text-info: var(--hf-color-blue-400);
@@ -537,7 +557,7 @@
   --hf-color-icon-secondary: var(--hf-color-grey-300);
   --hf-color-icon-tertiary: var(--hf-color-grey-325);
   --hf-color-icon-inverse: var(--hf-color-grey-550);
-  --hf-color-icon-disabled: var(--hf-color-shade-100);
+  --hf-color-icon-disabled: var(--hf-color-grey-325);
   --hf-color-icon-accent: var(--hf-color-lime-500);
   --hf-color-icon-brand: var(--hf-color-lime-500);
   --hf-color-icon-error: var(--hf-color-red-600);
@@ -563,14 +583,14 @@
   --hf-color-button-primary: var(--hf-color-grey-050);      /* white-on-dark */
   --hf-color-button-secondary: var(--hf-color-shade-250);
   --hf-color-button-tertiary: var(--hf-color-shade-050);
-  --hf-color-button-destructive: var(--hf-color-red-600);
+  --hf-color-button-destructive: var(--hf-color-red-600);   /* dark in both themes; label is always white */
   --hf-color-button-label-brand: var(--hf-color-grey-550);
   --hf-color-button-label-destructive: var(--hf-color-grey-050);
   --hf-color-button-disabled: #292b2c;
 
   /* Overlays */
   /* Neutral fills — the quiet tinted surfaces underneath chips, code blocks,
-     tracks, tiles and count badges. Higgsfield paints them with WHITE alpha
+     tracks, tiles and count badges. The reference system paints them with WHITE alpha
      because its product is dark; on a light surface the same fill is
      invisible, so the semantic layer owns them and the light block flips them
      to black alpha. Anything painted OVER generated media keeps the raw
@@ -594,21 +614,24 @@
   --hf-color-shadow-2xl: var(--hf-color-transparent-dark-40);
 
   /* State blocks — bg / fg / soft fg / glow (glow is used for focus rings) */
+  /* On a dark ground the status colours sit at -300/-400. The source ramp is
+     built for white, where -500 is already dark enough to read; the same step
+     on #151515 measures under 3:1. These are the steps that clear it.   [I] */
   --hf-color-state-error-bg: var(--hf-color-red-1000);
-  --hf-color-state-error-fg: var(--hf-color-red-600);
-  --hf-color-state-error-fg-soft: var(--hf-color-red-500);
+  --hf-color-state-error-fg: var(--hf-color-red-300);
+  --hf-color-state-error-fg-soft: var(--hf-color-red-200);
   --hf-color-state-error-glow: var(--hf-color-red-glow);
   --hf-color-state-success-bg: var(--hf-color-green-800);
-  --hf-color-state-success-fg: var(--hf-color-green-500);
-  --hf-color-state-success-fg-soft: var(--hf-color-green-400);
+  --hf-color-state-success-fg: var(--hf-color-green-300);
+  --hf-color-state-success-fg-soft: var(--hf-color-green-200);
   --hf-color-state-success-glow: var(--hf-color-green-glow);
   --hf-color-state-warning-bg: var(--hf-color-yellow-1100);
-  --hf-color-state-warning-fg: var(--hf-color-yellow-700);
-  --hf-color-state-warning-fg-soft: var(--hf-color-yellow-500);
+  --hf-color-state-warning-fg: var(--hf-color-yellow-300);
+  --hf-color-state-warning-fg-soft: var(--hf-color-yellow-200);
   --hf-color-state-warning-glow: var(--hf-color-yellow-glow);
   --hf-color-state-info-bg: var(--hf-color-blue-1100);
-  --hf-color-state-info-fg: var(--hf-color-blue-500);
-  --hf-color-state-info-fg-soft: var(--hf-color-blue-400);
+  --hf-color-state-info-fg: var(--hf-color-blue-300);
+  --hf-color-state-info-fg-soft: var(--hf-color-blue-200);
 
   /* Categorical palette (bg + on-bg text pairs) */
   --hf-color-palette-white: var(--hf-color-grey-050);
@@ -635,11 +658,11 @@
 
 /* ---------------------------------------------------------------------------
    TIER 2 — SEMANTICS · LIGHT                                             [A]
-   Higgsfield ships light-mode hooks (`[data-theme=light]` variants and the
+   The reference system ships light-mode hooks (`[data-theme=light]` variants and the
    `supercomputer-light` body theme) but does not expose a full light semantic
    block. Anchors taken from those hooks are marked [C] inline; the remainder
    is derived by inverting each role against the confirmed primitives. Treat
-   this block as approximation, not as Higgsfield's light theme.
+   this block as approximation, not as the reference system's light theme.
    ------------------------------------------------------------------------ */
 [data-theme="light"] {
   color-scheme: light;
@@ -665,7 +688,7 @@
 
   --hf-color-text-primary: var(--hf-color-grey-550);              /* #1a1a1a  [C] */
   --hf-color-text-secondary: var(--hf-color-grey-350);            /* #565656       */
-  --hf-color-text-tertiary: var(--hf-color-grey-250);             /* #7f7f7f       */
+  --hf-color-text-tertiary: var(--hf-color-grey-325);   /* -250 measured 2.95:1 on white */
   --hf-color-text-inverse: var(--hf-color-grey-050);
   --hf-color-text-disabled: var(--hf-color-grey-150);
   --hf-color-text-brand: var(--hf-color-lime-800);   /* darkened for contrast */
@@ -695,6 +718,8 @@
   --hf-color-overlay-wash: var(--hf-color-transparent-dark-50);
   --hf-color-overlay-scrim: var(--hf-color-transparent-dark-40);
 
+  --hf-color-text-danger: var(--hf-color-red-600);   /* the dark block sits at -300, which is a tint on white */
+
   --hf-color-state-error-bg: var(--hf-color-red-100);
   --hf-color-state-error-fg: var(--hf-color-red-700);
   --hf-color-state-error-fg-soft: var(--hf-color-red-600);
@@ -720,7 +745,7 @@
 
 /* ---------------------------------------------------------------------------
    TEXT STYLES                                                            [C]
-   Higgsfield composes text styles as one token carrying four values. Three
+   The reference system composes text styles as one token carrying four values. Three
    families of style: caption/body/heading (UI), h1..display (marketing),
    brand-* (Space-Grotesk-flavoured, incl. the -4% caps variants).
    ------------------------------------------------------------------------ */
@@ -781,7 +806,7 @@
      on flips too (white-on-dark becomes dark-on-white). A tint fill does NOT
      flip — lime-500 is lime-500 in both themes — so its ink must not either.
      This is the one text token deliberately left out of the light block.
-     Confirmed: Higgsfield's lime button carries #1a1a1a ink on the dark
+     Confirmed: the reference system's lime button carries #1a1a1a ink on the dark
      product and on the white marketing pages alike.                          */
   --hf-color-text-on-tint: var(--hf-color-grey-550);
 
@@ -797,14 +822,14 @@
   /* Product tints. The same components re-skin per surface via --q-tint. [C]
      Confirmed by three differently-tinted surfaces in the capture set.       */
   --q-tint-default: var(--hf-color-lime-500);   /* core product            */
-  --q-tint-marketing: var(--hf-color-pink-500); /* Marketing Studio        */
-  --q-tint-compute: #35c6a8;                    /* Supercomputer (approx)  */
+  --q-tint-marketing: var(--hf-color-pink-500); /* a second surface        */
+  --q-tint-compute: #35c6a8;                    /* a third surface (approx)  */
 }
 
 /* Light counterpart of the addendum. It has to live here, after the :root
    block above: [data-theme="light"] and :root carry the same specificity, so
    whichever comes last wins — an earlier light block would be overridden.
-   [I] Higgsfield ships no light build of the app chrome, so the four surfaces
+   [I] the reference system ships no light build of the app chrome, so the four surfaces
    are the dark ramp mirrored on the light ramp at the same relative steps:
    floor lightest, then panel, card, control. The tints and the success green
    are NOT repeated here — they are the same colour in both themes.          */
@@ -819,7 +844,7 @@
 
   /* Tint used as TEXT (not as a fill) has to darken on a light background:
      lime-500 on white is 1.17:1. The mix keeps this tint-agnostic, so the
-     Marketing pink and Supercomputer teal darken the same way.          [I] */
+     Marketing pink and a third surface teal darken the same way.          [I] */
   --q-tint-text: color-mix(in oklab, var(--q-tint) 62%, #000000);
 
   /* Disabled text derived at grey-150 is 1.24:1 on white — far below the

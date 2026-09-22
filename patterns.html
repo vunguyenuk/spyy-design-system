@@ -7,7 +7,7 @@
 <meta name="description" content="Composed product patterns: scoring, confidence, async scans, attribution evidence, pickers, results.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="components.css">
 <link rel="stylesheet" href="patterns.css">
@@ -18,7 +18,7 @@
 <div class="spy-container doc-lede">
   <p class="doc-eyebrow">Level 3 — Patterns</p>
   <h1 class="spy-h3">How spyy says things</h1>
-  <p class="spy-body-m spy-text-secondary doc-lede-text">Composed answers to problems that recur across the product: how a score is shown, how confidence is expressed, how an async scan reports itself, how an attribution decision explains itself. Each pattern names the requirement it serves (P1–P7 from the brief) and the Higgsfield capture it came from.</p>
+  <p class="spy-body-m spy-text-secondary doc-lede-text">Composed answers to problems that recur across the product: how a score is shown, how confidence is expressed, how an async scan reports itself, how an attribution decision explains itself. Each pattern names the requirement it serves (P1–P7 from the brief) and the reference capture it came from.</p>
   <div class="doc-legend">
     <span class="doc-legend-item"><span class="doc-ev" data-ev="c">Confirmed</span> <span class="spy-caption-m spy-text-secondary">read from the stylesheet, or measured from the capture set</span></span>
     <span class="doc-legend-item"><span class="doc-ev" data-ev="i">Inferred</span> <span class="spy-caption-m spy-text-secondary">derived from repeated patterns</span></span>
@@ -33,7 +33,7 @@
     <h2 class="spy-h5">Scoring</h2>
     <p class="spy-body-s spy-text-secondary">
       spyy is a judgement product: nearly every screen tells the user how sure it is about something.
-      Higgsfield solves the same problem in its Virality Predictor, and the way it does it is worth
+      The reference product solves the same problem in its virality predictor, and the way it does it is worth
       copying precisely — because the obvious approach is worse.
     </p>
     <span class="doc-ev" data-ev="c">Confirmed — capture #500</span>
@@ -45,7 +45,7 @@
     <div>
       <strong>This replaces the six coloured score cards in the current mockup.</strong>
       <p>The mockup gives each score its own bar colour — green, blue, purple, amber, green, red.
-      Higgsfield’s scoring surface makes <em>every</em> bar the same lime and puts the qualitative
+      The reference scoring surface makes <em>every</em> bar the same lime and puts the qualitative
       reading on one calibrated gradient scale instead. On six-plus dimensions that matters: with
       per-bar colour, a red “Brand Safety 38” and an amber “Conversion Intent 42” read as
       <em>severity</em>, when the data means <em>different axes</em>. Low brand safety is a warning;
@@ -144,7 +144,7 @@
     <p class="spy-caption-l spy-text-secondary doc-note">
       A thick ring whose arc colour is driven by the <em>verdict</em>, not the brand — lime when good,
       amber when marginal, red when bad — with a matching pill under the value. The good state also
-      glows, which is what makes a pass feel like a pass. This is Higgsfield’s moodboard quality ring;
+      glows, which is what makes a pass feel like a pass. This is the reference moodboard quality ring;
       spyy uses it for resolution confidence and adaptability.
     </p>
     <div class="doc-gauge-row" id="render-gauges"></div>
@@ -241,7 +241,7 @@
     <h3 class="doc-demo-title">Processing frame</h3>
     <p class="spy-caption-l spy-text-secondary doc-note">
       A 2px tint outline around the region that is working, with a status pill notched into its
-      top-left corner. Higgsfield uses it to say “something is happening <em>here</em>” without
+      top-left corner. The reference product uses it to say “something is happening <em>here</em>” without
       blocking the rest of the page — exactly what partial results need. The frame changes colour on
       completion and failure rather than disappearing, so the region keeps its history.
     </p>
@@ -323,7 +323,7 @@
   <div class="doc-demo">
     <h3 class="doc-demo-title">Cost in the commit action <span class="doc-serves">P7</span></h3>
     <p class="spy-caption-l spy-text-secondary doc-note">
-      Higgsfield puts the price inside the button that spends it — “Generate ✦ 32”, “Create moodboard ✦ 25”.
+      The reference product puts the price inside the button that spends it — “Generate ✦ 32”, “Create moodboard ✦ 25”.
       The brief asks for cost per scan to be instrumented from day one; putting it here makes it a
       product surface rather than a dashboard nobody opens.
     </p>
@@ -349,7 +349,7 @@
   <div class="doc-demo">
     <h3 class="doc-demo-title">Evidence panel</h3>
     <p class="spy-caption-l spy-text-secondary doc-note">
-      Two halves split by a hairline: what supports the decision, what undercuts it. Higgsfield uses
+      Two halves split by a hairline: what supports the decision, what undercuts it. The reference product uses
       this to teach moodboard quality (“Recommended” / “Avoid”); the negative side outlines its
       thumbnails in the error colour, which is the only place a thumbnail border means anything.
     </p>
@@ -462,7 +462,7 @@
   <div class="doc-demo">
     <h3 class="doc-demo-title">Option cards <span class="doc-ev" data-ev="c">Confirmed</span></h3>
     <p class="spy-caption-l spy-text-secondary doc-note">
-      Higgsfield’s aspect-ratio selector: a glyph above a label, selected taking a tint border
+      The reference aspect-ratio selector: a glyph above a label, selected taking a tint border
       <em>and</em> a tint label. The right control for 2–5 exclusive options that have a shape worth
       showing. Bigger than a chip, smaller than a preset tile.
     </p>
@@ -575,7 +575,7 @@
     </div>
     <div class="spy-results" id="render-results"></div>
     <p class="spy-caption-m spy-text-secondary doc-note">
-      Actions stay hidden until hover or focus, which is how every Higgsfield gallery behaves. The
+      Actions stay hidden until hover or focus, which is how every gallery in the reference product behaves. The
       duration chip sits top-right over a blurred scrim; source and tier sit under the card where they
       can be read down a column.
     </p>
@@ -725,7 +725,7 @@
       <div class="doc-panel-notes spy-caption-l spy-text-secondary">
         <p><strong>The correction this surface forced.</strong> I had built the switch with a lime
           checked track, because lime is the brand colour and lime is what every CTA uses. Sampling
-          the pixels here returned <code>#01c317</code> — the <em>success green</em>. Higgsfield
+          the pixels here returned <code>#01c317</code> — the <em>success green</em>. The reference product
           reserves lime for actions you take and uses green for state that is on. That distinction
           is not visible anywhere on the public site.</p>
         <p>Other details worth keeping: the panel surface is <code>#131517</code> (page-primary), one
@@ -845,9 +845,9 @@
   <div class="doc-demo">
     <h3 class="doc-demo-title">The tint system, confirmed</h3>
     <p class="spy-caption-l spy-text-secondary doc-note">
-      The capture set settled something the stylesheet only hinted at. Higgsfield ships the same
+      The capture set settled something the stylesheet only hinted at. The reference product ships the same
       components under three different tints — lime in the core product, magenta across Marketing
-      Studio, teal-green across Supercomputer — by moving one variable. Every component here reads
+      Studio, teal-green across a third surface — by moving one variable. Every component here reads
       <code>--q-tint</code>, so the same is true of this system.
     </p>
     <div class="doc-grid-3" id="render-tints"></div>

@@ -1,7 +1,6 @@
 # Spyy Design System
 
-A design system reverse-engineered from [higgsfield.ai](https://higgsfield.ai), then fitted to the
-**spyy** product brief. Open `index.html` — no build step.
+A design system audited out of shipped products, then fitted to the **spyy** product brief. Open `index.html` — no build step.
 
 ## Structure
 
@@ -49,16 +48,15 @@ One class plus `data-*` properties — no modifier soup:
 
 Two variables re-skin everything: `data-theme` swaps the semantic layer, and `--q-tint` drives
 switches, progress, toggles, tabs, gauges, option cards, tier pips and processing frames. Set the
-tint on any subtree to recolour that region — the mechanism Higgsfield uses for Marketing Studio
-(magenta) and Supercomputer (teal).
+tint on any subtree to recolour that region — the mechanism the reference system uses to re-skin a whole surface in one line.
 
-Fonts: Inter, Space Grotesk and IBM Plex Mono, all on Google Fonts. Higgsfield uses *Inter Display*
-for headings, which is not freely available; `tokens.css` falls back to Inter, so headings read very
-slightly wider than the original.
+Fonts: two faces, Space Grotesk for display headers and Inter for body copy and ordinary headings,
+plus IBM Plex Mono for code. All three are on Google Fonts. The display face is a stand-in: the
+marketing header it is meant to match has not been identified yet, and swapping it is one token.
 
 ## How it was built
 
-Two passes. First, Higgsfield's shipped stylesheet read directly — 3.79 MB, 10,656 custom-property
+Two passes. First, the reference system's shipped stylesheet read directly — 3.79 MB, 10,656 custom-property
 declarations, 25,922 rules — which is where the tokens and component geometry come from. Second, a
 557-screen capture set of the signed-in product, reviewed as contact sheets and then sampled pixel by
 pixel, which is where the editor, account and tint findings come from. Then the spyy brief was mapped
@@ -67,14 +65,26 @@ against the result (`GAPS.md`) and the Patterns and Templates levels were built 
 ## Three things worth knowing
 
 1. **Lime acts, green states.** Sampling the shipped editor returned `#01c317` on a checked switch —
-   the success green, not the brand lime. Higgsfield reserves lime for actions you can take and green
+   the success green, not the brand lime. The reference system reserves lime for actions you can take and green
    for state that is on. Nothing on the public site shows this.
 2. **Score bars are one colour.** The current spyy mockup gives each of six scores its own bar colour.
-   Higgsfield's scoring surface makes every bar the same and puts the qualitative reading on one
+   The reference system's scoring surface makes every bar the same and puts the qualitative reading on one
    calibrated gradient scale. With six axes, per-bar colour makes the eye read severity where the data
    means difference. Argued in full in `GAPS.md` §3.1.
 3. **The grey ramp leans blue, borders are alpha-white, elevation is an inset sheen.** Swap any of the
    three and the look goes, however correct the rest is.
+
+## Where the values come from
+
+Geometry — spacing, radius, border, elevation, motion, layout, the responsive type ladder — is
+transcribed from one shipped product. Colour and type family are transcribed from another. The
+brand green is the one colour kept from the first, because nothing in the second replaces it.
+
+That split was possible because a component never reads a raw value: it reads a semantic token, and
+the semantic token reads the palette. Swapping an entire palette was about 200 lines of
+`tokens.css` and nothing below it. `EVIDENCE.md` §17 records what the swap broke anyway — status
+colours calibrated for the old ramp, and four backdrops with hexes hardcoded outside the token
+layer.
 
 ## Browsing it
 
@@ -96,7 +106,7 @@ and a third (`--q-tint-text`) carries the tint when it is used to set type rathe
 `EVIDENCE.md` §14 has the full account, including the cascade-order trap that let the Mobbin
 addendum silently override the entire light theme.
 
-The other thing: Higgsfield's own `text-tertiary` (`#626262`) measures 2.4–2.8:1 on the product's
+The other thing: the reference system's own `text-tertiary` (`#626262`) measures 2.4–2.8:1 on the product's
 dark surfaces, below WCAG AA, and it carries most of the captions and metadata in the product. It
 was **left alone** — it is a transcribed value and the brief puts accuracy above interpretation. The
 light theme's tertiary is derived, so it was allowed to land at a readable `#7f7f7f`. Decide on the
@@ -105,7 +115,7 @@ dark one deliberately rather than inheriting it by accident.
 ## Known gaps
 
 The light theme is derived, not confirmed — the capture set contains no light-mode product chrome.
-Icon glyphs are original drawings to a confirmed spec rather than Higgsfield's own set. Campaign
+Icon glyphs are original drawings to a confirmed spec rather than the reference system's own set. Campaign
 reconstruction (the brief's "output, later") has no pattern yet and is out of PoC scope. Boards,
 Saved and Pattern Library appear in the mockup's navigation but not in the brief; folder cards exist,
 the screens do not. `GAPS.md` §4 and `EVIDENCE.md` §8–9 have the full list.
@@ -113,4 +123,4 @@ the screens do not. `GAPS.md` §4 and `EVIDENCE.md` §8–9 have the full list.
 ## A note on scope
 
 This reproduces a visual *system* — tokens, geometry, state behaviour — for design work. It
-deliberately does not reproduce Higgsfield's logomark, wordmark, icon set, imagery or copy.
+deliberately does not reproduce the reference system's logomark, wordmark, icon set, imagery or copy.

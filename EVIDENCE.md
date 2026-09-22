@@ -600,3 +600,96 @@ because media is dark in both themes.
 The method: render each page in the light theme and report every element whose computed background
 is `rgba(255,255,255,α)` with `0 < α < 1`. Text-contrast checking would never have caught this — the
 text was perfectly readable, it was the surface underneath it that had vanished.
+
+---
+
+## 17. The re-skin, and what it broke
+
+Colour and type family were replaced with ManyChat's (see `MANYCHAT-AUDIT.md`); geometry, spacing,
+components, patterns and templates were not touched. That is what the three-tier architecture is
+for — a component never reads tier 1 — and the swap was 200 lines of `tokens.css`. What follows is
+what the swap broke, because a palette swap is never only a palette swap.
+
+### 17.1 One colour was kept
+
+The brand green stays. Nothing in the new palette replaces a highlight yellow-green, and it is the
+product's signature — the new palette's own `lime-500` is an olive (`#5a7a03`), not a highlight.
+So `lime-*` is the one ramp still carrying the old values, and everything around it is new.
+
+### 17.2 The semantic layer was calibrated for the old ramps
+
+The old hue ramps put a bright mid tone at `-500`; the new ones are built for white, where `-500`
+is already dark. Every status role kept pointing at the same step number and went unreadable on the
+dark ground — error at 2.89:1, warning at 1.85:1. Retuned by measurement, not by eye:
+
+| Role, dark theme | Was | Now | Was measuring |
+|---|---|---|---|
+| `state-error-fg` | red-600 | red-300 | 2.89:1 |
+| `state-success-fg` | green-500 | green-300 | 2.75:1 |
+| `state-warning-fg` | yellow-700 | yellow-300 | 1.85:1 |
+| `state-info-fg` | blue-500 | blue-300 | — |
+| `text-danger` | red-600 | red-300 | 2.37:1 |
+| `text-disabled` | shade-100 | grey-325 | 1.39:1 |
+| `text-tertiary` | grey-325 | grey-250 | 2.55:1 |
+
+`text-tertiary` in the light theme moved the other way, grey-250 → grey-325, for the same reason:
+`#878787` on white is 2.95:1. Both replacements are steps off the transcribed neutral ramp, so the
+fix stayed inside the source palette.
+
+`--hf-color-button-destructive` is the one fill that does not flip with the theme — every red step
+at `-500` and below is dark — so its label is pinned to constant white rather than `text-inverse`.
+
+### 17.3 Colours hardcoded outside the token layer survived the swap
+
+Four backdrops in `docs.css` — the fake-media wash, the glass stage, the media fallback — were
+mixed from literal hexes of the *old* brand pink, old brand blue and the old blue-leaning grey
+ramp. Nothing in `tokens.css` could reach them, so they kept painting in a palette that no longer
+existed anywhere else on the page. All four now read tokens. The lesson is the ordinary one: a
+literal hex outside the token layer is a colour that will not be there when you change the palette.
+
+### 17.4 Type is two faces now, not four
+
+`primary`, `secondary`, `grotesk` and `mono` became **display**, **text** and **mono**, with the old
+four names aliased onto them so no component had to be rewritten.
+
+- **display** — `.spy-display`, `.spy-h1`, `.spy-h2`, `.spy-h3` only.
+- **text** — `.spy-h4` and below, and all body copy. A heading is not automatically a header; h4 sits
+  inside running text and belongs with it, or the page reads like a poster.
+- **mono** — code, tokens, measurements.
+
+`[A]` on the display face. It is meant to match the header face of the marketing site, which sits
+behind a bot check that neither browser could clear and that this work does not try to defeat.
+Space Grotesk stands in at roughly the right weight and width. Identifying the real one changes
+exactly one token, `--hf-type-family-display-base`.
+
+### 17.5 Geometry bugs found while looking
+
+Four, all caught by a detector rather than by eye, and all the same class of defect — a literal
+where a token belongs:
+
+| | |
+|---|---|
+| `.spy-btn[data-size="lg"]` | `0.875rem` (14px) — the only radius on the site off the scale |
+| app ladder `xl` / `xxl` | the same 14px, twice more |
+| `.spy-tier-pips` | `gap: 3px`, off the spacing scale |
+| `.spy-tier-pip`, `.doc-screen-bar > span` | `1px` and `50%` where `radius-full` was meant |
+
+The visible symptom was a row of buttons whose corners stepped 2 → 8 → 10 → 12 → 14px, which reads
+as five unrelated components rather than one at five sizes.
+
+Two hit-area fixes came out of the same sweep: `.spy-table-filter` is a sort control that looks like
+a label and was 16px tall with no focus ring, and `.spy-composer-attachment-remove` was a 16px
+target. Both keep their mark and gain a 24px box around it.
+
+### 17.6 The segmented control was wearing a panel's elevation
+
+The theme switch carried `--hf-shadow-sheen`, the inset top highlight that makes a large surface
+look raised. On a control 32px tall the same inset reads as a vertical gradient down the track, so
+the two halves of the switch were different tones. It now takes a flat fill and one hairline.
+
+### 17.7 Naming
+
+The shipped pages, stylesheets and scripts no longer name the source products. The provenance files
+— this one, `MANYCHAT-AUDIT.md`, `GAPS.md` and `_audit/` — still do, because a provenance record
+that will not say where a value came from is worth nothing. They are not linked from the site's
+navigation. Decide separately whether they ship.

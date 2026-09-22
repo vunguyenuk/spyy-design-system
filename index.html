@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Spyy Design System</title>
-<meta name="description" content="A design system reverse-engineered from higgsfield.ai and fitted to the spyy product brief — foundations, components, patterns and templates.">
+<meta name="description" content="The spyy design system — foundations, components, patterns and templates.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="components.css">
 <link rel="stylesheet" href="patterns.css">
@@ -17,9 +17,9 @@
 
 <div class="spy-container doc-lede">
   <p class="doc-eyebrow">Spyy Design System · v1</p>
-  <h1 class="spy-h2" style="max-width:20ch">Higgsfield’s system, fitted to spyy</h1>
+  <h1 class="spy-h2" style="max-width:20ch">A system, fitted to spyy</h1>
   <p class="spy-body-m spy-text-secondary doc-lede-text">
-    Two things happened here. First, Higgsfield’s design system was read out of the product rather than
+    Two things happened here. First, a reference design system was read out of a shipped product rather than
     guessed at — 1,622 tokens from the shipped stylesheet, then corrected against 557 screens of the
     signed-in app. Second, it was fitted to what spyy actually does: resolve a brand, scan four sources
     asynchronously, attribute videos from cheap signals, and say how sure it is about all of it.
@@ -77,7 +77,7 @@
       <span class="doc-ev" data-ev="c">Confirmed</span>
       <h3 class="spy-h6 doc-sub">Score bars are one colour</h3>
       <p class="spy-caption-l spy-text-secondary">
-        The mockup gives each of six scores its own bar colour. Higgsfield’s scoring surface makes every
+        The mockup gives each of six scores its own bar colour. The reference scoring surface makes every
         bar the same and puts the qualitative reading on one calibrated gradient scale. With six axes,
         per-bar colour makes the eye read severity where the data means difference.
       </p>
@@ -88,7 +88,7 @@
       <h3 class="spy-h6 doc-sub">Lime acts, green states</h3>
       <p class="spy-caption-l spy-text-secondary">
         Sampling the shipped editor returned <code>#01c317</code> on a checked switch — the success
-        green, not the brand lime. Higgsfield reserves lime for actions you can take and green for
+        green, not the brand lime. The system reserves lime for actions you can take and green for
         state that is on. Nothing on the public site shows this.
       </p>
       <a class="spy-btn" data-variant="outline" data-size="xs" href="foundations.html#color" style="margin-top:12px">See the tokens</a>
@@ -98,7 +98,7 @@
       <h3 class="spy-h6 doc-sub">Accent colour</h3>
       <p class="spy-caption-l spy-text-secondary">
         The mockup uses an indigo accent; the audited brand is lime. Rather than invent a third colour,
-        note that Higgsfield ships <code>purple-600 #7152f4</code> and that every stateful component
+        note that the reference system ships <code>purple-600 #7152f4</code> and that every stateful component
         reads <code>--q-tint</code>. Re-tint and the geometry stays true.
       </p>
       <div class="doc-tintswitch" id="render-tintswitch" style="margin-top:12px"></div>
@@ -130,7 +130,7 @@
       <h3 class="spy-h6 doc-sub" style="margin-top:0">Two variables re-skin everything</h3>
       <ul class="doc-defs">
         <li><strong><code>data-theme</code></strong><span>Swaps the semantic layer. Components read semantics only, so nothing else changes.</span></li>
-        <li><strong><code>--q-tint</code></strong><span>Drives switches, progress, toggles, tabs, gauges, option cards, tier pips and processing frames. Set it on any subtree to re-colour that whole region — the mechanism Higgsfield uses for Marketing Studio and Supercomputer.</span></li>
+        <li><strong><code>--q-tint</code></strong><span>Drives switches, progress, toggles, tabs, gauges, option cards, tier pips and processing frames. Set it on any subtree to re-colour that whole region — the mechanism the reference system uses to re-skin a whole surface.</span></li>
       </ul>
       <h3 class="spy-h6 doc-sub">Files</h3>
       <ul class="doc-defs">
@@ -163,7 +163,7 @@
       <h3 class="spy-h6 doc-sub" style="margin-top:0">Not yet</h3>
       <ul class="doc-defs">
         <li><strong>Light theme</strong><span>Derived, not confirmed. The capture set contains no light-mode product chrome.</span></li>
-        <li><strong>Icon glyphs</strong><span>Drawn to the confirmed spec (24×24, 1.5 stroke, .25 grid). Higgsfield’s own set and logomark are not reproduced.</span></li>
+        <li><strong>Icon glyphs</strong><span>Drawn to the confirmed spec (24×24, 1.5 stroke, .25 grid). No third-party icon set or logomark is reproduced.</span></li>
         <li><strong>Campaign view</strong><span>The brief’s “output, later” — the campaign behind the videos — has no pattern yet. It is out of PoC scope.</span></li>
         <li><strong>Boards, saved, pattern library</strong><span>Present in the mockup’s nav, not in the brief. Folder cards exist; the screens do not.</span></li>
       </ul>
