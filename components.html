@@ -19,7 +19,14 @@
   <p class="doc-eyebrow">Level 2 — Components</p>
   <h1 class="spy-h3">Primitives, with every state</h1>
   <p class="spy-body-m spy-text-secondary doc-lede-text">Single-purpose pieces. Each one takes properties rather than being duplicated per state, and each reads only the semantic token layer — so themes and tints flow through without touching component CSS. If you are looking for how spyy solves a specific problem, that is Patterns.</p>
-  
+  <div class="doc-legend">
+    <span class="doc-ev" data-ev="c">Confirmed</span>
+    <span class="spy-caption-m spy-text-secondary">read from the stylesheet, or measured from the capture set</span>
+    <span class="doc-ev" data-ev="i">Inferred</span>
+    <span class="spy-caption-m spy-text-secondary">derived from repeated patterns</span>
+    <span class="doc-ev" data-ev="a">Approximate</span>
+    <span class="spy-caption-m spy-text-secondary">not determinable — documented as a guess</span>
+  </div>
 </div>
 
 <nav class="doc-nav" aria-label="Sections">
@@ -828,6 +835,7 @@
 <section class="doc-section" id="api" data-nav="States &amp; props">
   <header class="doc-section-head">
     <h2 class="spy-h5">States &amp; properties</h2>
+    <span class="doc-ev" data-ev="c">Confirmed</span>
     <p class="spy-body-s spy-text-secondary">
       The whole component API in one table: every <code>data-*</code> property each base component
       accepts, and every state it responds to. It is extracted from <code>components.css</code>
