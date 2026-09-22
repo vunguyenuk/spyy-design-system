@@ -121,20 +121,22 @@ const HEIGHTS = [
   ['Button lg', 56, 'inferred'],
   ['Textarea floor', 80, ''],
 ];
+// Family and weight per step. display carries one weight because the display
+// face ships one; every text step carries a weight the text face actually has.
 const TYPE_SPECIMEN = [
-  ['--text-display', 'Display', 'Turn a prompt into a shot', 900, 'primary'],
-  ['--text-h1', 'H1', 'Cinema, generated', 700, 'primary'],
-  ['--text-h2', 'H2', 'Every frame on purpose', 700, 'primary'],
-  ['--text-h3', 'H3', 'Direct the model', 700, 'primary'],
-  ['--text-h4', 'H4', 'Reference, prompt, render', 700, 'primary'],
-  ['--text-h5', 'H5', 'Shot list and coverage', 600, 'primary'],
-  ['--text-h6', 'H6', 'Generation settings', 600, 'primary'],
-  ['--text-body-l', 'Body L', 'The system underneath the product, not one inspired by it.', 400, 'secondary'],
-  ['--text-body-m', 'Body M', 'Every value read out of the product rather than chosen.', 400, 'secondary'],
-  ['--text-body-s', 'Body S', 'Confirmed where the product answered; labelled where it did not.', 400, 'secondary'],
-  ['--text-caption-l', 'Caption L', 'Control labels, table cells, menu items.', 400, 'secondary'],
-  ['--text-caption-m', 'Caption M', 'Descriptions, helper text, metadata.', 400, 'secondary'],
-  ['--text-caption-s', 'Caption S', 'Tags, credit costs, timestamps.', 400, 'secondary'],
+  ['--text-display', 'Display', 'Turn a prompt into a shot', 400, 'display'],
+  ['--text-h1', 'H1', 'Cinema, generated', 400, 'display'],
+  ['--text-h2', 'H2', 'Every frame on purpose', 400, 'display'],
+  ['--text-h3', 'H3', 'Direct the model', 400, 'display'],
+  ['--text-h4', 'H4', 'Reference, prompt, render', 700, 'text'],
+  ['--text-h5', 'H5', 'Shot list and coverage', 600, 'text'],
+  ['--text-h6', 'H6', 'Generation settings', 600, 'text'],
+  ['--text-body-l', 'Body L', 'The system underneath the product, not one inspired by it.', 400, 'text'],
+  ['--text-body-m', 'Body M', 'Every value read out of the product rather than chosen.', 400, 'text'],
+  ['--text-body-s', 'Body S', 'Confirmed where the product answered; labelled where it did not.', 400, 'text'],
+  ['--text-caption-l', 'Caption L', 'Control labels, table cells, menu items.', 400, 'text'],
+  ['--text-caption-m', 'Caption M', 'Descriptions, helper text, metadata.', 400, 'text'],
+  ['--text-caption-s', 'Caption S', 'Tags, credit costs, timestamps.', 400, 'text'],
 ];
 const ELEVATION = [
   ['--hf-shadow-sheen', 'the base move — a 2px inset top highlight, nothing else'],
@@ -239,25 +241,36 @@ function renderAlpha() {
 function renderTypeSpecimen() {
   const host = $('#render-type-specimen'); if (!host) return;
   host.innerHTML = '';
+  // The face name is read back off the rendered element rather than written
+  // out by hand, so the label cannot drift from what is actually painted.
+  const faceOf = node => (getComputedStyle(node).fontFamily.split(',')[0] || '').replace(/["']/g, '').trim();
   TYPE_SPECIMEN.forEach(([tok, label, text, weight, fam]) => {
     const size = parseFloat(cssVar(tok));
     const track = size >= 1.75 ? '-2%' : size >= 1 ? '-1%' : '0';
     const row = el('div', { style: 'padding:16px 0;border-bottom:1px solid var(--hf-color-border-subtle)' });
     const meta = el('div', { class: 'spy-row', style: 'gap:12px;margin-bottom:8px' });
     meta.appendChild(el('span', { class: 'doc-state-label' }, label));
+    const faceChip = el('span', { class: 'spy-badge', 'data-variant': 'lime-subtle', 'data-shape': 'square' },
+      '<span class="spy-badge-surface"><span class="spy-badge-text">face</span></span>');
+    meta.appendChild(faceChip);
     meta.appendChild(el('code', {}, `${cssVar(tok)} / ${cssVar(tok + '--line-height')} · ${weight} · ${track}`));
     row.appendChild(meta);
-    row.appendChild(el('div', {
-      style: `font-family:var(--hf-type-family-${fam});font-size:var(${tok});line-height:var(${tok}--line-height);font-weight:${weight};letter-spacing:${track};color:var(--hf-color-text-${fam === 'primary' ? 'primary' : 'secondary'})`
-    }, text));
+    const sample = el('div', {
+      style: `font-family:var(--hf-type-family-${fam});font-size:var(${tok});line-height:var(${tok}--line-height);font-weight:${weight};letter-spacing:${track};color:var(--hf-color-text-${fam === 'display' ? 'primary' : 'secondary'})`
+    }, text);
+    row.appendChild(sample);
     host.appendChild(row);
+    faceChip.querySelector('.spy-badge-text').textContent = faceOf(sample);
   });
   const caps = el('div', { style: 'margin-top:28px;display:flex;flex-direction:column;gap:16px' });
-  caps.appendChild(el('span', { class: 'doc-state-label' }, 'display face · uppercase · -4% tracking'));
-  caps.appendChild(el('div', { class: 'spy-grotesk spy-caps', style: 'font-size:var(--hf-type-size-800);line-height:1.1' }, 'Sign up and get your extra discount'));
-  caps.appendChild(el('span', { class: 'doc-state-label' }, 'IBM Plex Mono · parameters and seeds'));
-  caps.appendChild(el('div', { class: 'spy-mono spy-text-secondary', style: 'font-size:var(--hf-type-size-200)' }, 'seed 44127 · cfg 3.5 · 1920x1080 · 24fps'));
+  const capsLabel = el('span', { class: 'doc-state-label' }, 'uppercase · -4% tracking');
+  const capsSample = el('div', { class: 'spy-grotesk spy-caps', style: 'font-size:var(--hf-type-size-800);line-height:1.1' }, 'Sign up and get your extra discount');
+  const monoLabel = el('span', { class: 'doc-state-label' }, 'the mono role · tabular figures');
+  const monoSample = el('div', { class: 'spy-mono spy-text-secondary', style: 'font-size:var(--hf-type-size-200)' }, 'seed 44127 · cfg 3.5 · 1920x1080 · 24fps');
+  caps.append(capsLabel, capsSample, monoLabel, monoSample);
   host.appendChild(caps);
+  capsLabel.textContent = faceOf(capsSample) + ' · uppercase · -4% tracking';
+  monoLabel.textContent = faceOf(monoSample) + ' · the mono role, with tabular figures';
 }
 
 function renderSpace() {

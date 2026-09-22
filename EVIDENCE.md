@@ -779,3 +779,27 @@ child touches one of its edges* — found six instances across the five pages:
 Worth writing down, because three different reports on "the border is wrong" had three unrelated
 causes — a mask, a clipped square ring, and a shadow painting under its own children — and only the
 last one is visible by reading the rule for the element you are looking at.
+
+### 17.11 Two faces, and the mono role without a monospace
+
+The type system is now **Archivo Black** for display and **Asta Sans** for everything else. No third
+face ships, including no monospace.
+
+Two consequences that are not obvious:
+
+**Archivo Black has one weight, and that weight is already black.** Asking it for 700 or 900 makes
+the browser synthesise a faux-bold by smearing the outline, which on a face this heavy fills in the
+counters. `--hf-type-weight-display: 400` now governs everything set in the display face — the four
+heading rules, the badge, and the stat figures — and no other weight is used with it.
+
+**The mono role survives without a mono face.** Dozens of rules ask for `--hf-type-family-mono`, and
+rewriting them all would have buried the change. The role now resolves to the text face with
+`tabular-nums` and `lining-nums` on and a hair of extra letter-spacing, so token names and hex values
+still form a column. What is lost is a fixed advance width for prose-length code, which is the real
+cost of the two-face rule. Putting a monospace back is one line.
+
+Verified by reading back the computed `font-family` of every element on the page rather than by
+reading the stylesheet: exactly two families appear, `Archivo Black` and `Asta Sans`.
+
+The type specimen now labels each row with the face actually painted, read off the rendered element
+at run time, so the label cannot drift from the CSS the way a hand-written one does.
