@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Foundations · Spyy Design System</title>
+<meta name="description" content="Colour, type, space, radius, border, elevation, icons, motion and layout tokens for the Spyy design system.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="patterns.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+<body>
+
+<div class="spy-container doc-lede">
+  <p class="doc-eyebrow">Level 1 — Foundations</p>
+  <h1 class="spy-h3">The decisions everything else inherits</h1>
+  <p class="spy-body-m spy-text-secondary doc-lede-text">Nine token families, transcribed from Higgsfield’s shipped stylesheet. Change a value here and every component on the next three pages moves with it. The rules matter more than the values: the grey ramp leans blue, borders are always alpha-white, and elevation is an inset sheen rather than a drop shadow.</p>
+  
+</div>
+
+<nav class="doc-nav" aria-label="Sections">
+  <div class="spy-container doc-nav-inner" id="doc-nav-links"></div>
+</nav>
+
+<main class="spy-container doc-main">
+<section class="doc-section" id="color" data-nav="Color">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Color</h2>
+    <p class="spy-body-s spy-text-secondary">
+      Three tiers. The palettes are raw; the semantic layer maps a role to a palette step; components
+      only ever read the semantic layer. Two observations worth keeping: the UI greys are
+      <em>blue-leaning</em> (the <code>cool</code> ramp), and borders are always alpha-white — never a
+      solid grey step. Swapping either one is the fastest way to lose the look.
+    </p>
+  </header>
+  <div id="render-color-semantic"></div>
+  <h3 class="spy-h6 doc-sub">Palette primitives <span class="doc-ev" data-ev="c">Confirmed</span></h3>
+  <div id="render-color-palettes"></div>
+  <h3 class="spy-h6 doc-sub">Alpha ladders <span class="doc-ev" data-ev="c">Confirmed</span></h3>
+  <p class="spy-caption-l spy-text-secondary doc-note">Every surface, border, hover and scrim in the system is built from these two ladders rather than from opaque greys. That is what lets panels stack over generated media without muddying it.</p>
+  <div id="render-color-alpha"></div>
+</section>
+
+<section class="doc-section" id="typography" data-nav="Type">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Typography</h2>
+    <p class="spy-body-s spy-text-secondary">
+      Four families and a fluid scale that steps twice — at 768px and 1280px. Size and line-height
+      share one index, so a step change moves both together.
+    </p>
+  </header>
+  <div class="doc-grid-2">
+    <div class="doc-panel">
+      <span class="doc-ev" data-ev="c">Confirmed</span>
+      <h3 class="spy-h6 doc-sub">Families</h3>
+      <ul class="doc-defs">
+        <li><strong>Inter Display</strong><span>primary — headings, display</span></li>
+        <li><strong>Inter</strong><span>secondary — all UI text, labels, body</span></li>
+        <li><strong>Space Grotesk</strong><span>accent — badges, special labels, always uppercase</span></li>
+        <li><strong>IBM Plex Mono</strong><span>mono — code, seeds, parameters</span></li>
+      </ul>
+      <p class="spy-caption-m spy-text-secondary doc-note">Weights shipped: 400 / 500 / 600 / 700 / 900. Body text is 400; every control label is 500 or 600; only display and badges go above.</p>
+    </div>
+    <div class="doc-panel">
+      <span class="doc-ev" data-ev="c">Confirmed</span>
+      <h3 class="spy-h6 doc-sub">The tracking rule</h3>
+      <p class="spy-caption-l spy-text-secondary">Tracking is a function of size, not of style. This held across all 188 text tokens:</p>
+      <table class="doc-mini-table">
+        <tr><td>≤ 14px</td><td><code>0%</code></td><td class="spy-text-tertiary">UI, labels, captions</td></tr>
+        <tr><td>16–20px</td><td><code>-1%</code></td><td class="spy-text-tertiary">body, small headings</td></tr>
+        <tr><td>28–64px</td><td><code>-2%</code></td><td class="spy-text-tertiary">display headings</td></tr>
+        <tr><td>any, caps</td><td><code>-4%</code></td><td class="spy-text-tertiary">always with uppercase</td></tr>
+      </table>
+      <p class="spy-caption-m spy-text-secondary doc-note">One exception: menu and nav labels carry <code>+0.1px</code> (<code>letter-spacing-loose</code>), opening them slightly for scanability.</p>
+    </div>
+  </div>
+  <h3 class="spy-h6 doc-sub">Specimen</h3>
+  <div id="render-type-specimen"></div>
+</section>
+
+<section class="doc-section" id="space" data-nav="Space">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Spacing &amp; sizing</h2>
+    <p class="spy-body-s spy-text-secondary">
+      A 4px base with 2px granularity at the small end. The names are numeric, not t-shirt sizes,
+      which is why the scale can carry both 6px and 10px without awkward naming — and those two
+      odd steps do real work: 6px is the standard icon-to-label gap, 10px is the tab's vertical padding.
+    </p>
+  </header>
+  <div id="render-space"></div>
+  <h3 class="spy-h6 doc-sub">Measured control heights <span class="doc-ev" data-ev="c">Confirmed</span></h3>
+  <div id="render-heights"></div>
+</section>
+
+<section class="doc-section" id="radius" data-nav="Radius">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Radius</h2>
+    <p class="spy-body-s spy-text-secondary">
+      Radius does not scale with the element. It <em>plateaus</em>: controls climb 6 → 8 → 10 → 12 and
+      stop, while containers jump to 16 and 24. A 48px button and a 640px modal are only two steps apart.
+      Counted across the live page, 12px was the single most used radius in the product.
+    </p>
+  </header>
+  <div id="render-radius"></div>
+</section>
+
+<section class="doc-section" id="border" data-nav="Border">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Border &amp; divider</h2>
+    <p class="spy-body-s spy-text-secondary">
+      Five widths, and the choice between them is meaningful: 1px for structure, 1.5px for
+      <em>focus and weight</em> (control borders, focus rings), 2px reserved on every button so
+      outline variants never shift layout.
+    </p>
+  </header>
+  <div id="render-border"></div>
+</section>
+
+<section class="doc-section" id="elevation" data-nav="Elevation">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Elevation</h2>
+    <p class="spy-body-s spy-text-secondary">
+      The most distinctive part of the system, and the easiest to get wrong. Higgsfield does not use a
+      drop-shadow ladder. Every raised surface carries a <strong>2px inset top sheen</strong> — light
+      catching the upper edge — plus a soft ambient shadow. Remove the sheen and the surfaces go flat
+      no matter how much shadow you add.
+    </p>
+  </header>
+  <div id="render-elevation"></div>
+</section>
+
+<section class="doc-section" id="icons" data-nav="Icons">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Icons</h2>
+    <p class="spy-body-s spy-text-secondary">
+      The specification is confirmed from the product's SVGs. The glyphs on this page are original
+      drawings to that spec — Higgsfield's own icon set and its logomark are not reproduced here.
+    </p>
+  </header>
+  <div class="doc-grid-2">
+    <div class="doc-panel">
+      <span class="doc-ev" data-ev="c">Confirmed — spec</span>
+      <h3 class="spy-h6 doc-sub">Drawing rules</h3>
+      <ul class="doc-defs">
+        <li><strong>24 × 24 viewBox</strong><span>always, whatever the render size</span></li>
+        <li><strong>1.5px stroke</strong><span>outline only; fill reserved for status glyphs</span></li>
+        <li><strong>currentColor</strong><span>never a hardcoded fill or stroke</span></li>
+        <li><strong>.25 grid offsets</strong><span>paths land on 6.25 / 17.75, not 6 / 18 — the half-stroke sits on the pixel</span></li>
+        <li><strong>round caps</strong><span>on organic paths; square on geometric ones</span></li>
+      </ul>
+      <p class="spy-caption-m spy-text-secondary doc-note">Optical weight is held by the stroke, not the size: a 16px icon and a 24px icon use the same 1.5px stroke, so small icons read slightly heavier. That is intentional and matches the product.</p>
+    </div>
+    <div class="doc-panel">
+      <span class="doc-ev" data-ev="c">Confirmed — sizes</span>
+      <h3 class="spy-h6 doc-sub">Size ladder &amp; pairing</h3>
+      <div id="render-icon-sizes"></div>
+      <p class="spy-caption-m spy-text-secondary doc-note">Icon-to-label gap is 6px at every control size below 48px, 8px at and above it. Icon-only controls drop horizontal padding to zero and rely on <code>min-width</code> to stay square.</p>
+    </div>
+  </div>
+  <h3 class="spy-h6 doc-sub">Set <span class="doc-ev" data-ev="a">Approximate — original glyphs to the confirmed spec</span></h3>
+  <div id="render-icon-grid"></div>
+</section>
+
+<section class="doc-section" id="motion" data-nav="Motion">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Motion</h2>
+    <p class="spy-body-s spy-text-secondary">
+      21 durations and 10 easings ship — far more than a typical system, because the product animates
+      state rather than decorating it. The pattern that matters: <strong>enter and exit are
+      asymmetric</strong>. Popovers enter over 180ms on an expo-out and leave in 130ms on an ease-in.
+      Hover on a filled control is not a colour change at all but a <code>brightness()</code> filter.
+    </p>
+  </header>
+  <div id="render-motion"></div>
+</section>
+
+<section class="doc-section" id="layout" data-nav="Layout">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Layout &amp; z-index</h2>
+  </header>
+  <div id="render-layout"></div>
+</section>
+
+<!-- ===================== COMPONENTS ===================== -->
+</main>
+
+<script src="icons.js"></script>
+<script src="shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

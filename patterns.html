@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patterns · Spyy Design System</title>
+<meta name="description" content="Composed product patterns: scoring, confidence, async scans, attribution evidence, pickers, results.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="patterns.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+<body>
+
+<div class="spy-container doc-lede">
+  <p class="doc-eyebrow">Level 3 — Patterns</p>
+  <h1 class="spy-h3">How spyy says things</h1>
+  <p class="spy-body-m spy-text-secondary doc-lede-text">Composed answers to problems that recur across the product: how a score is shown, how confidence is expressed, how an async scan reports itself, how an attribution decision explains itself. Each pattern names the requirement it serves (P1–P7 from the brief) and the Higgsfield capture it came from.</p>
+  
+</div>
+
+<nav class="doc-nav" aria-label="Sections">
+  <div class="spy-container doc-nav-inner" id="doc-nav-links"></div>
+</nav>
+
+<main class="spy-container doc-main">
+<section class="doc-section" id="scoring" data-nav="Scoring">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Scoring</h2>
+    <p class="spy-body-s spy-text-secondary">
+      spyy is a judgement product: nearly every screen tells the user how sure it is about something.
+      Higgsfield solves the same problem in its Virality Predictor, and the way it does it is worth
+      copying precisely — because the obvious approach is worse.
+    </p>
+    <span class="doc-ev" data-ev="c">Confirmed — capture #500</span>
+    <span class="doc-serves">Serves P3 attribution · P4 tiering</span>
+  </header>
+
+  <div class="doc-callout" data-tone="change">
+    <svg class="spy-icon"><use href="#i-info"/></svg>
+    <div>
+      <strong>This replaces the six coloured score cards in the current mockup.</strong>
+      <p>The mockup gives each score its own bar colour — green, blue, purple, amber, green, red.
+      Higgsfield’s scoring surface makes <em>every</em> bar the same lime and puts the qualitative
+      reading on one calibrated gradient scale instead. On six-plus dimensions that matters: with
+      per-bar colour, a red “Brand Safety 38” and an amber “Conversion Intent 42” read as
+      <em>severity</em>, when the data means <em>different axes</em>. Low brand safety is a warning;
+      low conversion intent is just a fact about the creative. One bar colour keeps them distinct.</p>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Headline score <span class="doc-ev" data-ev="c">Confirmed</span></h3>
+    <div class="spy-section-card">
+      <div class="spy-headline-score">
+        <div class="spy-score-scale">
+          <div class="spy-score-scale-track"><div class="spy-score-scale-fill" style="width:47%"></div></div>
+          <div class="spy-score-scale-ends"><span>Low</span><span>High</span></div>
+        </div>
+        <div class="spy-score-value">
+          <span class="spy-score-value-label">Brand match</span>
+          <span class="spy-score-value-number">47<small>/100</small></span>
+        </div>
+      </div>
+    </div>
+    <p class="spy-caption-m spy-text-secondary doc-note">
+      The number stays white at every value. Colour lives in the gradient track — red through amber to
+      yellow — filled to the score, with the ends labelled. One calibration for the whole product.
+    </p>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Metric rows <span class="doc-ev" data-ev="c">Confirmed</span></h3>
+    <div class="spy-section-card">
+      <div class="spy-section-head">
+        <svg class="spy-icon"><use href="#i-layers"/></svg>
+        <span class="spy-section-title">Attribution signals</span>
+        <span class="spy-count">6</span>
+      </div>
+      <div class="spy-metrics" id="render-metrics"></div>
+    </div>
+    <p class="spy-caption-m spy-text-secondary doc-note">
+      Label left, value right, 4px track beneath, two columns. Confidence is a separate line in the
+      tertiary colour — never a second colour on the bar, because confidence and value are different
+      questions. A row still loading shows its track with a sweep and dims its label.
+    </p>
+    <div class="doc-props">
+      <span class="doc-prop"><em>value</em> 0–100</span>
+      <span class="doc-prop"><em>tone</em> neutral · success · warning · danger <span class="spy-text-tertiary">(on the value only)</span></span>
+      <span class="doc-prop"><em>confidence</em> high · medium · low</span>
+      <span class="doc-prop"><em>pending</em> bool</span>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Stats <span class="doc-ev" data-ev="c">Confirmed</span></h3>
+    <p class="spy-caption-l spy-text-secondary doc-note">
+      Raw counts, not judgements. Value above, label below — and the label stays quiet. Used for video
+      performance, scan summaries and cost reporting.
+    </p>
+    <div class="spy-section-card">
+      <div class="spy-stats">
+        <div class="spy-stat"><span class="spy-stat-value">1.2M</span><span class="spy-stat-label">Views</span></div>
+        <div class="spy-stat"><span class="spy-stat-value">97.7K</span><span class="spy-stat-label">Likes</span></div>
+        <div class="spy-stat"><span class="spy-stat-value">12.4K</span><span class="spy-stat-label">Saves</span></div>
+        <div class="spy-stat"><span class="spy-stat-value">737</span><span class="spy-stat-label">Shares</span></div>
+        <div class="spy-stat"><span class="spy-stat-value">9.1%</span><span class="spy-stat-label">Engagement</span></div>
+        <div class="spy-stat"><span class="spy-stat-value">1.0%</span><span class="spy-stat-label">Save rate</span></div>
+      </div>
+    </div>
+    <div class="spy-section-card" style="margin-top:16px">
+      <div class="spy-section-head">
+        <svg class="spy-icon"><use href="#i-refresh"/></svg>
+        <span class="spy-section-title">Scan economics</span>
+        <span class="doc-serves">P7</span>
+      </div>
+      <div class="spy-stats">
+        <div class="spy-stat"><span class="spy-stat-value">218</span><span class="spy-stat-label">Creatives found</span></div>
+        <div class="spy-stat"><span class="spy-stat-value">41</span><span class="spy-stat-label">Analysed deeply</span></div>
+        <div class="spy-stat"><span class="spy-stat-value">$0.38</span><span class="spy-stat-label">Cost per scan <span class="spy-stat-delta" data-dir="down">▾ 12%</span></span></div>
+        <div class="spy-stat"><span class="spy-stat-value">2m 14s</span><span class="spy-stat-label">Wall clock</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="doc-section" id="confidence" data-nav="Confidence">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Confidence &amp; verdicts</h2>
+    <p class="spy-body-s spy-text-secondary">
+      The brief is unusually explicit that resolution and attribution carry a confidence score and that
+      a human must be able to act on it. So confidence needs a shape that reads at a glance and never
+      pretends to be certainty.
+    </p>
+    <span class="doc-ev" data-ev="c">Confirmed — captures #125–126</span>
+    <span class="doc-serves">Serves P1 resolution · P3 attribution</span>
+  </header>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Score gauge</h3>
+    <p class="spy-caption-l spy-text-secondary doc-note">
+      A thick ring whose arc colour is driven by the <em>verdict</em>, not the brand — lime when good,
+      amber when marginal, red when bad — with a matching pill under the value. The good state also
+      glows, which is what makes a pass feel like a pass. This is Higgsfield’s moodboard quality ring;
+      spyy uses it for resolution confidence and adaptability.
+    </p>
+    <div class="doc-gauge-row" id="render-gauges"></div>
+    <div class="doc-props">
+      <span class="doc-prop"><em>value</em> 0–100</span>
+      <span class="doc-prop"><em>verdict</em> good · fair · bad</span>
+      <span class="doc-prop"><em>size</em> md 160 · sm 96</span>
+      <span class="doc-prop"><em>suffix</em> text</span>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Verdict group</h3>
+    <p class="spy-caption-l spy-text-secondary doc-note">
+      Status mark, label, the reasons, a count and a way in. The row does not tint its background —
+      the mark carries the state, which keeps a list of three verdicts from looking like an error page.
+      In the current mockup this is Keep / Modify / Remove; the same component covers attribution
+      outcomes.
+    </p>
+    <div class="doc-grid-2">
+      <div class="spy-section-card">
+        <div class="spy-section-head"><svg class="spy-icon"><use href="#i-wand"/></svg><span class="spy-section-title">Adaptability</span></div>
+        <div class="spy-verdicts">
+          <button class="spy-verdict" data-verdict="keep">
+            <span class="spy-verdict-icon"><svg class="spy-icon"><use href="#i-check"/></svg></span>
+            <span class="spy-verdict-label">Keep</span>
+            <ul class="spy-verdict-reasons"><li>Specific number &amp; deadline</li><li>Community participation</li></ul>
+            <span class="spy-verdict-count">2 <svg class="spy-icon"><use href="#i-chevron-right"/></svg></span>
+          </button>
+          <button class="spy-verdict" data-verdict="modify">
+            <span class="spy-verdict-icon"><svg class="spy-icon"><use href="#i-minus"/></svg></span>
+            <span class="spy-verdict-label">Modify</span>
+            <ul class="spy-verdict-reasons"><li>Transformation journey</li><li>Extreme framing</li></ul>
+            <span class="spy-verdict-count">2 <svg class="spy-icon"><use href="#i-chevron-right"/></svg></span>
+          </button>
+          <button class="spy-verdict" data-verdict="remove">
+            <span class="spy-verdict-icon"><svg class="spy-icon"><use href="#i-close"/></svg></span>
+            <span class="spy-verdict-label">Remove</span>
+            <ul class="spy-verdict-reasons"><li>Unsafe or risky recommendations</li><li>Short-term unhealthy methods</li></ul>
+            <span class="spy-verdict-count">2 <svg class="spy-icon"><use href="#i-chevron-right"/></svg></span>
+          </button>
+        </div>
+      </div>
+      <div class="spy-section-card">
+        <div class="spy-section-head"><svg class="spy-icon"><use href="#i-search"/></svg><span class="spy-section-title">Attribution outcome</span></div>
+        <div class="spy-verdicts">
+          <button class="spy-verdict" data-verdict="keep">
+            <span class="spy-verdict-icon"><svg class="spy-icon"><use href="#i-check"/></svg></span>
+            <span class="spy-verdict-label">Attributed</span>
+            <ul class="spy-verdict-reasons"><li>Served from the official account</li><li>Ad Library provenance</li></ul>
+            <span class="spy-verdict-count">184 <svg class="spy-icon"><use href="#i-chevron-right"/></svg></span>
+          </button>
+          <button class="spy-verdict" data-verdict="modify">
+            <span class="spy-verdict-icon"><svg class="spy-icon"><use href="#i-minus"/></svg></span>
+            <span class="spy-verdict-label">Uncertain</span>
+            <ul class="spy-verdict-reasons"><li>Creator video, no paid disclosure</li><li>Landing domain does not match</li></ul>
+            <span class="spy-verdict-count">27 <svg class="spy-icon"><use href="#i-chevron-right"/></svg></span>
+          </button>
+          <button class="spy-verdict" data-verdict="remove">
+            <span class="spy-verdict-icon"><svg class="spy-icon"><use href="#i-close"/></svg></span>
+            <span class="spy-verdict-label">Rejected</span>
+            <ul class="spy-verdict-reasons"><li>Different brand in caption</li></ul>
+            <span class="spy-verdict-count">7 <svg class="spy-icon"><use href="#i-chevron-right"/></svg></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Analysis tier <span class="doc-ev" data-ev="i">Inferred</span> <span class="doc-serves">P4</span></h3>
+    <p class="spy-caption-l spy-text-secondary doc-note">
+      Four pips, filled to the depth that actually ran. It makes the cost model legible in a list —
+      a filled fourth pip means multimodal ran on that video — and it gives the user something to
+      click when they want a deeper pass.
+    </p>
+    <div class="doc-demo-row" id="render-tiers"></div>
+  </div>
+</section>
+<section class="doc-section" id="async" data-nav="Async scan">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Async scan</h2>
+    <p class="spy-body-s spy-text-secondary">
+      “A scan is an async job: resolve, fan out to adapters, persist, tier the analysis, report partial
+      results as they land. It must survive one source failing and report which sources were covered.”
+      That sentence rules out a page spinner. Results arrive unevenly and the page has to stay useful
+      the whole time.
+    </p>
+    <span class="doc-ev" data-ev="c">Confirmed — capture #501</span>
+    <span class="doc-serves">Serves P2 coverage · P6 orchestration</span>
+  </header>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Processing frame</h3>
+    <p class="spy-caption-l spy-text-secondary doc-note">
+      A 2px tint outline around the region that is working, with a status pill notched into its
+      top-left corner. Higgsfield uses it to say “something is happening <em>here</em>” without
+      blocking the rest of the page — exactly what partial results need. The frame changes colour on
+      completion and failure rather than disappearing, so the region keeps its history.
+    </p>
+    <div class="doc-grid-3">
+      <div class="spy-processing">
+        <span class="spy-processing-badge"><svg class="spy-icon"><use href="#i-refresh"/></svg>Scanning</span>
+        <div class="spy-stack" style="gap:12px">
+          <div class="spy-skeleton" data-shape="text" style="width:70%"></div>
+          <div class="spy-skeleton" style="height:64px;border-radius:12px"></div>
+        </div>
+      </div>
+      <div class="spy-processing" data-state="done">
+        <span class="spy-processing-badge"><svg class="spy-icon"><use href="#i-check"/></svg>218 found</span>
+        <p class="spy-caption-l spy-text-secondary" style="margin:0">Meta Ad Library and TikTok both returned. App Store skipped — no listing resolved.</p>
+      </div>
+      <div class="spy-processing" data-state="failed">
+        <span class="spy-processing-badge"><svg class="spy-icon"><use href="#i-warning"/></svg>Source failed</span>
+        <p class="spy-caption-l spy-text-secondary" style="margin:0 0 12px">TikTok returned 429 after 140 creatives. Partial results kept.</p>
+        <button class="spy-btn" data-variant="outline" data-size="xs"><svg class="spy-icon"><use href="#i-refresh"/></svg>Retry source</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Source coverage <span class="doc-serves">P2</span></h3>
+    <p class="spy-caption-l spy-text-secondary doc-note">
+      The brief makes coverage a reporting requirement, so it is a first-class object rather than an
+      error toast. One row per adapter, each with its own status and count. A failed source keeps its
+      row and offers a retry — the scan is not “broken”, it is <em>partial</em>, and the UI has to be
+      able to say that.
+    </p>
+    <div class="spy-section-card" style="max-width:44rem">
+      <div class="spy-section-head">
+        <svg class="spy-icon"><use href="#i-layers"/></svg>
+        <span class="spy-section-title">Coverage</span>
+        <span class="spy-count">4</span>
+      </div>
+      <div class="spy-coverage" id="render-coverage"></div>
+      <div class="spy-notice">
+        <span class="spy-icon-tile"><svg class="spy-icon"><use href="#i-info"/></svg></span>
+        <span class="spy-notice-text">
+          <span class="spy-notice-title">Two of four sources complete</span>
+          <span class="spy-notice-description">Results below are partial. They will keep filling in as adapters return.</span>
+        </span>
+        <button class="spy-btn" data-variant="outline" data-size="xs">View log</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Progress shapes</h3>
+    <div class="doc-grid-2">
+      <div class="spy-section-card">
+        <span class="doc-state-label">Determinate — known total</span>
+        <div class="spy-row" style="justify-content:space-between"><span class="spy-caption-l spy-text-secondary">Analysing creatives</span><span class="spy-caption-l doc-num">41 / 218</span></div>
+        <div class="spy-progress"><div class="spy-progress-fill" style="width:19%"></div></div>
+      </div>
+      <div class="spy-section-card">
+        <span class="doc-state-label">Segmented — one per source</span>
+        <div class="spy-progress-steps">
+          <div class="spy-progress-segment"><div class="spy-progress-fill" style="width:100%"></div></div>
+          <div class="spy-progress-segment"><div class="spy-progress-fill" style="width:100%"></div></div>
+          <div class="spy-progress-segment"><div class="spy-progress-fill" style="width:62%"></div></div>
+          <div class="spy-progress-segment"><div class="spy-progress-fill" style="width:0%"></div></div>
+        </div>
+        <span class="spy-caption-m spy-text-tertiary">Meta · TikTok · App Store · YouTube</span>
+      </div>
+      <div class="spy-section-card">
+        <span class="doc-state-label">Indeterminate — resolving</span>
+        <div class="spy-progress" data-indeterminate><div class="spy-progress-fill"></div></div>
+      </div>
+      <div class="spy-section-card">
+        <span class="doc-state-label">Placeholder — result pending</span>
+        <span class="spy-loader-shine" style="width:100%;height:56px;display:block"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Cost in the commit action <span class="doc-serves">P7</span></h3>
+    <p class="spy-caption-l spy-text-secondary doc-note">
+      Higgsfield puts the price inside the button that spends it — “Generate ✦ 32”, “Create moodboard ✦ 25”.
+      The brief asks for cost per scan to be instrumented from day one; putting it here makes it a
+      product surface rather than a dashboard nobody opens.
+    </p>
+    <div class="doc-demo-row">
+      <button class="spy-btn" data-variant="brand" data-size="md" data-gloss><svg class="spy-icon"><use href="#i-search"/></svg>Run scan <span class="spy-kbd" style="background:rgba(0,0,0,.14);color:inherit">✦ 12</span></button>
+      <button class="spy-btn" data-variant="outline" data-size="md">Deepen analysis <span class="spy-text-tertiary">✦ 40</span></button>
+      <button class="spy-btn" data-variant="brand" data-size="md" aria-busy="true"><span class="spy-btn-label">Running</span></button>
+    </div>
+  </div>
+</section>
+<section class="doc-section" id="attribution" data-nav="Attribution">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Attribution &amp; explanation</h2>
+    <p class="spy-body-s spy-text-secondary">
+      “Decide brand relevance from cheap signals before touching the video… vision analysis is the last
+      resort.” A tiered decision like that is only trustworthy if it shows its working. These are the
+      shapes for that: what argued for the call, what argued against, and which observations it rests on.
+    </p>
+    <span class="doc-ev" data-ev="c">Confirmed — capture #126</span>
+    <span class="doc-serves">Serves P3 signals · P5 placements</span>
+  </header>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Evidence panel</h3>
+    <p class="spy-caption-l spy-text-secondary doc-note">
+      Two halves split by a hairline: what supports the decision, what undercuts it. Higgsfield uses
+      this to teach moodboard quality (“Recommended” / “Avoid”); the negative side outlines its
+      thumbnails in the error colour, which is the only place a thumbnail border means anything.
+    </p>
+    <div class="spy-evidence">
+      <div class="spy-evidence-side" data-tone="for">
+        <div class="spy-evidence-head">
+          <span class="spy-evidence-mark"><svg class="spy-icon"><use href="#i-check"/></svg></span>
+          <div>
+            <div class="spy-evidence-title">Signals for</div>
+            <div class="spy-evidence-claim">Four cheap signals agree this is brand-owned.</div>
+          </div>
+        </div>
+        <ul class="spy-evidence-list">
+          <li><svg class="spy-icon"><use href="#i-check"/></svg><span>Served from the verified Meta page <code>nordic-labs</code></span></li>
+          <li><svg class="spy-icon"><use href="#i-check"/></svg><span>Present in Ad Library with paid provenance</span></li>
+          <li><svg class="spy-icon"><use href="#i-check"/></svg><span>Landing domain matches <code>nordiclabs.com</code></span></li>
+          <li><svg class="spy-icon"><use href="#i-check"/></svg><span>App Store link resolves to the same listing</span></li>
+        </ul>
+      </div>
+      <div class="spy-evidence-side" data-tone="against">
+        <div class="spy-evidence-head">
+          <span class="spy-evidence-mark"><svg class="spy-icon"><use href="#i-close"/></svg></span>
+          <div>
+            <div class="spy-evidence-title">Signals against</div>
+            <div class="spy-evidence-claim">One signal is missing; none contradict.</div>
+          </div>
+        </div>
+        <ul class="spy-evidence-list">
+          <li><svg class="spy-icon"><use href="#i-close"/></svg><span>No paid-partnership disclosure on the TikTok placement</span></li>
+        </ul>
+        <div class="spy-evidence-thumbs">
+          <span class="spy-evidence-thumb"><span class="doc-media-fake" style="position:static;display:block;width:100%;height:100%;filter:hue-rotate(20deg)"></span></span>
+          <span class="spy-evidence-thumb"><span class="doc-media-fake" style="position:static;display:block;width:100%;height:100%;filter:hue-rotate(200deg)"></span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Ranked reasons <span class="doc-ev" data-ev="i">Inferred</span></h3>
+    <p class="spy-caption-l spy-text-secondary doc-note">
+      Numbered, because order is the message — signal 1 did more work than signal 5. The impact chip is
+      the only coloured element, and only “high” gets a colour.
+    </p>
+    <div class="spy-section-card">
+      <div class="spy-section-head"><svg class="spy-icon"><use href="#i-sparkle"/></svg><span class="spy-section-title">Why it worked</span></div>
+      <div class="spy-ranked" id="render-ranked"></div>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Classification</h3>
+    <p class="spy-caption-l spy-text-secondary doc-note">Read-only metadata: icon, label, value chips. If a value is editable it is a Field, not this.</p>
+    <div class="doc-grid-2">
+      <div class="spy-section-card">
+        <div class="spy-section-head"><svg class="spy-icon"><use href="#i-list"/></svg><span class="spy-section-title">Content classification</span></div>
+        <div class="spy-classify">
+          <div class="spy-classify-row"><svg class="spy-icon"><use href="#i-sparkle"/></svg><span class="spy-classify-label">Primary goal</span><span class="spy-classify-values"><span class="spy-classify-value" data-tone="tint">Engagement</span></span></div>
+          <div class="spy-classify-row"><svg class="spy-icon"><use href="#i-grid"/></svg><span class="spy-classify-label">Format</span><span class="spy-classify-values"><span class="spy-classify-value">Talking head</span></span></div>
+          <div class="spy-classify-row"><svg class="spy-icon"><use href="#i-layers"/></svg><span class="spy-classify-label">Content type</span><span class="spy-classify-values"><span class="spy-classify-value">Question / Advice</span><span class="spy-classify-value">Personal story</span></span></div>
+          <div class="spy-classify-row"><svg class="spy-icon"><use href="#i-user"/></svg><span class="spy-classify-label">Audience</span><span class="spy-classify-values"><span class="spy-classify-value">Women 18–30</span><span class="spy-classify-value">General</span></span></div>
+          <div class="spy-classify-row"><svg class="spy-icon"><use href="#i-wand"/></svg><span class="spy-classify-label">Emotions</span><span class="spy-classify-values"><span class="spy-classify-value">Curiosity</span><span class="spy-classify-value">Urgency</span><span class="spy-classify-value">Vulnerability</span></span></div>
+        </div>
+      </div>
+      <div class="spy-section-card">
+        <div class="spy-section-head"><svg class="spy-icon"><use href="#i-link"/></svg><span class="spy-section-title">Placements</span><span class="spy-count">4</span></div>
+        <p class="spy-caption-m spy-text-secondary" style="margin:0">One canonical creative, deduplicated by perceptual hash, observed on four surfaces.</p>
+        <div class="spy-placements" id="render-placements"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="doc-section" id="pickers" data-nav="Pickers">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Input &amp; disambiguation</h2>
+    <p class="spy-body-s spy-text-secondary">
+      “Resolve free text to a set of candidate accounts and app listings, with a confidence score and a
+      way for the user to confirm. <strong>Everything downstream depends on this being right.</strong>”
+      That last clause is the design constraint: resolution cannot be a silent auto-pick, and a
+      low-confidence top result must not look like a decided answer.
+    </p>
+    <span class="doc-ev" data-ev="c">Confirmed — captures #199, #8–15</span>
+    <span class="doc-serves">Serves P1 resolution · P4 tier selection</span>
+  </header>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Candidate picker <span class="doc-serves">P1</span></h3>
+    <div class="doc-grid-2">
+      <div class="spy-section-card">
+        <div class="spy-section-head"><svg class="spy-icon"><use href="#i-search"/></svg><span class="spy-section-title">Which one is the brand?</span></div>
+        <p class="spy-caption-l spy-text-secondary" style="margin:0">Three identities matched “nordic labs”. Pick one — the scan runs against it.</p>
+        <div class="spy-candidates" id="render-candidates"></div>
+        <div class="spy-row" style="justify-content:space-between;margin-top:4px">
+          <button class="spy-btn" data-variant="ghost" data-size="sm">None of these</button>
+          <button class="spy-btn" data-variant="brand" data-size="sm">Confirm &amp; scan <span style="opacity:.6">✦ 12</span></button>
+        </div>
+      </div>
+      <div class="doc-panel">
+        <h3 class="spy-h6 doc-sub" style="margin-top:0">Why it looks like this</h3>
+        <ul class="doc-defs">
+          <li><strong>Radio, not a dropdown</strong><span>Exactly one is correct and the choice is consequential. A closed select would hide the alternatives and the confidence spread.</span></li>
+          <li><strong>Confidence as a number, right-aligned</strong><span>So three candidates can be compared down a column. Below 60 it goes amber — a weak top match should look weak.</span></li>
+          <li><strong>Source badges on every row</strong><span>The same brand name resolves to a Meta page, a TikTok account and an app listing. Which platform a candidate is on is half the decision.</span></li>
+          <li><strong>“None of these” is always present</strong><span>The brief says resolution will sometimes be wrong. The escape hatch is part of the pattern, not an edge case.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Option cards <span class="doc-ev" data-ev="c">Confirmed</span></h3>
+    <p class="spy-caption-l spy-text-secondary doc-note">
+      Higgsfield’s aspect-ratio selector: a glyph above a label, selected taking a tint border
+      <em>and</em> a tint label. The right control for 2–5 exclusive options that have a shape worth
+      showing. Bigger than a chip, smaller than a preset tile.
+    </p>
+    <div class="doc-grid-2">
+      <div>
+        <p class="doc-state-label" style="margin-bottom:10px">Sources to scan</p>
+        <div class="spy-options" id="render-options-sources"></div>
+      </div>
+      <div>
+        <p class="doc-state-label" style="margin-bottom:10px">Analysis depth <span class="spy-text-tertiary">— P4</span></p>
+        <div class="spy-options" id="render-options-tier"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Navigator rows &amp; dropzone <span class="doc-ev" data-ev="c">Confirmed</span></h3>
+    <div class="doc-grid-2">
+      <div class="spy-stack" style="gap:10px">
+        <button class="spy-navrow">
+          <span class="spy-navrow-text"><span class="spy-navrow-label">Brand</span><span class="spy-navrow-value">Nordic Labs <span class="spy-source" data-source="meta"><span class="spy-source-dot"></span>Meta</span></span></span>
+          <svg class="spy-icon"><use href="#i-chevron-right"/></svg>
+        </button>
+        <button class="spy-navrow">
+          <span class="spy-navrow-text"><span class="spy-navrow-label">Date range</span><span class="spy-navrow-value">Last 90 days</span></span>
+          <svg class="spy-icon"><use href="#i-chevron-right"/></svg>
+        </button>
+        <button class="spy-navrow">
+          <span class="spy-navrow-text"><span class="spy-navrow-label">Analysis depth</span><span class="spy-navrow-value">Transcript <span class="spy-tier"><span class="spy-tier-pips"><span class="spy-tier-pip" data-on></span><span class="spy-tier-pip" data-on></span><span class="spy-tier-pip" data-on></span><span class="spy-tier-pip"></span></span></span></span></span>
+          <svg class="spy-icon"><use href="#i-chevron-right"/></svg>
+        </button>
+        <p class="spy-caption-m spy-text-secondary doc-note">Label above, value below, chevron at the end. Use it when the choice needs a whole surface to make; otherwise use a Select.</p>
+      </div>
+      <div class="spy-stack" style="gap:12px">
+        <div class="spy-field">
+          <label class="spy-field-label">Brand or app name</label>
+          <div class="spy-field-control" data-size="lg">
+            <span class="spy-field-affix"><svg class="spy-icon"><use href="#i-search"/></svg></span>
+            <input class="spy-field-input" placeholder="e.g. Nordic Labs, or paste a TikTok link">
+            <span class="spy-kbd-group"><span class="spy-kbd">⌘</span><span class="spy-kbd">K</span></span>
+          </div>
+          <span class="spy-field-description">Free text. We resolve it to platform identities before scanning.</span>
+        </div>
+        <div class="spy-dropzone">
+          <svg class="spy-icon"><use href="#i-upload"/></svg>
+          <span class="spy-dropzone-title">Or drop a creative to match</span>
+          <span class="spy-dropzone-hint">MP4 or MOV · we’ll find where else it ran</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Page header &amp; breadcrumb <span class="doc-ev" data-ev="c">Confirmed</span></h3>
+    <div class="spy-section-card">
+      <nav class="spy-breadcrumb" aria-label="Breadcrumb">
+        <a href="#pickers">Scans</a><span class="spy-breadcrumb-sep">/</span>
+        <a href="#pickers">Nordic Labs</a><span class="spy-breadcrumb-sep">/</span>
+        <span aria-current="page">Creative 4127</span>
+      </nav>
+      <div class="spy-page-header" style="padding-bottom:0">
+        <div class="spy-page-header-text">
+          <h3 class="spy-page-title">Nordic Labs</h3>
+          <p class="spy-page-subtitle">218 creatives across 4 sources · first seen 12 Mar 2026 · scan updated 4 minutes ago</p>
+        </div>
+        <div class="spy-page-actions">
+          <button class="spy-btn" data-variant="outline" data-size="sm"><svg class="spy-icon"><use href="#i-download"/></svg>Export</button>
+          <div class="spy-btn-group" data-attached>
+            <button class="spy-btn" data-variant="brand" data-size="sm"><svg class="spy-icon"><use href="#i-refresh"/></svg>Rescan</button>
+            <button class="spy-btn" data-variant="brand" data-size="sm" data-icon-only aria-label="Rescan options"><svg class="spy-icon"><use href="#i-chevron-down"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="doc-section" id="results" data-nav="Results">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Results &amp; media</h2>
+    <p class="spy-body-s spy-text-secondary">
+      The scan output is not a list of videos — it is a list of <em>creatives</em>, each deduplicated by
+      perceptual hash and each expanding to its placements. Every card therefore carries three things a
+      plain gallery would not: which source it came from, how deeply it was analysed, and when it ran.
+    </p>
+    <span class="doc-ev" data-ev="c">Confirmed — asset grids throughout</span>
+    <span class="doc-serves">Serves P5 dedup · P4 tiering</span>
+  </header>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Filter bar &amp; result grid</h3>
+    <div class="spy-filterbar">
+      <button class="spy-chip" data-size="sm" data-js="chip" data-selected>All 218</button>
+      <button class="spy-chip" data-size="sm" data-js="chip">Attributed 184</button>
+      <button class="spy-chip" data-size="sm" data-js="chip">Uncertain 27</button>
+      <button class="spy-field-control spy-select-trigger" data-size="sm" style="width:auto;min-width:150px">
+        <span class="spy-select-value">All sources</span>
+        <span class="spy-select-icon"><svg class="spy-icon" data-size="sm"><use href="#i-chevron-down"/></svg></span>
+      </button>
+      <button class="spy-field-control spy-select-trigger" data-size="sm" style="width:auto;min-width:140px">
+        <span class="spy-select-value">Last 90 days</span>
+        <span class="spy-select-icon"><svg class="spy-icon" data-size="sm"><use href="#i-chevron-down"/></svg></span>
+      </button>
+      <div class="spy-filterbar-end">
+        <span class="spy-caption-m spy-text-tertiary">Sorted by last seen</span>
+        <div class="spy-btn-group" data-attached>
+          <button class="spy-btn" data-variant="outline" data-size="sm" data-icon-only aria-label="Grid"><svg class="spy-icon"><use href="#i-grid"/></svg></button>
+          <button class="spy-btn" data-variant="outline" data-size="sm" data-icon-only aria-label="List"><svg class="spy-icon"><use href="#i-list"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="spy-results" id="render-results"></div>
+    <p class="spy-caption-m spy-text-secondary doc-note">
+      Actions stay hidden until hover or focus, which is how every Higgsfield gallery behaves. The
+      duration chip sits top-right over a blurred scrim; source and tier sit under the card where they
+      can be read down a column.
+    </p>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Vertical player <span class="doc-ev" data-ev="c">Confirmed — captures #66–71</span></h3>
+    <div class="doc-grid-3">
+      <div class="spy-player">
+        <span class="doc-media-fake"></span>
+        <div class="spy-player-caption">Need to lose 10 lbs before October, please give me your most insane ways to do so.</div>
+        <div class="spy-player-rail">
+          <button class="spy-player-action"><svg class="spy-icon"><use href="#i-sparkle"/></svg>97.7K</button>
+          <button class="spy-player-action"><svg class="spy-icon"><use href="#i-list"/></svg>1.6K</button>
+          <button class="spy-player-action"><svg class="spy-icon"><use href="#i-download"/></svg>12.4K</button>
+          <button class="spy-player-action"><svg class="spy-icon"><use href="#i-link"/></svg>737</button>
+        </div>
+        <div class="spy-player-author">
+          <span class="spy-avatar" data-size="sm">M</span>
+          <span class="spy-caption-l">@melanie1.s…</span>
+          <button class="spy-btn" data-variant="outline" data-size="xxs">Follow</button>
+        </div>
+        <div class="spy-player-transport">
+          <button class="spy-btn" data-variant="ghost" data-size="xxs" data-icon-only aria-label="Play"><svg class="spy-icon"><use href="#i-play"/></svg></button>
+          <span class="spy-media-scrub"><span class="spy-media-scrub-fill" style="width:38%"></span></span>
+          <span>00:03 / 00:08</span>
+          <button class="spy-btn" data-variant="ghost" data-size="xxs" data-icon-only aria-label="Mute"><svg class="spy-icon"><use href="#i-volume"/></svg></button>
+        </div>
+      </div>
+      <div class="doc-panel" style="grid-column:span 2">
+        <h3 class="spy-h6 doc-sub" style="margin-top:0">Notes</h3>
+        <ul class="doc-defs">
+          <li><strong>Overlay text uses the on-overlay colours</strong><span><code>text-on-overlay-secondary</code> and a text shadow, never the page text tokens — the background is arbitrary video.</span></li>
+          <li><strong>The action rail is not a toolbar</strong><span>It mirrors the source platform so the creative reads as it did in the wild. It is decoration of the evidence, not product chrome — spyy’s own actions live in the page header.</span></li>
+          <li><strong>Transport sits on a gradient scrim</strong><span>Black 60% → transparent, 16px padding, same recipe as every media overlay in the system.</span></li>
+        </ul>
+        <div class="spy-alert" data-status="info" style="margin-top:16px">
+          <svg class="spy-icon"><use href="#i-info"/></svg>
+          <span>Rights note: creatives are third-party content shown as evidence. Cards link out to the source rather than rehosting where the platform requires it.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Empty, partial and failed</h3>
+    <div class="doc-grid-3">
+      <div class="spy-empty">
+        <svg class="spy-icon"><use href="#i-search"/></svg>
+        <h4 class="spy-empty-title">No creatives yet</h4>
+        <p class="spy-empty-description">Name a brand and we’ll resolve it, then pull its video advertising.</p>
+        <button class="spy-btn" data-variant="brand" data-size="sm" style="margin-top:4px">Start a scan</button>
+      </div>
+      <div class="spy-empty">
+        <svg class="spy-icon"><use href="#i-filter"/></svg>
+        <h4 class="spy-empty-title">Nothing matches these filters</h4>
+        <p class="spy-empty-description">218 creatives in the scan. Try widening the date range or clearing the source filter.</p>
+        <button class="spy-btn" data-variant="outline" data-size="sm" style="margin-top:4px">Clear filters</button>
+      </div>
+      <div class="spy-empty" data-status="error">
+        <svg class="spy-icon"><use href="#i-warning"/></svg>
+        <h4 class="spy-empty-title">Couldn’t resolve that brand</h4>
+        <p class="spy-empty-description">No Meta page, TikTok account or app listing matched. Try the exact legal name, or paste a profile link.</p>
+        <button class="spy-btn" data-variant="outline" data-size="sm" style="margin-top:4px">Try again</button>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="doc-section" id="editor" data-nav="Editor">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Parameter panel · Tool bar · Presets</h2>
+    <p class="spy-body-s spy-text-secondary">
+      The densest surfaces in the product, and the ones the public site never shows. These come
+      from the 557-screen capture set: the editor's right-hand rail, the tool bar that floats over
+      the work surface, and the preset grid that appears in every studio.
+    </p>
+    <span class="doc-ev" data-ev="c">Confirmed from capture set</span>
+  </header>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Floating tool bar</h3>
+    <p class="spy-caption-l spy-text-secondary doc-note">
+      A pill container of 48px pill tools. The container sits on the card surface
+      (<code>#1c1e20</code>, sampled); the active tool is one step lighter at 10% white, and may
+      carry a badge. It scrolls horizontally rather than wrapping.
+    </p>
+    <div class="doc-toolbar-stage">
+      <div class="spy-toolbar" data-js="toolbar">
+        <button class="spy-tool"><svg class="spy-icon"><use href="#i-list"/></svg>Overview</button>
+        <button class="spy-tool" data-active><svg class="spy-icon"><use href="#i-layers"/></svg>Color Grading
+          <span class="spy-badge" data-variant="lime"><span class="spy-badge-surface"><span class="spy-badge-text">New</span></span></span>
+        </button>
+        <button class="spy-tool"><svg class="spy-icon"><use href="#i-fullscreen"/></svg>Upscale</button>
+        <button class="spy-tool"><svg class="spy-icon"><use href="#i-wand"/></svg>Enhancer</button>
+        <button class="spy-tool"><svg class="spy-icon"><use href="#i-sun"/></svg>Relight</button>
+        <button class="spy-tool"><svg class="spy-icon"><use href="#i-crop"/></svg>Inpaint</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Parameter panel</h3>
+    <div class="doc-panel-stage">
+      <aside class="spy-panel">
+        <div class="spy-panel-header">
+          <svg class="spy-icon"><use href="#i-layers"/></svg>
+          <span class="spy-panel-header-title">Color Grading</span>
+          <button class="spy-btn" data-variant="ghost" data-size="xs" data-icon-only aria-label="Close panel"><svg class="spy-icon"><use href="#i-close"/></svg></button>
+        </div>
+        <div class="spy-panel-body">
+          <div class="spy-panel-section" data-open data-js="panel-section">
+            <button class="spy-panel-section-header"><svg class="spy-icon"><use href="#i-chevron-down"/></svg>Presets</button>
+            <div class="spy-panel-section-body">
+              <div class="spy-preset-grid" id="render-presets"></div>
+            </div>
+          </div>
+          <div>
+            <button class="spy-param-row">
+              <svg class="spy-icon"><use href="#i-chevron-right"/></svg>
+              <span class="spy-param-label">Color Correct <svg class="spy-icon spy-param-info"><use href="#i-info"/></svg></span>
+              <span class="spy-switch" data-size="medium" data-checked data-js="switch"><span class="spy-switch-thumb"></span></span>
+            </button>
+            <button class="spy-param-row">
+              <svg class="spy-icon"><use href="#i-chevron-right"/></svg>
+              <span class="spy-param-label">Soften Details <svg class="spy-icon spy-param-info"><use href="#i-info"/></svg></span>
+              <span class="spy-switch" data-size="medium" data-js="switch"><span class="spy-switch-thumb"></span></span>
+            </button>
+            <button class="spy-param-row">
+              <svg class="spy-icon"><use href="#i-chevron-right"/></svg>
+              <span class="spy-param-label">Bloom <svg class="spy-icon spy-param-info"><use href="#i-info"/></svg></span>
+              <span class="spy-switch" data-size="medium" data-checked data-js="switch"><span class="spy-switch-thumb"></span></span>
+            </button>
+            <button class="spy-param-row">
+              <svg class="spy-icon"><use href="#i-chevron-right"/></svg>
+              <span class="spy-param-label">Film Grain <svg class="spy-icon spy-param-info"><use href="#i-info"/></svg></span>
+              <span class="spy-param-value">0.24</span>
+              <span class="spy-switch" data-size="medium" data-checked data-js="switch"><span class="spy-switch-thumb"></span></span>
+            </button>
+          </div>
+        </div>
+        <div class="spy-panel-footer">
+          <button class="spy-btn" data-variant="outline" data-size="md">Reset</button>
+          <button class="spy-btn" data-variant="outline" data-size="md" data-icon-only aria-label="Download"><svg class="spy-icon"><use href="#i-download"/></svg></button>
+          <button class="spy-btn" data-variant="brand" data-size="md" data-gloss data-grow>Apply edits</button>
+        </div>
+      </aside>
+      <div class="doc-panel-notes spy-caption-l spy-text-secondary">
+        <p><strong>The correction this surface forced.</strong> I had built the switch with a lime
+          checked track, because lime is the brand colour and lime is what every CTA uses. Sampling
+          the pixels here returned <code>#01c317</code> — the <em>success green</em>. Higgsfield
+          reserves lime for actions you take and uses green for state that is on. That distinction
+          is not visible anywhere on the public site.</p>
+        <p>Other details worth keeping: the panel surface is <code>#131517</code> (page-primary), one
+          step <em>darker</em> than the cards it floats over — the opposite of the usual convention.
+          Parameter rows are 56px with 8%-white dividers. The footer pins three controls at 48px and
+          lets only the primary grow. And the primary carries the lime gloss gradient, which I had
+          assumed was marketing-only: sampling its top edge returned <code>#eefd17</code>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Preset grid — selected state</h3>
+    <p class="spy-caption-l spy-text-secondary doc-note">
+      Selection is a 2px lime ring <em>and</em> a lime circular check centred on the thumbnail —
+      both, not either. Worth copying exactly: the ring alone is too quiet at this thumbnail size,
+      which is presumably why they doubled it.
+    </p>
+    <div class="spy-preset-grid" style="max-width:26rem" id="render-presets-2"></div>
+  </div>
+</section>
+
+<section class="doc-section" id="account" data-nav="Account">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Settings · Table · Notice</h2>
+    <p class="spy-body-s spy-text-secondary">
+      The account surfaces settled three things that were previously inferred: the table is real and
+      has confirmed geometry, the settings nav uses coloured icon tiles rather than plain glyphs, and
+      there is a distinct notice row that is not the status alert.
+    </p>
+    <span class="doc-ev" data-ev="c">Confirmed from capture set</span>
+  </header>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Icon tiles &amp; notice row</h3>
+    <div class="doc-grid-2">
+      <div class="spy-sidebar" style="height:auto">
+        <div class="spy-sidebar-section">
+          <div class="spy-sidebar-section-header">asmith's workspace</div>
+          <a class="spy-sidebar-row" href="#account"><span class="spy-icon-tile"><svg class="spy-icon"><use href="#i-user"/></svg></span><span class="spy-sidebar-truncate">Personal profile</span></a>
+          <a class="spy-sidebar-row" href="#account"><span class="spy-icon-tile" data-tone="orange"><svg class="spy-icon"><use href="#i-sparkle"/></svg></span><span class="spy-sidebar-truncate">Gifts</span></a>
+          <a class="spy-sidebar-row" href="#account"><span class="spy-icon-tile" data-tone="pink"><svg class="spy-icon"><use href="#i-settings"/></svg></span><span class="spy-sidebar-truncate">Subscription</span></a>
+          <a class="spy-sidebar-row" data-active href="#account"><span class="spy-icon-tile"><svg class="spy-icon"><use href="#i-list"/></svg></span><span class="spy-sidebar-truncate">Usage</span></a>
+          <a class="spy-sidebar-row" href="#account"><span class="spy-icon-tile" data-tone="purple"><svg class="spy-icon"><use href="#i-link"/></svg></span><span class="spy-sidebar-truncate">Promocode</span></a>
+        </div>
+      </div>
+      <div class="spy-card">
+        <div class="spy-card-header">
+          <span class="spy-row"><svg class="spy-icon" data-size="sm" style="color:var(--hf-color-icon-secondary)"><use href="#i-refresh"/></svg><span class="spy-caption-l spy-text-secondary">Credits auto-refill</span></span>
+        </div>
+        <div style="padding:0 20px 20px">
+          <div class="spy-notice">
+            <span class="spy-icon-tile"><svg class="spy-icon"><use href="#i-refresh"/></svg></span>
+            <span class="spy-notice-text">
+              <span class="spy-notice-title">Auto-refill is disabled</span>
+              <span class="spy-notice-description">Enable to automatically top up credits when running low</span>
+            </span>
+            <button class="spy-btn" data-variant="brand" data-size="xs">Set-up &amp; Enable</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Table — confirmed geometry</h3>
+    <div class="spy-card">
+      <div class="spy-card-header">
+        <span class="spy-row">
+          <svg class="spy-icon" data-size="sm" style="color:var(--hf-color-icon-secondary)"><use href="#i-list"/></svg>
+          <span class="spy-caption-l spy-text-secondary">Usage history</span>
+          <span class="spy-count">99</span>
+        </span>
+      </div>
+      <table class="spy-table">
+        <thead><tr>
+          <th>Credits</th>
+          <th><button class="spy-table-filter">All features <svg class="spy-icon"><use href="#i-chevron-down"/></svg></button></th>
+          <th><button class="spy-table-filter">All actions <svg class="spy-icon"><use href="#i-chevron-down"/></svg></button></th>
+          <th>Date</th>
+        </tr></thead>
+        <tbody id="render-usage-rows"></tbody>
+      </table>
+      <div class="spy-table-footer">
+        <span class="spy-row"><span class="spy-caption-l spy-text-secondary">Show</span>
+          <button class="spy-field-control spy-select-trigger" data-size="sm" style="width:auto;min-width:80px">
+            <span class="spy-select-value">10</span>
+            <span class="spy-select-icon"><svg class="spy-icon" data-size="sm"><use href="#i-chevron-down"/></svg></span>
+          </button>
+        </span>
+        <span data-center>Page 1 of 10</span>
+        <span class="spy-row" style="gap:4px">
+          <button class="spy-btn" data-variant="outline" data-size="xs" data-icon-only aria-label="Previous" disabled><svg class="spy-icon"><use href="#i-chevron-left"/></svg></button>
+          <button class="spy-btn" data-variant="outline" data-size="xs" data-icon-only aria-label="Next"><svg class="spy-icon"><use href="#i-chevron-right"/></svg></button>
+        </span>
+      </div>
+    </div>
+    <p class="spy-caption-m spy-text-secondary doc-note">
+      64px rows — far more generous than a typical data table, and consistent with how spacious the
+      rest of the product is. Filterable column headers carry a chevron and are buttons. The date
+      cell is two-tone in a single cell: date primary, time secondary. Values use tabular figures
+      with a dotted underline where a tooltip is attached, and positive deltas go green.
+    </p>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">Stepper <span class="doc-ev" data-ev="i">Inferred</span></h3>
+    <p class="spy-caption-l spy-text-secondary doc-note">The wizard rail used by the multi-step studios. Dots fill with the tint once complete; the active step is a ring.</p>
+    <div class="spy-stepper" style="max-width:22rem">
+      <div class="spy-step" data-state="done"><span class="spy-step-dot"><svg class="spy-icon" data-size="xs"><use href="#i-check"/></svg></span><span class="spy-step-text"><span class="spy-step-title">Select a product</span><span class="spy-step-description">Upload or pick from your library</span></span></div>
+      <div class="spy-step" data-state="done"><span class="spy-step-dot"><svg class="spy-icon" data-size="xs"><use href="#i-check"/></svg></span><span class="spy-step-text"><span class="spy-step-title">Choose a look</span><span class="spy-step-description">Studio, lifestyle or editorial</span></span></div>
+      <div class="spy-step" data-state="active"><span class="spy-step-dot">3</span><span class="spy-step-text"><span class="spy-step-title">Generate photos</span><span class="spy-step-description">Four variants, around 40 seconds</span></span></div>
+      <div class="spy-step" data-state="todo"><span class="spy-step-dot">4</span><span class="spy-step-text"><span class="spy-step-title">Confirm the look</span></span></div>
+    </div>
+  </div>
+
+  <div class="doc-demo">
+    <h3 class="doc-demo-title">The tint system, confirmed</h3>
+    <p class="spy-caption-l spy-text-secondary doc-note">
+      The capture set settled something the stylesheet only hinted at. Higgsfield ships the same
+      components under three different tints — lime in the core product, magenta across Marketing
+      Studio, teal-green across Supercomputer — by moving one variable. Every component here reads
+      <code>--q-tint</code>, so the same is true of this system.
+    </p>
+    <div class="doc-grid-3" id="render-tints"></div>
+  </div>
+</section>
+
+<section class="doc-section" id="composer" data-nav="Composer">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Prompt composer &amp; generation controls</h2>
+    <p class="spy-body-s spy-text-secondary">
+      The product's central object. Composition is <strong>inferred</strong> — it lives behind auth, so
+      I could not audit it directly — but every value inside it is confirmed: the multiline field
+      control, the toggle row, the chip filters, the model dropdown, the brand submit button and the
+      40px dial track all ship as documented above.
+    </p>
+    <span class="doc-ev" data-ev="i">Inferred composition · confirmed parts</span>
+  </header>
+  <div class="doc-demo">
+    <div class="spy-composer">
+      <div class="spy-composer-attachments">
+        <div class="spy-composer-attachment"><div class="doc-media-fake" style="border-radius:8px"></div><button class="spy-composer-attachment-remove" aria-label="Remove"><svg class="spy-icon" data-size="xs"><use href="#i-close"/></svg></button></div>
+        <button class="spy-btn" data-variant="outline" data-size="md" data-icon-only aria-label="Add reference"><svg class="spy-icon"><use href="#i-plus"/></svg></button>
+      </div>
+      <textarea class="spy-composer-input" rows="2" placeholder="Describe the shot — camera, subject, light, motion">Slow dolly-in on a rain-slick rooftop at dusk, neon spill from the sign behind, anamorphic flare</textarea>
+      <div class="spy-composer-toolbar">
+        <button class="spy-field-control spy-select-trigger" data-size="sm" style="width:auto;min-width:180px">
+          <span class="spy-select-value">Seedance 2.5</span>
+          <span class="spy-select-icon"><svg class="spy-icon" data-size="sm"><use href="#i-chevron-down"/></svg></span>
+        </button>
+        <button class="spy-chip" data-size="xs" data-js="chip" data-selected>16:9</button>
+        <button class="spy-chip" data-size="xs" data-js="chip">8s</button>
+        <button class="spy-toggle" data-size="sm" data-js="toggle" data-pressed><svg class="spy-icon"><use href="#i-wand"/></svg>Enhance</button>
+        <div class="spy-composer-toolbar-end">
+          <span class="spy-tag"><svg class="spy-icon"><use href="#i-sparkle"/></svg>12 cr</span>
+          <button class="spy-btn" data-variant="brand" data-size="sm"><svg class="spy-icon"><use href="#i-sparkle"/></svg>Generate</button>
+        </div>
+      </div>
+    </div>
+    <div class="doc-grid-3" style="margin-top:20px">
+      <div class="doc-panel">
+        <h4 class="spy-caption-l spy-text-secondary" style="margin:0 0 12px">Parameter dials</h4>
+        <div class="spy-dial" style="margin-bottom:12px"><div class="spy-dial-track"></div><div class="spy-progress-center">Motion · 0.62</div></div>
+        <div class="spy-dial"><div class="spy-dial-track"></div><div class="spy-progress-center">Guidance · 3.5</div></div>
+      </div>
+      <div class="doc-panel">
+        <h4 class="spy-caption-l spy-text-secondary" style="margin:0 0 12px">Queue</h4>
+        <div class="spy-stack" style="gap:10px">
+          <div class="spy-row"><span class="spy-loader" style="--spy-loader-size:20px"><svg class="spy-loader-spinner" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="13" stroke="currentColor" stroke-opacity=".2" stroke-width="3"/><path d="M29 16A13 13 0 0 0 16 3" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></span><span class="spy-caption-l">Shot 3 of 4</span><span class="spy-tag" style="margin-left:auto">42%</span></div>
+          <div class="spy-progress"><div class="spy-progress-fill" style="width:42%"></div></div>
+        </div>
+      </div>
+      <div class="doc-panel">
+        <h4 class="spy-caption-l spy-text-secondary" style="margin:0 0 12px">Result actions</h4>
+        <div class="doc-demo-row">
+          <button class="spy-btn" data-variant="tertiary" data-size="xs" data-icon-only aria-label="Re-roll"><svg class="spy-icon"><use href="#i-refresh"/></svg></button>
+          <button class="spy-btn" data-variant="tertiary" data-size="xs" data-icon-only aria-label="Upscale"><svg class="spy-icon"><use href="#i-arrow-up"/></svg></button>
+          <button class="spy-btn" data-variant="tertiary" data-size="xs" data-icon-only aria-label="Crop"><svg class="spy-icon"><use href="#i-crop"/></svg></button>
+          <button class="spy-btn" data-variant="tertiary" data-size="xs" data-icon-only aria-label="Copy link"><svg class="spy-icon"><use href="#i-link"/></svg></button>
+          <button class="spy-btn" data-variant="tertiary" data-size="xs" data-icon-only aria-label="Download"><svg class="spy-icon"><use href="#i-download"/></svg></button>
+          <button class="spy-btn" data-variant="danger-soft" data-size="xs" data-icon-only aria-label="Delete"><svg class="spy-icon"><use href="#i-trash"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script src="icons.js"></script>
+<script src="shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

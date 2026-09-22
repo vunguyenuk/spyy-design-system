@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Templates · Spyy Design System</title>
+<meta name="description" content="Whole spyy screens assembled from the design system — one per step of the scan flow.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="patterns.css">
+<link rel="stylesheet" href="docs.css">
+</head>
+<body>
+
+<div class="spy-container doc-lede">
+  <p class="doc-eyebrow">Level 4 — Templates</p>
+  <h1 class="spy-h3">The flow, assembled</h1>
+  <p class="spy-body-m spy-text-secondary doc-lede-text">
+    Four screens, one per step of the brief’s flow: name a brand, confirm which brand, watch the scan
+    land, read a creative. Nothing here introduces a component — if a template needs something new,
+    that is a signal the Patterns level is incomplete, not a licence to improvise.
+  </p>
+  <div class="doc-legend">
+    <span class="doc-serves">P1 resolve</span><span class="doc-serves">P2 coverage</span>
+    <span class="doc-serves">P4 tiering</span><span class="doc-serves">P6 async</span><span class="doc-serves">P7 cost</span>
+  </div>
+</div>
+
+<nav class="doc-nav" aria-label="Sections">
+  <div class="spy-container doc-nav-inner" id="doc-nav-links"></div>
+</nav>
+
+<main class="spy-container doc-main">
+
+<section class="doc-section" id="t1" data-nav="1 · Start">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">T1 — Start a scan</h2>
+    <p class="spy-body-s spy-text-secondary">
+      The product’s entire input is one text field, so the screen is mostly that field plus a reason to
+      trust it. Cost sits in the button from the first screen, per P7.
+    </p>
+  </header>
+  <div class="doc-screen">
+    <div class="doc-screen-bar"><span></span><span></span><span></span><em>spyy — new scan</em></div>
+    <div class="doc-screen-body doc-screen-centered">
+      <div class="doc-scan-start">
+        <span class="spy-badge" data-variant="lime"><span class="spy-badge-surface"><span class="spy-badge-text">Competitive intel</span></span></span>
+        <h3 class="spy-h4" style="margin:0">What is the brand?</h3>
+        <p class="spy-body-s spy-text-secondary" style="margin:0;max-width:44ch">
+          Name a brand or an app. We resolve it to its Meta page, TikTok account and app listing, then
+          pull the video advertising it is running.
+        </p>
+        <div class="spy-field" style="width:100%">
+          <div class="spy-field-control" data-size="lg">
+            <span class="spy-field-affix"><svg class="spy-icon"><use href="#i-search"/></svg></span>
+            <input class="spy-field-input" placeholder="Nordic Labs" value="Nordic Labs">
+            <span class="spy-kbd-group"><span class="spy-kbd">⌘</span><span class="spy-kbd">K</span></span>
+          </div>
+        </div>
+        <div class="spy-options" style="width:100%" id="t1-sources"></div>
+        <div class="spy-row" style="width:100%;justify-content:space-between;margin-top:4px">
+          <button class="spy-navrow" style="width:auto;background:transparent;padding-inline:0">
+            <span class="spy-navrow-text"><span class="spy-navrow-label">Analysis depth</span><span class="spy-navrow-value">Transcript</span></span>
+            <svg class="spy-icon"><use href="#i-chevron-right"/></svg>
+          </button>
+          <button class="spy-btn" data-variant="brand" data-size="md" data-gloss>Run scan <span style="opacity:.55">✦ 12</span></button>
+        </div>
+      </div>
+      <div class="doc-scan-recent">
+        <div class="spy-row" style="justify-content:space-between;margin-bottom:12px">
+          <span class="doc-state-label">Recent scans</span>
+          <button class="spy-btn" data-variant="ghost" data-size="xs">View all</button>
+        </div>
+        <ul class="spy-list" data-divided id="t1-recent"></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="doc-section" id="t2" data-nav="2 · Resolve">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">T2 — Resolve the brand</h2>
+    <p class="spy-body-s spy-text-secondary">
+      P1, the step everything depends on. Three candidates, each with confidence and the platform it
+      lives on. The top match is <em>not</em> pre-confirmed — it is pre-selected, and the difference
+      matters when confidence is 62.
+    </p>
+    <span class="doc-serves">P1</span>
+  </header>
+  <div class="doc-screen">
+    <div class="doc-screen-bar"><span></span><span></span><span></span><em>spyy — resolve “nordic labs”</em></div>
+    <div class="doc-screen-body doc-screen-centered">
+      <div class="doc-resolve">
+        <nav class="spy-breadcrumb" aria-label="Breadcrumb">
+          <a href="#t2">New scan</a><span class="spy-breadcrumb-sep">/</span><span aria-current="page">Resolve</span>
+        </nav>
+        <h3 class="spy-h5" style="margin:8px 0 4px">Which one is “nordic labs”?</h3>
+        <p class="spy-body-s spy-text-secondary" style="margin:0 0 20px">
+          Everything downstream is attributed to the identity you pick.
+        </p>
+        <div class="spy-candidates" id="t2-candidates"></div>
+        <div class="spy-alert" data-status="warning" style="margin-top:16px">
+          <svg class="spy-icon"><use href="#i-warning"/></svg>
+          <span>The top match is 62% confident. Two accounts share this name — check the follower count and the linked domain before confirming.</span>
+        </div>
+        <div class="spy-row" style="justify-content:space-between;margin-top:20px">
+          <button class="spy-btn" data-variant="ghost" data-size="sm">None of these — refine the name</button>
+          <div class="spy-row">
+            <button class="spy-btn" data-variant="outline" data-size="sm">Back</button>
+            <button class="spy-btn" data-variant="brand" data-size="sm" data-gloss>Confirm &amp; scan <span style="opacity:.55">✦ 12</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="doc-section" id="t3" data-nav="3 · Scanning">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">T3 — Scan running</h2>
+    <p class="spy-body-s spy-text-secondary">
+      P6 and P2 together. Results land unevenly, so the grid fills in around placeholders while the
+      coverage panel reports per source. One source has failed and the screen does not read as broken.
+    </p>
+    <span class="doc-serves">P2</span><span class="doc-serves">P6</span>
+  </header>
+  <div class="doc-screen">
+    <div class="doc-screen-bar"><span></span><span></span><span></span><em>spyy — Nordic Labs · scanning</em></div>
+    <div class="doc-screen-body">
+      <div class="doc-app">
+        <aside class="doc-app-rail" id="t3-rail"></aside>
+        <div class="doc-app-main">
+          <nav class="spy-breadcrumb" aria-label="Breadcrumb">
+            <a href="#t3">Scans</a><span class="spy-breadcrumb-sep">/</span><span aria-current="page">Nordic Labs</span>
+          </nav>
+          <div class="spy-page-header">
+            <div class="spy-page-header-text">
+              <h3 class="spy-page-title">Nordic Labs</h3>
+              <p class="spy-page-subtitle">Resolved to <span class="spy-source" data-source="meta"><span class="spy-source-dot"></span>Meta</span> Nordic Labs · 94% confidence</p>
+            </div>
+            <div class="spy-page-actions">
+              <button class="spy-btn" data-variant="outline" data-size="sm">Cancel scan</button>
+            </div>
+          </div>
+          <div class="doc-t3-grid">
+            <div>
+              <div class="spy-processing" style="margin-bottom:20px">
+                <span class="spy-processing-badge"><svg class="spy-icon"><use href="#i-refresh"/></svg>Scanning · 147 so far</span>
+                <div class="spy-row" style="justify-content:space-between;margin-bottom:10px">
+                  <span class="spy-caption-l spy-text-secondary">Analysing creatives</span>
+                  <span class="spy-caption-l doc-num">41 / 147</span>
+                </div>
+                <div class="spy-progress"><div class="spy-progress-fill" style="width:28%"></div></div>
+              </div>
+              <div class="spy-results" id="t3-results"></div>
+            </div>
+            <div class="spy-col">
+              <div class="spy-section-card">
+                <div class="spy-section-head"><svg class="spy-icon"><use href="#i-layers"/></svg><span class="spy-section-title">Coverage</span></div>
+                <div class="spy-coverage" id="t3-coverage"></div>
+              </div>
+              <div class="spy-section-card">
+                <div class="spy-section-head"><svg class="spy-icon"><use href="#i-refresh"/></svg><span class="spy-section-title">This scan</span></div>
+                <div class="spy-stats">
+                  <div class="spy-stat"><span class="spy-stat-value">147</span><span class="spy-stat-label">Found</span></div>
+                  <div class="spy-stat"><span class="spy-stat-value">41</span><span class="spy-stat-label">Analysed</span></div>
+                  <div class="spy-stat"><span class="spy-stat-value">$0.21</span><span class="spy-stat-label">Spent so far</span></div>
+                  <div class="spy-stat"><span class="spy-stat-value">1m 08s</span><span class="spy-stat-label">Elapsed</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="doc-section" id="t4" data-nav="4 · Creative">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">T4 — Creative analysis</h2>
+    <p class="spy-body-s spy-text-secondary">
+      Your screen, rebuilt on the system. Three changes from the mockup, all argued in
+      <a href="patterns.html#scoring">Patterns</a>: the six coloured score cards become metric rows in
+      one colour with a calibrated headline; the gauge takes a verdict colour; and the attribution
+      evidence that the brief requires (P3) now has somewhere to live.
+    </p>
+    <span class="doc-serves">P3</span><span class="doc-serves">P4</span><span class="doc-serves">P5</span>
+  </header>
+  <div class="doc-screen">
+    <div class="doc-screen-bar"><span></span><span></span><span></span><em>spyy — Nordic Labs · creative 4127</em></div>
+    <div class="doc-screen-body">
+      <div class="doc-app">
+        <aside class="doc-app-rail" id="t4-rail"></aside>
+        <div class="doc-app-main">
+          <nav class="spy-breadcrumb" aria-label="Breadcrumb">
+            <a href="#t4">Scans</a><span class="spy-breadcrumb-sep">/</span>
+            <a href="#t4">Nordic Labs</a><span class="spy-breadcrumb-sep">/</span>
+            <span aria-current="page">Creative 4127</span>
+          </nav>
+          <div class="spy-page-header">
+            <div class="spy-page-header-text">
+              <h3 class="spy-page-title">Creative analysis</h3>
+              <div class="spy-row" style="gap:10px;flex-wrap:wrap">
+                <span class="spy-source" data-source="meta"><span class="spy-source-dot"></span>Meta</span>
+                <span class="spy-source" data-source="tiktok"><span class="spy-source-dot"></span>TikTok</span>
+                <span class="spy-tier"><span class="spy-tier-pips"><span class="spy-tier-pip" data-on></span><span class="spy-tier-pip" data-on></span><span class="spy-tier-pip" data-on></span><span class="spy-tier-pip" data-on></span></span><span class="spy-tier-label">Multimodal</span></span>
+                <span class="spy-caption-l spy-text-tertiary">First seen 18 Sep 2024 · last seen 2 days ago</span>
+              </div>
+            </div>
+            <div class="spy-page-actions">
+              <button class="spy-btn" data-variant="outline" data-size="sm" data-icon-only aria-label="Save"><svg class="spy-icon"><use href="#i-download"/></svg></button>
+              <button class="spy-btn" data-variant="outline" data-size="sm">Add to board</button>
+              <div class="spy-btn-group" data-attached>
+                <button class="spy-btn" data-variant="brand" data-size="sm"><svg class="spy-icon"><use href="#i-sparkle"/></svg>Brief a similar ad</button>
+                <button class="spy-btn" data-variant="brand" data-size="sm" data-icon-only aria-label="More"><svg class="spy-icon"><use href="#i-chevron-down"/></svg></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="spy-tabs" data-variant="line" style="margin-bottom:20px">
+            <div class="spy-tabs-list" role="tablist" data-js="tabs">
+              <button class="spy-tabs-tab" data-active role="tab"><span class="spy-tabs-tab-content">Overview</span></button>
+              <button class="spy-tabs-tab" role="tab"><span class="spy-tabs-tab-content">Attribution</span></button>
+              <button class="spy-tabs-tab" role="tab"><span class="spy-tabs-tab-content">Transcript</span></button>
+              <button class="spy-tabs-tab" role="tab"><span class="spy-tabs-tab-content">Placements</span></button>
+              <button class="spy-tabs-tab" role="tab"><span class="spy-tabs-tab-content">Similar</span></button>
+            </div>
+          </div>
+
+          <div class="spy-workspace">
+            <div class="spy-col">
+              <div class="spy-player">
+                <span class="doc-media-fake"></span>
+                <div class="spy-player-caption">Need to lose 10 lbs before October, please give me your most insane ways to do so.</div>
+                <div class="spy-player-rail">
+                  <button class="spy-player-action"><svg class="spy-icon"><use href="#i-sparkle"/></svg>97.7K</button>
+                  <button class="spy-player-action"><svg class="spy-icon"><use href="#i-list"/></svg>1.6K</button>
+                  <button class="spy-player-action"><svg class="spy-icon"><use href="#i-download"/></svg>12.4K</button>
+                </div>
+                <div class="spy-player-transport">
+                  <button class="spy-btn" data-variant="ghost" data-size="xxs" data-icon-only aria-label="Play"><svg class="spy-icon"><use href="#i-play"/></svg></button>
+                  <span class="spy-media-scrub"><span class="spy-media-scrub-fill" style="width:38%"></span></span>
+                  <span>00:03 / 00:08</span>
+                </div>
+              </div>
+              <div class="spy-section-card">
+                <div class="spy-section-head"><svg class="spy-icon"><use href="#i-list"/></svg><span class="spy-section-title">Performance</span>
+                  <button class="spy-field-control spy-select-trigger spy-section-action" data-size="sm" style="width:auto;min-width:120px">
+                    <span class="spy-select-value">30 days</span>
+                    <span class="spy-select-icon"><svg class="spy-icon" data-size="sm"><use href="#i-chevron-down"/></svg></span>
+                  </button>
+                </div>
+                <div class="spy-stats">
+                  <div class="spy-stat"><span class="spy-stat-value">1.2M</span><span class="spy-stat-label">Views</span></div>
+                  <div class="spy-stat"><span class="spy-stat-value">97.7K</span><span class="spy-stat-label">Likes</span></div>
+                  <div class="spy-stat"><span class="spy-stat-value">12.4K</span><span class="spy-stat-label">Saves</span></div>
+                  <div class="spy-stat"><span class="spy-stat-value">9.1%</span><span class="spy-stat-label">Engagement</span></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="spy-col">
+              <div class="spy-section-card">
+                <div class="spy-section-head"><svg class="spy-icon"><use href="#i-sparkle"/></svg><span class="spy-section-title">Creative scores</span></div>
+                <div class="spy-headline-score">
+                  <div class="spy-score-scale">
+                    <div class="spy-score-scale-track"><div class="spy-score-scale-fill" style="width:72%"></div></div>
+                    <div class="spy-score-scale-ends"><span>Low</span><span>High</span></div>
+                  </div>
+                  <div class="spy-score-value">
+                    <span class="spy-score-value-label">Overall</span>
+                    <span class="spy-score-value-number">72<small>/100</small></span>
+                  </div>
+                </div>
+                <hr class="spy-divider">
+                <div class="spy-metrics" id="t4-metrics"></div>
+              </div>
+              <div class="spy-section-card">
+                <div class="spy-section-head"><svg class="spy-icon"><use href="#i-search"/></svg><span class="spy-section-title">Why this is attributed to Nordic Labs</span><span class="doc-serves">P3</span></div>
+                <div class="spy-ranked" id="t4-ranked"></div>
+              </div>
+            </div>
+
+            <div class="spy-col">
+              <div class="spy-section-card">
+                <div class="spy-section-head"><svg class="spy-icon"><use href="#i-wand"/></svg><span class="spy-section-title">Adaptability</span></div>
+                <div class="spy-row" style="gap:20px;align-items:center">
+                  <div class="spy-gauge" data-verdict="good" data-size="sm" data-value="78" data-suffix="/100"></div>
+                  <div>
+                    <p class="spy-caption-l" style="margin:0 0 4px;color:var(--hf-color-state-success-fg)">High adaptability</p>
+                    <p class="spy-caption-m spy-text-secondary" style="margin:0">Core mechanics transfer to your product with some modification.</p>
+                  </div>
+                </div>
+                <div class="spy-verdicts">
+                  <button class="spy-verdict" data-verdict="keep">
+                    <span class="spy-verdict-icon"><svg class="spy-icon"><use href="#i-check"/></svg></span>
+                    <span class="spy-verdict-label">Keep</span>
+                    <ul class="spy-verdict-reasons"><li>Specific number &amp; deadline</li><li>Community participation</li></ul>
+                    <span class="spy-verdict-count">2 <svg class="spy-icon"><use href="#i-chevron-right"/></svg></span>
+                  </button>
+                  <button class="spy-verdict" data-verdict="modify">
+                    <span class="spy-verdict-icon"><svg class="spy-icon"><use href="#i-minus"/></svg></span>
+                    <span class="spy-verdict-label">Modify</span>
+                    <ul class="spy-verdict-reasons"><li>Transformation journey</li></ul>
+                    <span class="spy-verdict-count">2 <svg class="spy-icon"><use href="#i-chevron-right"/></svg></span>
+                  </button>
+                  <button class="spy-verdict" data-verdict="remove">
+                    <span class="spy-verdict-icon"><svg class="spy-icon"><use href="#i-close"/></svg></span>
+                    <span class="spy-verdict-label">Remove</span>
+                    <ul class="spy-verdict-reasons"><li>Unsafe health claims</li></ul>
+                    <span class="spy-verdict-count">2 <svg class="spy-icon"><use href="#i-chevron-right"/></svg></span>
+                  </button>
+                </div>
+              </div>
+              <div class="spy-section-card">
+                <div class="spy-section-head"><svg class="spy-icon"><use href="#i-list"/></svg><span class="spy-section-title">Classification</span></div>
+                <div class="spy-classify">
+                  <div class="spy-classify-row"><svg class="spy-icon"><use href="#i-sparkle"/></svg><span class="spy-classify-label">Primary goal</span><span class="spy-classify-values"><span class="spy-classify-value" data-tone="tint">Engagement</span></span></div>
+                  <div class="spy-classify-row"><svg class="spy-icon"><use href="#i-grid"/></svg><span class="spy-classify-label">Format</span><span class="spy-classify-values"><span class="spy-classify-value">Talking head</span></span></div>
+                  <div class="spy-classify-row"><svg class="spy-icon"><use href="#i-user"/></svg><span class="spy-classify-label">Audience</span><span class="spy-classify-values"><span class="spy-classify-value">Women 18–30</span></span></div>
+                  <div class="spy-classify-row"><svg class="spy-icon"><use href="#i-wand"/></svg><span class="spy-classify-label">Emotions</span><span class="spy-classify-values"><span class="spy-classify-value">Curiosity</span><span class="spy-classify-value">Urgency</span></span></div>
+                </div>
+              </div>
+              <div class="spy-section-card">
+                <div class="spy-section-head"><svg class="spy-icon"><use href="#i-link"/></svg><span class="spy-section-title">Placements</span><span class="spy-count">4</span><span class="doc-serves">P5</span></div>
+                <div class="spy-placements" id="t4-placements"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="doc-section" id="coverage" data-nav="Coverage">
+  <header class="doc-section-head">
+    <h2 class="spy-h5">Coverage against the brief</h2>
+    <p class="spy-body-s spy-text-secondary">
+      Where the system stands against each problem in the product overview. Honest status, not a
+      checklist — “partial” means the pieces exist but the screen has not been designed.
+    </p>
+  </header>
+  <div class="spy-table-wrap">
+    <table class="spy-table">
+      <thead><tr><th>Requirement</th><th>Covered by</th><th>Status</th></tr></thead>
+      <tbody id="render-coverage-matrix"></tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+<script src="icons.js"></script>
+<script src="shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

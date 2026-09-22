@@ -233,3 +233,124 @@ code {
 
 /* grid rows must not stretch a panel that clips its own overflow */
 #account .doc-grid-2 { align-items: start; }
+
+/* ===========================================================================
+   MULTI-PAGE SHELL
+   ======================================================================== */
+.doc-brand { text-decoration: none; }
+.doc-levels { display: flex; align-items: center; gap: 2px; margin-inline-start: var(--hf-space-500); overflow-x: auto; scrollbar-width: none; }
+.doc-levels::-webkit-scrollbar { display: none; }
+.doc-level {
+  display: inline-flex; align-items: center; white-space: nowrap;
+  padding: var(--hf-space-150) var(--hf-space-300);
+  border-radius: var(--hf-radius-200);
+  color: var(--hf-color-text-tertiary);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-500);
+  font-weight: var(--hf-type-weight-medium);
+  letter-spacing: var(--hf-type-letter-spacing-loose);
+  text-decoration: none;
+  transition: background-color var(--hf-duration-150) ease, color var(--hf-duration-150) ease;
+}
+.doc-level:hover { background-color: var(--hf-color-overlay-hover); color: var(--hf-color-text-primary); }
+.doc-level[aria-current="page"] { color: var(--hf-color-text-primary); background-color: var(--hf-color-transparent-light-10); }
+
+.doc-eyebrow { margin: 0 0 var(--hf-space-300); color: var(--q-tint); font-size: var(--hf-type-size-200); font-weight: var(--hf-type-weight-medium); letter-spacing: var(--hf-type-letter-spacing-wide); text-transform: uppercase; }
+
+.doc-footer-inner { display: flex; flex-direction: column; gap: var(--hf-space-600); }
+.doc-footer-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr)); gap: var(--hf-space-300); }
+.doc-footer-nav a { display: flex; flex-direction: column; gap: 2px; padding: var(--hf-space-300); border-radius: var(--hf-radius-300); text-decoration: none; background-color: var(--hf-color-transparent-light-05); transition: background-color var(--hf-duration-150) ease; }
+.doc-footer-nav a:hover { background-color: var(--hf-color-overlay-hover); }
+.doc-footer-nav strong { color: var(--hf-color-text-primary); font-size: var(--hf-type-size-200); font-weight: var(--hf-type-weight-medium); }
+.doc-footer-nav span { color: var(--hf-color-text-tertiary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); }
+
+/* Requirement tag — which brief problem a pattern serves */
+.doc-serves {
+  display: inline-flex; align-items: center;
+  padding: 2px var(--hf-space-200);
+  border-radius: var(--hf-radius-150);
+  background-color: color-mix(in oklch, var(--q-tint) 14%, transparent);
+  color: var(--q-tint);
+  font-family: var(--hf-type-family-mono);
+  font-size: 10px; line-height: 16px;
+  white-space: nowrap;
+}
+
+/* Callout — a design decision that departs from the mockup */
+.doc-callout {
+  display: flex; align-items: flex-start; gap: var(--hf-space-300);
+  padding: var(--hf-space-400);
+  margin-bottom: var(--hf-space-800);
+  border-radius: var(--hf-radius-400);
+  background-color: var(--hf-color-transparent-light-05);
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle);
+}
+.doc-callout > .spy-icon { --spy-icon-size: var(--hf-icon-md); color: var(--q-tint); flex-shrink: 0; margin-top: 2px; }
+.doc-callout strong { display: block; color: var(--hf-color-text-primary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); margin-bottom: var(--hf-space-200); }
+.doc-callout p { margin: 0; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-700); max-width: 76ch; }
+.doc-callout[data-tone="change"] { box-shadow: inset 0 0 0 var(--hf-border-width-thin) color-mix(in oklch, var(--q-tint) 30%, transparent); }
+
+.doc-gauge-row { display: flex; flex-wrap: wrap; gap: var(--hf-space-800); align-items: flex-start; }
+.doc-gauge-cell { display: flex; flex-direction: column; align-items: center; gap: var(--hf-space-250); }
+
+.doc-levelcards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: var(--hf-space-400); }
+.doc-levelcard { display: flex; flex-direction: column; gap: var(--hf-space-250); padding: var(--hf-space-500); border-radius: var(--hf-radius-400); background-color: var(--hf-color-background-secondary); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle); text-decoration: none; transition: box-shadow var(--hf-duration-150) ease, background-color var(--hf-duration-150) ease; }
+.doc-levelcard:hover { background-color: var(--hf-color-background-secondary-strong); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-strong); }
+.doc-levelcard-index { font-family: var(--hf-type-family-mono); font-size: 10px; color: var(--q-tint); letter-spacing: var(--hf-type-letter-spacing-wide); }
+.doc-levelcard-title { color: var(--hf-color-text-primary); font-size: var(--hf-type-size-500); line-height: var(--hf-type-line-height-700); font-weight: var(--hf-type-weight-semi-bold); }
+.doc-levelcard-q { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
+.doc-levelcard-list { margin: var(--hf-space-200) 0 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: var(--hf-space-150); }
+.doc-levelcard-list li { font-size: var(--hf-type-size-100); color: var(--hf-color-text-tertiary); padding: 2px var(--hf-space-200); border-radius: var(--hf-radius-100); background-color: var(--hf-color-transparent-light-05); }
+
+.doc-problem { display: flex; gap: var(--hf-space-300); padding: var(--hf-space-400); border-radius: var(--hf-radius-300); background-color: var(--hf-color-transparent-light-05); }
+.doc-problem-id { flex-shrink: 0; font-family: var(--hf-type-family-mono); font-size: var(--hf-type-size-200); color: var(--q-tint); }
+.doc-problem-text { display: flex; flex-direction: column; gap: var(--hf-space-150); min-width: 0; }
+.doc-problem-title { color: var(--hf-color-text-primary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-medium); }
+.doc-problem-desc { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
+.doc-problem-links { display: flex; flex-wrap: wrap; gap: var(--hf-space-150); margin-top: var(--hf-space-100); }
+.doc-problem-links a { font-size: var(--hf-type-size-100); color: var(--hf-color-text-link); text-decoration: none; padding: 2px var(--hf-space-200); border-radius: var(--hf-radius-100); background-color: color-mix(in oklch, var(--q-tint) 12%, transparent); }
+
+.doc-tintswitch { display: flex; gap: var(--hf-space-200); }
+.doc-tintswitch button { width: var(--hf-space-800); height: var(--hf-space-800); border-radius: var(--hf-radius-200); border: var(--hf-border-width-thick) solid transparent; cursor: pointer; padding: 0; }
+.doc-tintswitch button[data-active] { border-color: var(--hf-color-text-primary); }
+
+.doc-code { margin: 0 0 var(--hf-space-400); padding: var(--hf-space-300); border-radius: var(--hf-radius-300); background-color: var(--hf-color-transparent-light-05); overflow-x: auto; }
+.doc-code code { background: none; padding: 0; font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-500); color: var(--hf-color-text-secondary); white-space: pre; }
+
+/* ===========================================================================
+   TEMPLATE FRAMES
+   ======================================================================== */
+.doc-screen { border-radius: var(--hf-radius-500); overflow: hidden; background-color: var(--hf-surface-app, var(--hf-color-background-primary)); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-default), var(--hf-shadow-raised); }
+.doc-screen-bar { display: flex; align-items: center; gap: var(--hf-space-200); padding: var(--hf-space-250) var(--hf-space-400); background-color: var(--hf-color-background-secondary); border-bottom: var(--hf-border-width-thin) solid var(--hf-color-border-subtle); }
+.doc-screen-bar > span { width: 10px; height: 10px; border-radius: 50%; background-color: var(--hf-color-transparent-light-15); }
+.doc-screen-bar > em { margin-inline-start: var(--hf-space-300); font-style: normal; color: var(--hf-color-text-tertiary); font-size: var(--hf-type-size-100); font-family: var(--hf-type-family-mono); }
+.doc-screen-body { padding: var(--hf-space-600); }
+.doc-screen-centered { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; gap: var(--hf-space-800); }
+
+.doc-scan-start { display: flex; flex-direction: column; align-items: center; text-align: center; gap: var(--hf-space-400); width: 100%; max-width: 34rem; padding-block: var(--hf-space-800); }
+.doc-scan-recent { width: 100%; max-width: 34rem; }
+.doc-resolve { width: 100%; max-width: 40rem; }
+
+.doc-app { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: var(--hf-space-500); align-items: start; }
+/* the rail must fill its grid cell, not its own 17rem default, or it covers
+   the main column */
+.doc-app-rail { position: sticky; top: 0; --spy-sidebar-width: 100%; width: 100%; }
+.doc-app-main { min-width: 0; }
+@media (max-width: 64rem) { .doc-app { grid-template-columns: minmax(0, 1fr); } .doc-app-rail { display: none; } }
+
+.doc-t3-grid { display: grid; grid-template-columns: minmax(0, 1fr) 20rem; gap: var(--hf-space-500); align-items: start; }
+@media (max-width: 72rem) { .doc-t3-grid { grid-template-columns: minmax(0, 1fr); } }
+
+@media (max-width: 56rem) {
+  .doc-levels { order: 3; width: 100%; margin-inline-start: 0; padding-top: var(--hf-space-200); }
+  .doc-masthead-inner { flex-wrap: wrap; }
+  .doc-screen-body { padding: var(--hf-space-400); }
+}
+
+/* The marketing headings are fixed-size tokens, so the doc lede steps down
+   itself on narrow screens rather than overflowing the page. */
+@media (max-width: 48rem) {
+  .doc-lede h1.spy-h2 { font-size: var(--text-h4); line-height: var(--text-h4--line-height); }
+  .doc-lede h1.spy-h3 { font-size: var(--text-h5); line-height: var(--text-h5--line-height); }
+  .doc-lede { padding-block: var(--hf-space-1000) var(--hf-space-600); }
+}

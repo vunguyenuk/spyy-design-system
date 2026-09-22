@@ -352,3 +352,70 @@ toolbar with presence cursors and comment pins (#440–#495), the node/flow edit
 audio waveform and voice-picker cards (#260–#271), the metric scorecard (#499–#502), and the
 game-marketplace cards (#307–#311). Each is noted here so the omission is a decision rather
 than an oversight.
+
+---
+
+## 13. Product fit — spyy
+
+A third pass, after the two audit passes above: the system was mapped against the spyy product brief
+and extended where the product needed something the audit had not produced. The full gap table is in
+`GAPS.md`; this section records only the new evidence that pass generated.
+
+### 13.1 Higgsfield's own scoring surface (captures #500–#502)
+
+The Virality Predictor is the closest analogue to spyy in Higgsfield's product — drop a clip, run an
+async analysis, read a set of scores. Measured:
+
+| Part | Finding |
+|---|---|
+| Headline score | Label above, then a display-size white number with the denominator in grey. **The number is never coloured by value.** |
+| Calibration | A ~6px gradient track — red → amber → yellow — filled to the score, with LOW / HIGH labelled at the ends in 12px uppercase |
+| Metric set | Two-column grid of rows: label left, value right, 4px track beneath. **Every bar is the same lime**, whatever the value |
+| Stat row | Three stats, label above value, centred |
+| Processing state | A 2px lime outline around the working region with a lime status pill notched into the top-left corner, radius matched to the frame |
+| Pending metric | Label and value present, track empty |
+| Commit action | Full-width primary at 56px with a leading glyph |
+
+The single-colour bar rule is the load-bearing finding. It is what makes a six-dimension score set
+readable, and it is the opposite of the intuitive choice.
+
+### 13.2 Verdict-driven gauges (captures #125–126)
+
+| Part | Finding |
+|---|---|
+| Ring | Thick stroke, arc colour set by verdict — lime "Perfect", red "Bad" — not by brand |
+| Glow | The good state carries a coloured drop-shadow; the bad state does not |
+| Centre | Value at display size with the unit as a grey suffix, verdict pill beneath |
+| Guidance | A two-half panel split by a hairline: status mark + claim + thumbnails, with the negative side outlining its thumbnails in the error colour |
+
+### 13.3 Selection controls (capture #199)
+
+| Part | Finding |
+|---|---|
+| Option card | Boxed choice, glyph above label, ~80px tall. Selected takes a tint border **and** a tint label |
+| Navigator row | Quiet label above, current value below, chevron at the end — opens a full picker surface |
+| Dropzone | Rounded well at 5% white, icon + title + hint, two lines |
+| Asset picker tabs | Pill segmented control whose active pill is **white with dark text** — the `border-inverse` indicator |
+| Cost in CTA | "Generate ✦ 32" — the price lives inside the button that spends it |
+
+### 13.4 Patterns built new, and why
+
+These have no single Higgsfield source because Higgsfield does not have the problem. Each is
+assembled from confirmed parts and introduces no new token:
+
+| Pattern | Serves | Built from |
+|---|---|---|
+| Source coverage list | P2 — "each adapter declares its coverage and its failure mode" | status chips + notice row + source badge |
+| Source badge | P2 | Higgsfield's per-model colour tokens (`--color-mcp-model-*`), which solve the identical problem for generation models |
+| Tier indicator | P4 — four analysis tiers | four pips filled to depth; derived from the credit meta chip |
+| Candidate picker | P1 — resolve with confidence and confirm | model-picker row + a right-aligned confidence figure |
+| Placement row | P5 — one creative, many observations | asset list row + date meta + a live dot |
+| Evidence panel | P3 — explain a tiered attribution decision | the Recommended / Avoid panel, relabelled |
+
+### 13.5 Where the brief and Higgsfield disagree
+
+One place, worth recording. Higgsfield's galleries treat every asset as equal and let the grid carry
+the meaning. spyy's results are **not** equal: an attributed creative and an uncertain one need to be
+distinguishable at a glance in the same grid. The result card therefore carries a status chip that
+Higgsfield's asset cards do not have. It uses the confirmed chip component at its smallest size, so
+the addition is to the *composition*, not to the visual language.

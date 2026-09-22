@@ -1,0 +1,625 @@
+/* ============================================================================
+   SPYY DESIGN SYSTEM — Pattern layer
+   Composed solutions to recurring problems in the spyy product. Every pattern
+   here is assembled from tokens.css + components.css; none introduces a new
+   colour, radius, duration or type size.
+
+   Each pattern names the product requirement it serves (P1–P7 from the brief)
+   and the Higgsfield capture it was derived from.
+   ========================================================================= */
+
+/* ---------------------------------------------------------------------------
+   PAGE HEADER + BREADCRUMB                                              [C]
+   Capture #500, #126. Breadcrumb is 14px, separators are a plain slash at
+   tertiary, the trailing crumb goes primary. The header row below it carries
+   the title and its actions.
+   ------------------------------------------------------------------------ */
+.spy-breadcrumb { display: flex; align-items: center; gap: var(--hf-space-200); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
+.spy-breadcrumb a { color: var(--hf-color-text-secondary); text-decoration: none; transition: color var(--hf-duration-150) var(--hf-ease-out); }
+.spy-breadcrumb a:hover { color: var(--hf-color-text-primary); }
+.spy-breadcrumb-sep { color: var(--hf-color-text-tertiary); }
+.spy-breadcrumb [aria-current="page"] { color: var(--hf-color-text-primary); }
+
+.spy-page-header { display: flex; align-items: flex-start; gap: var(--hf-space-400); flex-wrap: wrap; padding-block: var(--hf-space-400) var(--hf-space-600); }
+.spy-page-header-text { flex: 1 1 24rem; min-width: 0; display: flex; flex-direction: column; gap: var(--hf-space-200); }
+.spy-page-title { margin: 0; font-family: var(--hf-type-family-primary); font-size: var(--hf-type-size-1000); line-height: var(--hf-type-line-height-1100); font-weight: var(--hf-type-weight-bold); letter-spacing: var(--hf-tracking-display); color: var(--hf-color-text-primary); }
+.spy-page-subtitle { margin: 0; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-700); max-width: 68ch; }
+.spy-page-actions { display: flex; align-items: center; gap: var(--hf-space-200); flex-shrink: 0; margin-inline-start: auto; }
+
+/* Keyboard hint chip — ⌘ K in the nav search.                            [C] */
+.spy-kbd {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: var(--hf-space-500); height: var(--hf-space-500);
+  padding-inline: var(--hf-space-150);
+  border-radius: var(--hf-radius-150);
+  background-color: var(--hf-color-transparent-light-10);
+  color: var(--hf-color-text-secondary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-100);
+  line-height: 1;
+}
+.spy-kbd-group { display: inline-flex; align-items: center; gap: var(--hf-space-100); }
+
+/* ---------------------------------------------------------------------------
+   METRIC ROW                                                    [C] · P3, P4
+   Capture #500. THE pattern for a set of scores. Label left, value right,
+   full-width 4px track beneath — not a grid of bordered cards.
+
+   One rule, taken from the source and worth keeping: every bar is the same
+   colour. Higgsfield does not colour bars by value. With six-plus dimensions,
+   per-bar colour makes the eye read severity where the data means difference.
+   Severity, when it is real, goes on the VALUE via data-tone.
+   ------------------------------------------------------------------------ */
+.spy-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: var(--hf-space-500) var(--hf-space-600); }
+.spy-metric { display: flex; flex-direction: column; gap: var(--hf-space-200); min-width: 0; }
+.spy-metric-head { display: flex; align-items: baseline; gap: var(--hf-space-300); }
+.spy-metric-label {
+  flex: 1 1 0; min-width: 0;
+  color: var(--hf-color-text-primary);
+  font-size: var(--hf-type-size-300);
+  line-height: var(--hf-type-line-height-600);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.spy-metric-value {
+  flex-shrink: 0;
+  color: var(--hf-color-text-primary);
+  font-size: var(--hf-type-size-300);
+  line-height: var(--hf-type-line-height-600);
+  font-variant-numeric: tabular-nums;
+}
+.spy-metric-value[data-tone="danger"]  { color: var(--hf-color-state-error-fg-soft); }
+.spy-metric-value[data-tone="warning"] { color: var(--hf-color-state-warning-fg-soft); }
+.spy-metric-value[data-tone="success"] { color: var(--hf-color-state-success-fg-soft); }
+.spy-metric-track {
+  position: relative;
+  height: var(--hf-space-100);                 /* 4px */
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-transparent-light-10);
+  overflow: hidden;
+}
+.spy-metric-fill {
+  position: absolute; inset-block: 0; left: 0;
+  border-radius: var(--hf-radius-full);
+  background-color: var(--q-tint);
+  transition: width var(--hf-duration-350) var(--hf-ease-in-out-circ);
+}
+/* Confidence is a separate axis from value and is never a colour.        [I] */
+.spy-metric-meta { display: flex; align-items: center; gap: var(--hf-space-150); color: var(--hf-color-text-tertiary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); }
+.spy-metric-meta > .spy-icon { --spy-icon-size: var(--hf-icon-xs); }
+/* Unscored / still-running row: track only, no fill, label dimmed.       [C] */
+.spy-metric[data-pending] .spy-metric-label,
+.spy-metric[data-pending] .spy-metric-value { color: var(--hf-color-text-tertiary); }
+.spy-metric[data-pending] .spy-metric-track::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 35%, var(--hf-color-transparent-light-10) 50%, transparent 65%);
+  animation: spy-sweep var(--hf-duration-1400) var(--hf-ease-linear) infinite;
+}
+
+/* ---------------------------------------------------------------------------
+   HEADLINE SCORE + CALIBRATION SCALE                            [C] · P3, P4
+   Capture #500. The one score that leads a panel. Value is white at display
+   size with the denominator in grey; the qualitative reading comes from the
+   gradient scale beside it, labelled at both ends — not from colouring the
+   number.
+   ------------------------------------------------------------------------ */
+.spy-headline-score { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--hf-space-600); flex-wrap: wrap; }
+.spy-score-scale { flex: 1 1 14rem; min-width: 0; display: flex; flex-direction: column; gap: var(--hf-space-200); }
+.spy-score-scale-track {
+  position: relative;
+  height: var(--hf-space-150);                 /* 6px */
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-transparent-light-10);
+  overflow: hidden;
+}
+.spy-score-scale-fill {
+  position: absolute; inset-block: 0; left: 0;
+  border-radius: var(--hf-radius-full);
+  background-image: linear-gradient(90deg, var(--hf-color-red-600) 0%, var(--hf-color-orange-500) 45%, var(--hf-color-yellow-500) 100%);
+}
+.spy-score-scale-ends { display: flex; justify-content: space-between; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); letter-spacing: var(--hf-type-letter-spacing-wide); text-transform: uppercase; }
+.spy-score-value { display: flex; flex-direction: column; align-items: flex-end; gap: var(--hf-space-100); flex-shrink: 0; }
+.spy-score-value-label { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
+.spy-score-value-number { display: flex; align-items: baseline; gap: var(--hf-space-100); font-family: var(--hf-type-family-primary); font-weight: var(--hf-type-weight-bold); letter-spacing: var(--hf-tracking-display); color: var(--hf-color-text-primary); font-size: var(--hf-type-size-1100); line-height: 1; }
+.spy-score-value-number small { font-size: var(--hf-type-size-700); color: var(--hf-color-text-tertiary); font-weight: inherit; }
+
+/* ---------------------------------------------------------------------------
+   SCORE GAUGE                                                   [C] · P1, P3
+   Capture #125–126. A thick ring whose arc colour is driven by the VERDICT,
+   not by the brand: lime when good, amber when marginal, red when bad, with a
+   matching verdict pill under the value. A good gauge also carries a glow.
+   Used for anything with a pass/fail reading — resolution confidence,
+   adaptability, brand-safety.
+   ------------------------------------------------------------------------ */
+.spy-gauge {
+  --spy-gauge-size: 10rem;
+  --spy-gauge-stroke: 14;
+  --spy-gauge-color: var(--q-tint);
+  position: relative;
+  width: var(--spy-gauge-size); height: var(--spy-gauge-size);
+  display: inline-grid; place-items: center;
+  flex-shrink: 0;
+}
+.spy-gauge svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.spy-gauge circle { fill: none; stroke-width: var(--spy-gauge-stroke); stroke-linecap: round; }
+.spy-gauge .spy-gauge-track { stroke: var(--hf-color-background-tertiary); }
+.spy-gauge .spy-gauge-arc {
+  stroke: var(--spy-gauge-color);
+  transition: stroke-dashoffset var(--hf-duration-700) var(--hf-ease-in-out-circ), stroke var(--hf-duration-normal) var(--hf-ease-out);
+}
+.spy-gauge[data-verdict="good"]     { --spy-gauge-color: var(--hf-color-brand-primary); }
+.spy-gauge[data-verdict="fair"]     { --spy-gauge-color: var(--hf-color-state-warning-fg-soft); }
+.spy-gauge[data-verdict="bad"]      { --spy-gauge-color: var(--hf-color-state-error-fg); }
+.spy-gauge[data-verdict="good"] .spy-gauge-arc { filter: drop-shadow(0 0 10px color-mix(in oklch, var(--spy-gauge-color) 55%, transparent)); }
+.spy-gauge-center { position: relative; display: flex; flex-direction: column; align-items: center; gap: var(--hf-space-150); }
+.spy-gauge-number { display: flex; align-items: baseline; gap: 2px; font-family: var(--hf-type-family-primary); font-size: var(--hf-type-size-900); line-height: 1; font-weight: var(--hf-type-weight-bold); letter-spacing: var(--hf-tracking-display); color: var(--hf-color-text-primary); }
+.spy-gauge-number small { font-size: var(--hf-type-size-300); color: var(--hf-color-text-tertiary); font-weight: var(--hf-type-weight-medium); }
+.spy-gauge-verdict {
+  display: inline-flex; align-items: center;
+  padding: 2px var(--hf-space-200);
+  border-radius: var(--hf-radius-150);
+  font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium);
+}
+.spy-gauge[data-verdict="good"] .spy-gauge-verdict { background-color: var(--hf-color-brand-primary); color: var(--hf-color-text-inverse); }
+.spy-gauge[data-verdict="fair"] .spy-gauge-verdict { background-color: var(--hf-color-state-warning-bg); color: var(--hf-color-state-warning-fg-soft); }
+.spy-gauge[data-verdict="bad"]  .spy-gauge-verdict { background-color: var(--hf-color-state-error-bg); color: var(--hf-color-state-error-fg-soft); }
+.spy-gauge[data-size="sm"] { --spy-gauge-size: 6rem; --spy-gauge-stroke: 10; }
+.spy-gauge[data-size="sm"] .spy-gauge-number { font-size: var(--hf-type-size-600); }
+.spy-gauge[data-size="sm"] .spy-gauge-verdict { display: none; }
+
+/* ---------------------------------------------------------------------------
+   STAT ROW / STAT GRID                                              [C] · P7
+   Capture #500 (Duration · Hook Score · Hold Rate), #533. Label above, value
+   below, tabular figures. The label is the quiet half — resist the urge to
+   bold it.
+   ------------------------------------------------------------------------ */
+.spy-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr)); gap: var(--hf-space-500) var(--hf-space-400); }
+.spy-stat { display: flex; flex-direction: column; gap: var(--hf-space-100); min-width: 0; }
+.spy-stat-value { color: var(--hf-color-text-primary); font-size: var(--hf-type-size-700); line-height: var(--hf-type-line-height-800); font-weight: var(--hf-type-weight-semi-bold); letter-spacing: var(--hf-tracking-body); font-variant-numeric: tabular-nums; }
+.spy-stat-label { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
+.spy-stat[data-align="center"] { align-items: center; text-align: center; }
+.spy-stat-delta { display: inline-flex; align-items: center; gap: 2px; font-size: var(--hf-type-size-100); }
+.spy-stat-delta[data-dir="up"]   { color: var(--hf-color-state-success-fg); }
+.spy-stat-delta[data-dir="down"] { color: var(--hf-color-state-error-fg-soft); }
+
+/* ---------------------------------------------------------------------------
+   VERDICT GROUP                                                 [C] · P3
+   Capture #126 (Recommended / Avoid). A status icon, a label, the reasons,
+   and a count. spyy uses this twice: Keep / Modify / Remove on adaptability,
+   and Attributed / Uncertain / Rejected on attribution.
+   The icon carries the state; the row does not tint its background.
+   ------------------------------------------------------------------------ */
+.spy-verdicts { display: flex; flex-direction: column; }
+.spy-verdict {
+  display: flex; align-items: flex-start; gap: var(--hf-space-300);
+  width: 100%;
+  padding: var(--hf-space-300) 0;
+  border: none; border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-primary);
+  background: none; text-align: start; cursor: pointer;
+  color: var(--hf-color-text-primary);
+  font-family: var(--hf-type-family-secondary);
+  transition: background-color var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-verdict:last-child { border-bottom: none; }
+.spy-verdict:hover { background-color: var(--hf-color-overlay-hover); }
+.spy-verdict-icon {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: var(--hf-space-600); height: var(--hf-space-600);
+  border-radius: var(--hf-radius-full);
+}
+.spy-verdict[data-verdict="keep"]   .spy-verdict-icon { background-color: var(--hf-color-state-success-fg); color: var(--hf-color-text-inverse); }
+.spy-verdict[data-verdict="modify"] .spy-verdict-icon { background-color: var(--hf-color-state-warning-fg-soft); color: var(--hf-color-text-inverse); }
+.spy-verdict[data-verdict="remove"] .spy-verdict-icon { background-color: var(--hf-color-state-error-fg); color: var(--hf-color-text-primary); }
+.spy-verdict-icon > .spy-icon { --spy-icon-size: var(--hf-icon-sm); stroke-width: 2.5; }
+.spy-verdict-label { flex: 0 0 5.5rem; font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-medium); }
+.spy-verdict-reasons { flex: 1 1 0; min-width: 0; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--hf-space-100); }
+.spy-verdict-reasons li { position: relative; padding-inline-start: var(--hf-space-300); color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
+.spy-verdict-reasons li::before { content: "•"; position: absolute; left: 0; color: var(--hf-color-text-tertiary); }
+.spy-verdict-count { flex-shrink: 0; display: inline-flex; align-items: center; gap: var(--hf-space-150); color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); font-variant-numeric: tabular-nums; }
+.spy-verdict-count > .spy-icon { --spy-icon-size: var(--hf-icon-sm); color: var(--hf-color-icon-tertiary); }
+
+/* ---------------------------------------------------------------------------
+   EVIDENCE PANEL                                                [C] · P3
+   Capture #126. Two halves split by a hairline, each a status icon + claim +
+   supporting thumbnails. In spyy this is how an attribution decision explains
+   itself: the signals that fired on the left, what argued against on the right.
+   Note the negative side outlines its thumbnails in the error colour.
+   ------------------------------------------------------------------------ */
+.spy-evidence { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); border-radius: var(--hf-radius-400); background-color: var(--hf-color-background-secondary); overflow: hidden; }
+.spy-evidence-side { padding: var(--hf-space-400); display: flex; flex-direction: column; gap: var(--hf-space-300); }
+.spy-evidence-side + .spy-evidence-side { border-inline-start: var(--hf-border-width-thin) solid var(--hf-color-divider-primary); }
+.spy-evidence-head { display: flex; align-items: flex-start; gap: var(--hf-space-250); }
+.spy-evidence-mark {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: var(--hf-space-500); height: var(--hf-space-500);
+  border-radius: var(--hf-radius-full);
+  margin-top: 2px;
+}
+.spy-evidence-side[data-tone="for"]     .spy-evidence-mark { background-color: var(--hf-color-state-success-fg); color: var(--hf-color-text-inverse); }
+.spy-evidence-side[data-tone="against"] .spy-evidence-mark { background-color: var(--hf-color-state-error-fg); color: var(--hf-color-text-primary); }
+.spy-evidence-mark > .spy-icon { --spy-icon-size: var(--hf-space-300); stroke-width: 3; }
+.spy-evidence-title { color: var(--hf-color-text-primary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-semi-bold); }
+.spy-evidence-claim { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); }
+.spy-evidence-thumbs { display: flex; gap: var(--hf-space-200); flex-wrap: wrap; }
+.spy-evidence-thumb { width: var(--hf-space-1600); aspect-ratio: 3 / 4; border-radius: var(--hf-radius-200); overflow: hidden; background-color: var(--hf-color-background-tertiary); }
+.spy-evidence-side[data-tone="against"] .spy-evidence-thumb { box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-state-error-fg); }
+.spy-evidence-list { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--hf-space-200); }
+.spy-evidence-list li { display: flex; align-items: flex-start; gap: var(--hf-space-200); color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
+.spy-evidence-list .spy-icon { --spy-icon-size: var(--hf-icon-sm); flex-shrink: 0; margin-top: 2px; }
+.spy-evidence-side[data-tone="for"] .spy-evidence-list .spy-icon { color: var(--hf-color-state-success-fg); }
+.spy-evidence-side[data-tone="against"] .spy-evidence-list .spy-icon { color: var(--hf-color-state-error-fg); }
+
+/* ---------------------------------------------------------------------------
+   RANKED LIST WITH IMPACT                                           [I] · P3
+   "Why it worked" / "Why we attributed this". Numbered, reason, evidence
+   quote, impact chip. Composed from list rows and chips; no new visual.
+   ------------------------------------------------------------------------ */
+.spy-ranked { display: flex; flex-direction: column; }
+.spy-ranked-item { display: flex; align-items: flex-start; gap: var(--hf-space-300); padding: var(--hf-space-300) 0; border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-primary); }
+.spy-ranked-item:last-child { border-bottom: none; }
+.spy-ranked-index {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: var(--hf-space-600); height: var(--hf-space-600);
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-transparent-light-10);
+  color: var(--hf-color-text-secondary);
+  font-size: var(--hf-type-size-100); font-weight: var(--hf-type-weight-medium);
+  font-variant-numeric: tabular-nums;
+}
+.spy-ranked-title { flex: 0 0 11rem; color: var(--hf-color-text-primary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-medium); }
+.spy-ranked-detail { flex: 1 1 0; min-width: 0; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); }
+.spy-impact {
+  flex-shrink: 0;
+  display: inline-flex; align-items: center;
+  height: var(--hf-space-600);
+  padding-inline: var(--hf-space-250);
+  border-radius: var(--hf-radius-150);
+  font-size: var(--hf-type-size-100); line-height: 1;
+  font-weight: var(--hf-type-weight-medium);
+}
+.spy-impact[data-level="high"]   { background-color: var(--hf-color-state-error-bg); color: var(--hf-color-state-error-fg-soft); }
+.spy-impact[data-level="medium"] { background-color: var(--hf-color-transparent-light-10); color: var(--hf-color-text-secondary); }
+.spy-impact[data-level="low"]    { background-color: var(--hf-color-transparent-light-05); color: var(--hf-color-text-tertiary); }
+
+/* ---------------------------------------------------------------------------
+   CLASSIFICATION LIST                                               [C] · P3
+   Capture #533 settings rows + chips. Icon, label, then one or more value
+   chips. Read-only metadata — if a value is editable it is a Field, not this.
+   ------------------------------------------------------------------------ */
+.spy-classify { display: flex; flex-direction: column; gap: var(--hf-space-100); }
+.spy-classify-row { display: flex; align-items: center; gap: var(--hf-space-300); min-height: var(--hf-space-800); }
+.spy-classify-row > .spy-icon { --spy-icon-size: var(--hf-icon-sm); color: var(--hf-color-icon-tertiary); flex-shrink: 0; }
+.spy-classify-label { flex: 0 0 9rem; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
+.spy-classify-values { flex: 1 1 0; min-width: 0; display: flex; flex-wrap: wrap; gap: var(--hf-space-150); }
+.spy-classify-value {
+  display: inline-flex; align-items: center;
+  height: var(--hf-space-600);
+  padding-inline: var(--hf-space-250);
+  border-radius: var(--hf-radius-150);
+  background-color: var(--hf-color-transparent-light-10);
+  color: var(--hf-color-text-primary);
+  font-size: var(--hf-type-size-200); line-height: 1;
+}
+.spy-classify-value[data-tone="tint"] { background-color: color-mix(in oklch, var(--q-tint) 18%, transparent); color: var(--q-tint); }
+
+/* ---------------------------------------------------------------------------
+   OPTION CARD                                                       [C] · P4
+   Capture #199 (16:9 / 1:1 / 9:16). A boxed, selectable choice: glyph above a
+   label. Selected takes a lime border AND a lime label — the same doubling
+   the preset grid uses. Bigger than a chip, smaller than a preset tile; the
+   right control for 2–5 mutually exclusive options with a shape to show.
+   In spyy: source selection, analysis tier, date range.
+   ------------------------------------------------------------------------ */
+.spy-options { display: flex; gap: var(--hf-space-200); flex-wrap: wrap; }
+.spy-option {
+  flex: 1 1 0; min-width: 5.5rem;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--hf-space-200);
+  min-height: var(--hf-space-2000);
+  padding: var(--hf-space-300);
+  border: var(--hf-border-width-thin) solid var(--hf-color-border-default);
+  border-radius: var(--hf-radius-300);
+  background-color: transparent;
+  color: var(--hf-color-text-secondary);
+  font-family: var(--hf-type-family-secondary);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-500);
+  font-weight: var(--hf-type-weight-medium);
+  cursor: pointer; outline: none;
+  transition-property: border-color, background-color, color, box-shadow;
+  transition-duration: var(--hf-duration-150);
+}
+.spy-option > .spy-icon { --spy-icon-size: var(--hf-icon-lg); color: var(--hf-color-icon-secondary); }
+.spy-option:hover { border-color: var(--hf-color-border-strong); color: var(--hf-color-text-primary); }
+.spy-option[data-selected] { border-color: var(--q-tint); color: var(--q-tint); }
+.spy-option[data-selected] > .spy-icon { color: var(--q-tint); }
+.spy-option:focus-visible { box-shadow: 0 0 0 var(--hf-border-width-thick) var(--hf-color-transparent-lime-20); }
+.spy-option[data-disabled] { opacity: 0.5; pointer-events: none; }
+.spy-option-caption { color: var(--hf-color-text-tertiary); font-size: var(--hf-type-size-100); }
+
+/* ---------------------------------------------------------------------------
+   NAVIGATOR ROW                                                     [C] · P4
+   Capture #199 ("Model · Seedance 2.0 ›"). A two-line row that opens a picker:
+   quiet label above, current value below, chevron at the end. Use it when the
+   choice needs a whole surface to make — otherwise use a Select.
+   ------------------------------------------------------------------------ */
+.spy-navrow {
+  display: flex; align-items: center; gap: var(--hf-space-300);
+  width: 100%;
+  min-height: var(--hf-space-1400);
+  padding: var(--hf-space-250) var(--hf-space-300);
+  border: none;
+  border-radius: var(--hf-radius-300);
+  background-color: var(--hf-color-overlay-dim-soft);
+  color: var(--hf-color-text-primary);
+  text-align: start; cursor: pointer; outline: none;
+  transition: background-color var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-navrow:hover { background-color: var(--hf-color-overlay-hover); }
+.spy-navrow:focus-visible { box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus); }
+.spy-navrow-text { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.spy-navrow-label { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); }
+.spy-navrow-value { display: flex; align-items: center; gap: var(--hf-space-200); color: var(--hf-color-text-primary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spy-navrow > .spy-icon:last-child { --spy-icon-size: var(--hf-icon-sm); color: var(--hf-color-icon-tertiary); flex-shrink: 0; }
+
+/* ---------------------------------------------------------------------------
+   SOURCE BADGE                                                      [C] · P2
+   Higgsfield gives every model its own colour token (--color-mcp-model-*) and
+   renders it as a small tile. spyy's sources are the same kind of thing:
+   a fixed, small set that must be recognisable at a glance in a dense list.
+   ------------------------------------------------------------------------ */
+.spy-source {
+  display: inline-flex; align-items: center; gap: var(--hf-space-150);
+  height: var(--hf-space-600);
+  padding-inline: var(--hf-space-150) var(--hf-space-250);
+  border-radius: var(--hf-radius-150);
+  background-color: var(--hf-color-transparent-light-05);
+  color: var(--hf-color-text-primary);
+  font-size: var(--hf-type-size-100); line-height: 1;
+  font-weight: var(--hf-type-weight-medium);
+  white-space: nowrap;
+}
+.spy-source-dot { width: var(--hf-space-200); height: var(--hf-space-200); border-radius: var(--hf-radius-full); flex-shrink: 0; background-color: var(--spy-source-color, var(--hf-color-text-tertiary)); }
+.spy-source[data-source="meta"]     { --spy-source-color: #0064e0; }
+.spy-source[data-source="tiktok"]   { --spy-source-color: #25f4ee; }
+.spy-source[data-source="appstore"] { --spy-source-color: var(--hf-color-blue-400); }
+.spy-source[data-source="youtube"]  { --spy-source-color: #ff0033; }
+.spy-source[data-source="landing"]  { --spy-source-color: var(--hf-color-grey-200); }
+
+/* ---------------------------------------------------------------------------
+   SOURCE COVERAGE LIST                                              [C] · P2
+   The brief requires the scan to survive one source failing and still report
+   which sources were covered. So coverage is a first-class object, not an
+   error toast: one row per adapter, each with its own status and count.
+   Status lives in a chip; a failed source keeps its row and offers a retry.
+   ------------------------------------------------------------------------ */
+.spy-coverage { display: flex; flex-direction: column; }
+.spy-coverage-row {
+  display: flex; align-items: center; gap: var(--hf-space-300);
+  min-height: var(--hf-space-1400);
+  padding: var(--hf-space-250) 0;
+  border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-primary);
+}
+.spy-coverage-row:last-child { border-bottom: none; }
+.spy-coverage-name { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: var(--hf-space-250); color: var(--hf-color-text-primary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); }
+.spy-coverage-count { flex-shrink: 0; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); font-variant-numeric: tabular-nums; }
+.spy-coverage-status {
+  flex-shrink: 0;
+  display: inline-flex; align-items: center; gap: var(--hf-space-150);
+  height: var(--hf-space-600);
+  padding-inline: var(--hf-space-250);
+  border-radius: var(--hf-radius-150);
+  font-size: var(--hf-type-size-100); line-height: 1; font-weight: var(--hf-type-weight-medium);
+}
+.spy-coverage-status > .spy-icon { --spy-icon-size: var(--hf-icon-xs); }
+.spy-coverage-status[data-state="done"]    { background-color: var(--hf-color-state-success-bg); color: var(--hf-color-state-success-fg-soft); }
+.spy-coverage-status[data-state="running"] { background-color: var(--hf-color-transparent-light-10); color: var(--hf-color-text-secondary); }
+.spy-coverage-status[data-state="partial"] { background-color: var(--hf-color-state-warning-bg); color: var(--hf-color-state-warning-fg-soft); }
+.spy-coverage-status[data-state="failed"]  { background-color: var(--hf-color-state-error-bg); color: var(--hf-color-state-error-fg-soft); }
+.spy-coverage-status[data-state="skipped"] { background-color: var(--hf-color-transparent-light-05); color: var(--hf-color-text-tertiary); }
+.spy-coverage-status[data-state="running"] > .spy-icon { animation: spy-spin var(--hf-duration-1000) var(--hf-ease-linear) infinite; }
+
+/* ---------------------------------------------------------------------------
+   TIER INDICATOR                                                    [C] · P4
+   Four pips, one per analysis tier, filled up to the depth actually run.
+   Cheap to scan down a list of results, and it makes the cost model legible:
+   a filled fourth pip means multimodal ran on that video.
+   ------------------------------------------------------------------------ */
+.spy-tier { display: inline-flex; align-items: center; gap: var(--hf-space-250); }
+.spy-tier-pips { display: inline-flex; gap: 3px; }
+.spy-tier-pip { width: var(--hf-space-300); height: var(--hf-space-150); border-radius: 1px; background-color: var(--hf-color-transparent-light-10); }
+.spy-tier-pip[data-on] { background-color: var(--q-tint); }
+.spy-tier-label { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); white-space: nowrap; }
+
+/* ---------------------------------------------------------------------------
+   PROCESSING FRAME                                                  [C] · P6
+   Capture #501. A 2px tint outline around the work area with a status pill
+   notched into its top-left corner. This is Higgsfield's answer to "something
+   is happening here, in this region" — far better than a page spinner when
+   results stream in, because the rest of the page stays usable.
+   ------------------------------------------------------------------------ */
+.spy-processing {
+  position: relative;
+  border: var(--hf-border-width-thick) solid var(--q-tint);
+  border-radius: var(--hf-radius-400);
+  padding: var(--hf-space-600) var(--hf-space-400) var(--hf-space-400);
+  background-color: var(--hf-color-background-primary);
+}
+.spy-processing-badge {
+  position: absolute; top: calc(-1 * var(--hf-border-width-thick)); left: calc(-1 * var(--hf-border-width-thick));
+  display: inline-flex; align-items: center; gap: var(--hf-space-200);
+  height: var(--hf-space-800);
+  padding-inline: var(--hf-space-300);
+  border-radius: var(--hf-radius-400) 0 var(--hf-radius-300) 0;
+  background-color: var(--q-tint);
+  color: var(--hf-color-text-inverse);
+  font-size: var(--hf-type-size-200); line-height: 1;
+  font-weight: var(--hf-type-weight-medium);
+}
+.spy-processing-badge > .spy-icon { --spy-icon-size: var(--hf-icon-sm); animation: spy-spin var(--hf-duration-1000) var(--hf-ease-linear) infinite; }
+.spy-processing[data-state="done"]   { border-color: var(--hf-color-state-success-fg); }
+.spy-processing[data-state="done"]   .spy-processing-badge { background-color: var(--hf-color-state-success-fg); }
+.spy-processing[data-state="done"]   .spy-processing-badge > .spy-icon { animation: none; }
+.spy-processing[data-state="failed"] { border-color: var(--hf-color-state-error-fg); }
+.spy-processing[data-state="failed"] .spy-processing-badge { background-color: var(--hf-color-state-error-fg); color: var(--hf-color-text-primary); }
+.spy-processing[data-state="failed"] .spy-processing-badge > .spy-icon { animation: none; }
+
+/* ---------------------------------------------------------------------------
+   CANDIDATE PICKER                                                  [C] · P1
+   The brief's hardest UI requirement: free text resolves to candidate
+   identities, each with a confidence score, and the user confirms. Built from
+   the model-picker row (media tile + title + description + meta) plus a small
+   gauge for confidence. Radio semantics, because exactly one is correct.
+   A low-confidence top candidate must not look like a decided answer.
+   ------------------------------------------------------------------------ */
+.spy-candidates { display: flex; flex-direction: column; gap: var(--hf-space-200); }
+.spy-candidate {
+  display: flex; align-items: center; gap: var(--hf-space-300);
+  width: 100%;
+  padding: var(--hf-space-300);
+  border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
+  border-radius: var(--hf-radius-300);
+  background-color: var(--hf-color-transparent-light-05);
+  color: var(--hf-color-text-primary);
+  text-align: start; cursor: pointer; outline: none;
+  transition-property: border-color, background-color, box-shadow;
+  transition-duration: var(--hf-duration-150);
+}
+.spy-candidate:hover { border-color: var(--hf-color-border-strong); }
+.spy-candidate[data-selected] { border-color: var(--q-tint); background-color: color-mix(in oklch, var(--q-tint) 8%, transparent); }
+.spy-candidate:focus-visible { box-shadow: 0 0 0 var(--hf-border-width-thick) var(--hf-color-transparent-lime-20); }
+.spy-candidate-avatar {
+  flex-shrink: 0;
+  width: var(--hf-space-1200); height: var(--hf-space-1200);
+  border-radius: var(--hf-radius-250);
+  background-color: var(--hf-color-background-secondary-strong);
+  box-shadow: var(--hf-shadow-inset-tile-hairline);
+  overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--hf-color-icon-secondary);
+}
+.spy-candidate-avatar > img { width: 100%; height: 100%; object-fit: cover; }
+.spy-candidate-text { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: var(--hf-space-100); }
+.spy-candidate-name { display: flex; align-items: center; gap: var(--hf-space-200); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-medium); }
+.spy-candidate-handle { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spy-candidate-meta { display: flex; align-items: center; gap: var(--hf-space-200); flex-wrap: wrap; }
+.spy-candidate-confidence { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: var(--hf-space-100); }
+.spy-candidate-confidence-value { font-size: var(--hf-type-size-300); line-height: 1; font-weight: var(--hf-type-weight-semi-bold); font-variant-numeric: tabular-nums; color: var(--hf-color-text-primary); }
+.spy-candidate-confidence-label { font-size: var(--hf-type-size-100); color: var(--hf-color-text-tertiary); }
+.spy-candidate[data-confidence="low"] .spy-candidate-confidence-value { color: var(--hf-color-state-warning-fg-soft); }
+
+/* ---------------------------------------------------------------------------
+   PLACEMENT ROW                                                     [C] · P5
+   One canonical creative, many platform observations. Source, where it ran,
+   first seen → last seen, and whether it is still live. Dates use tabular
+   figures so a column of them scans.
+   ------------------------------------------------------------------------ */
+.spy-placements { display: flex; flex-direction: column; }
+.spy-placement { display: flex; align-items: center; gap: var(--hf-space-300); min-height: var(--hf-space-1200); padding: var(--hf-space-200) 0; border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-primary); }
+.spy-placement:last-child { border-bottom: none; }
+.spy-placement-where { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: var(--hf-space-250); color: var(--hf-color-text-primary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
+.spy-placement-span { flex-shrink: 0; display: flex; align-items: center; gap: var(--hf-space-200); color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); font-variant-numeric: tabular-nums; }
+.spy-placement-span > .spy-icon { --spy-icon-size: var(--hf-icon-xs); color: var(--hf-color-icon-tertiary); }
+.spy-live-dot { position: relative; display: inline-flex; width: var(--hf-space-200); height: var(--hf-space-200); border-radius: var(--hf-radius-full); background-color: var(--hf-color-state-success-fg); flex-shrink: 0; }
+.spy-live-dot::after { content: ""; position: absolute; inset: -3px; border-radius: inherit; border: 1px solid var(--hf-color-state-success-fg); opacity: .4; animation: spy-ping 2s var(--hf-ease-out) infinite; }
+@keyframes spy-ping { 0% { transform: scale(.8); opacity: .5; } 100% { transform: scale(1.6); opacity: 0; } }
+
+/* ---------------------------------------------------------------------------
+   DROPZONE                                                              [C]
+   Capture #199. Rounded well at 5% white with an icon, a title and a hint.
+   ------------------------------------------------------------------------ */
+.spy-dropzone {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--hf-space-200);
+  min-height: var(--hf-space-2400);
+  padding: var(--hf-space-600) var(--hf-space-400);
+  border-radius: var(--hf-radius-300);
+  background-color: var(--hf-color-overlay-dim-soft);
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle);
+  color: var(--hf-color-text-secondary);
+  text-align: center; cursor: pointer;
+  transition-property: background-color, box-shadow;
+  transition-duration: var(--hf-duration-150);
+}
+.spy-dropzone:hover,
+.spy-dropzone[data-over] { background-color: var(--hf-color-overlay-hover); box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus); }
+.spy-dropzone > .spy-icon { --spy-icon-size: var(--hf-icon-xl); color: var(--hf-color-icon-tertiary); }
+.spy-dropzone-title { color: var(--hf-color-text-primary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); }
+.spy-dropzone-hint { color: var(--hf-color-text-tertiary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
+
+/* ---------------------------------------------------------------------------
+   RESULT CARD + GRID                                                    [C]
+   The scan output. Media tile, hover action rail, and a footer carrying the
+   source, tier and dates. Hover reveals actions rather than always showing
+   them, which is how every Higgsfield gallery behaves.
+   ------------------------------------------------------------------------ */
+.spy-results { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr)); gap: var(--hf-space-400); }
+.spy-result { display: flex; flex-direction: column; gap: var(--hf-space-250); }
+.spy-result-media { position: relative; border-radius: var(--hf-radius-300); overflow: hidden; aspect-ratio: 9 / 16; background-color: var(--hf-color-background-secondary); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle); }
+.spy-result-media > img, .spy-result-media > video { width: 100%; height: 100%; object-fit: cover; }
+.spy-result-actions {
+  position: absolute; inset-inline: var(--hf-space-200); bottom: var(--hf-space-200);
+  display: flex; align-items: center; gap: var(--hf-space-150);
+  opacity: 0; translate: 0 var(--hf-space-200);
+  transition: opacity var(--hf-duration-150) var(--hf-ease-out), translate var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-result:hover .spy-result-actions,
+.spy-result:focus-within .spy-result-actions { opacity: 1; translate: 0 0; }
+.spy-result-top { position: absolute; inset-inline: var(--hf-space-200); top: var(--hf-space-200); display: flex; align-items: flex-start; justify-content: space-between; gap: var(--hf-space-200); }
+.spy-result-duration {
+  display: inline-flex; align-items: center;
+  height: var(--hf-space-500); padding-inline: var(--hf-space-200);
+  border-radius: var(--hf-radius-150);
+  background-color: var(--hf-color-transparent-dark-60);
+  backdrop-filter: blur(var(--hf-space-200));
+  color: var(--hf-color-text-primary);
+  font-size: var(--hf-type-size-100); line-height: 1; font-variant-numeric: tabular-nums;
+}
+.spy-result-foot { display: flex; flex-direction: column; gap: var(--hf-space-150); min-width: 0; }
+.spy-result-title { color: var(--hf-color-text-primary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.spy-result-meta { display: flex; align-items: center; gap: var(--hf-space-200); flex-wrap: wrap; }
+
+/* Filter bar — chips and selects on one scrolling row.                   [C] */
+.spy-filterbar { display: flex; align-items: center; gap: var(--hf-space-200); flex-wrap: wrap; padding-block: var(--hf-space-300); }
+.spy-filterbar-end { margin-inline-start: auto; display: flex; align-items: center; gap: var(--hf-space-200); }
+
+/* ---------------------------------------------------------------------------
+   VERTICAL PLAYER                                                       [C]
+   Captures #66–71. The 9:16 viewer with its action rail down the right edge
+   and a transport strip along the bottom. Overlay text uses the on-overlay
+   colours, never the page text colours.
+   ------------------------------------------------------------------------ */
+.spy-player { position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: var(--hf-radius-400); overflow: hidden; background-color: var(--hf-color-background-secondary); }
+.spy-player > img, .spy-player > video { width: 100%; height: 100%; object-fit: cover; }
+.spy-player-caption { position: absolute; inset-inline: var(--hf-space-400); top: 22%; color: var(--hf-color-text-primary); font-size: var(--hf-type-size-500); line-height: var(--hf-type-line-height-700); font-weight: var(--hf-type-weight-semi-bold); text-shadow: 0 2px 12px rgba(0,0,0,.6); }
+.spy-player-rail { position: absolute; right: var(--hf-space-300); bottom: var(--hf-space-1600); display: flex; flex-direction: column; align-items: center; gap: var(--hf-space-400); }
+.spy-player-action { display: flex; flex-direction: column; align-items: center; gap: var(--hf-space-100); border: none; background: none; color: var(--hf-color-text-primary); cursor: pointer; font-size: var(--hf-type-size-100); font-variant-numeric: tabular-nums; }
+.spy-player-action > .spy-icon { --spy-icon-size: var(--hf-icon-lg); filter: drop-shadow(0 2px 4px rgba(0,0,0,.5)); }
+.spy-player-author { position: absolute; inset-inline: var(--hf-space-300); bottom: var(--hf-space-1200); display: flex; align-items: center; gap: var(--hf-space-250); }
+.spy-player-transport {
+  position: absolute; inset-inline: 0; bottom: 0;
+  display: flex; align-items: center; gap: var(--hf-space-250);
+  padding: var(--hf-space-250) var(--hf-space-300);
+  background-image: linear-gradient(to top, var(--hf-color-transparent-dark-60), transparent);
+  color: var(--hf-color-text-primary);
+  font-size: var(--hf-type-size-100); font-variant-numeric: tabular-nums;
+}
+.spy-player-transport .spy-media-scrub { flex: 1 1 0; }
+
+/* ---------------------------------------------------------------------------
+   TWO / THREE COLUMN WORKSPACE
+   The analysis screen's shape: a fixed media column, a fluid main column, and
+   a fixed insight column. Collapses to one column below 80rem.
+   ------------------------------------------------------------------------ */
+.spy-workspace { display: grid; grid-template-columns: 22rem minmax(0, 1fr) 24rem; gap: var(--hf-space-500); align-items: start; }
+.spy-workspace > * { min-width: 0; }
+@media (max-width: 96rem) { .spy-workspace { grid-template-columns: 20rem minmax(0, 1fr); } .spy-workspace > :nth-child(3) { grid-column: 1 / -1; } }
+@media (max-width: 64rem) { .spy-workspace { grid-template-columns: minmax(0, 1fr); } .spy-workspace > :nth-child(3) { grid-column: auto; } }
+.spy-col { display: flex; flex-direction: column; gap: var(--hf-space-500); }
+
+/* Section card — the repeating container on analysis screens.             [C] */
+.spy-section-card { border-radius: var(--hf-radius-400); background-color: var(--hf-color-background-secondary); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle); padding: var(--hf-space-500); display: flex; flex-direction: column; gap: var(--hf-space-400); }
+.spy-section-head { display: flex; align-items: center; gap: var(--hf-space-250); }
+.spy-section-head > .spy-icon { --spy-icon-size: var(--hf-icon-md); color: var(--q-tint); }
+.spy-section-title { flex: 1 1 0; min-width: 0; color: var(--hf-color-text-primary); font-size: var(--hf-type-size-400); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-semi-bold); }
+.spy-section-action { flex-shrink: 0; }

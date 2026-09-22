@@ -788,6 +788,447 @@ function renderTints() {
   });
 }
 
+
+/* ===========================================================================
+   PRODUCT DATA — spyy
+   Sample content for the pattern and template pages. Realistic on purpose:
+   a pattern demoed with lorem hides the cases that break it.
+   ======================================================================== */
+const METRICS = [
+  ['Account ownership', 96, '', 'high'],
+  ['Ad Library provenance', 88, '', 'high'],
+  ['Landing domain match', 74, '', 'medium'],
+  ['Caption & hashtags', 61, '', 'medium'],
+  ['Paid-partnership disclosure', 24, 'warning', 'high'],
+  ['App Store link', 0, '', 'low'],
+];
+const T4_METRICS = [
+  ['Hook strength', 91, '', 'high'],
+  ['Audience fit', 72, '', 'medium'],
+  ['Product relevance', 84, '', 'high'],
+  ['Conversion intent', 42, '', 'medium'],
+  ['Replicability', 87, '', 'high'],
+  ['Brand safety', 38, 'warning', 'high'],
+];
+const GAUGES = [
+  [94, 'good', 'Resolved', '/100', 'Confident'],
+  [62, 'fair', 'Resolved', '/100', 'Check it'],
+  [28, 'bad', 'Resolved', '/100', 'Too weak'],
+];
+const TIERS = [
+  [1, 'Metadata only', 'no media downloaded'],
+  [2, 'Thumbnail + first frames', 'cheap image pass'],
+  [3, 'Transcript', 'audio to text'],
+  [4, 'Multimodal', 'campaign-defining only'],
+];
+const COVERAGE = [
+  ['meta', 'Meta Ad Library', '134 creatives', 'done', 'Complete'],
+  ['tiktok', 'TikTok', '84 creatives', 'running', 'Running'],
+  ['appstore', 'App Store', 'No listing resolved', 'skipped', 'Skipped'],
+  ['youtube', 'YouTube', '0 creatives', 'failed', 'Rate limited'],
+];
+const RANKED = [
+  ['Official account', 'Served from the verified Meta page nordic-labs.', 'high'],
+  ['Ad Library provenance', 'Present in the Ad Library with a paid placement record.', 'high'],
+  ['Landing domain', 'Click-through resolves to nordiclabs.com.', 'high'],
+  ['Caption signals', 'Brand handle and product name both appear in the caption.', 'medium'],
+  ['App Store link', 'No store link on this placement.', 'low'],
+];
+const T4_RANKED = [
+  ['Specific stakes', '“10 lbs before October” creates immediate tension.', 'high'],
+  ['Extreme framing', 'Asking for the “most insane ways” triggers curiosity.', 'high'],
+  ['Community participation', 'Invites comments, which lifts distribution.', 'high'],
+  ['Personal vulnerability', 'Reads as authentic rather than produced.', 'medium'],
+  ['Native format', 'Direct talking head is native to short-form.', 'medium'],
+];
+const PLACEMENTS = [
+  ['meta', 'Meta · Feed', 'Sep 18 2024', 'Nov 2 2026', true],
+  ['meta', 'Meta · Reels', 'Sep 18 2024', 'Aug 14 2026', false],
+  ['tiktok', 'TikTok · In-feed', 'Oct 2 2024', 'Nov 4 2026', true],
+  ['tiktok', 'TikTok · Spark Ads', 'Jan 9 2026', 'Mar 30 2026', false],
+];
+const CANDIDATES = [
+  ['NL', 'Nordic Labs', '@nordiclabs · 412K followers · nordiclabs.com', 'meta', 'Meta page', 94, ''],
+  ['NL', 'Nordic Labs Sverige', '@nordiclabs.se · 38K followers · nordiclabs.se', 'tiktok', 'TikTok', 62, 'low'],
+  ['NR', 'Nordic Recovery Co.', 'App Store · Health & Fitness · 4.6★', 'appstore', 'App listing', 41, 'low'],
+];
+const SOURCES_OPT = [
+  ['meta', 'Meta', 'i-grid', true],
+  ['tiktok', 'TikTok', 'i-video', true],
+  ['appstore', 'App Store', 'i-download', false],
+  ['youtube', 'YouTube', 'i-play', false],
+];
+const TIER_OPT = [
+  ['Metadata', 'i-list', '✦ 4', false],
+  ['Frames', 'i-image', '✦ 8', false],
+  ['Transcript', 'i-audio', '✦ 12', true],
+  ['Multimodal', 'i-sparkle', '✦ 40', false],
+];
+const RESULTS = [
+  ['Need to lose 10 lbs before October…', 'meta', 4, '0:08', true],
+  ['POV: your morning routine after…', 'tiktok', 3, '0:14', true],
+  ['We tested it for 30 days. Here’s…', 'meta', 2, '0:22', false],
+  ['Three things nobody tells you…', 'tiktok', 4, '0:11', true],
+  ['The before and after that broke…', 'meta', 1, '0:09', false],
+  ['Reply to @jess — yes it works', 'tiktok', 3, '0:17', true],
+];
+const LEVELS_DOC = [
+  ['01', 'Foundations', 'foundations.html', 'What are the raw decisions?',
+   ['Colour', 'Type', 'Space', 'Radius', 'Border', 'Elevation', 'Icons', 'Motion', 'Layout']],
+  ['02', 'Components', 'components.html', 'What is the smallest usable piece?',
+   ['Button', 'Field', 'Select', 'Controls', 'Chip', 'Tabs', 'Overlay', 'Surface', 'Feedback', 'Data', 'Nav']],
+  ['03', 'Patterns', 'patterns.html', 'How does spyy say this?',
+   ['Scoring', 'Confidence', 'Async scan', 'Attribution', 'Pickers', 'Results']],
+  ['04', 'Templates', 'templates.html', 'What does the screen look like?',
+   ['Start', 'Resolve', 'Scanning', 'Creative']],
+];
+const PROBLEMS = [
+  ['P1', 'Brand name → platform identity', 'Free text resolves to candidate accounts and listings, each with a confidence score and an explicit confirm. Everything downstream depends on it.', [['Candidate picker','patterns.html#pickers'],['T2 Resolve','templates.html#t2']]],
+  ['P2', 'Video discovery per source', 'One adapter per source, each declaring its coverage and its failure mode. A failed source must not read as a failed scan.', [['Source coverage','patterns.html#async'],['T3 Scanning','templates.html#t3']]],
+  ['P3', 'Attribution signal', 'Brand relevance decided from cheap signals first, vision last. A tiered decision has to show its working.', [['Evidence panel','patterns.html#attribution'],['Scoring','patterns.html#scoring']]],
+  ['P4', 'Cost-efficient analysis pipeline', 'Four tiers, expensive steps on few videos. Each result carries the depth that actually ran.', [['Tier indicator','patterns.html#confidence'],['Option cards','patterns.html#pickers']]],
+  ['P5', 'Storage and dedup model', 'One canonical creative, many platform observations — first seen, last seen, where it ran.', [['Placements','patterns.html#attribution']]],
+  ['P6', 'Scan orchestration', 'Async job reporting partial results as they land, surviving one source failing.', [['Processing frame','patterns.html#async'],['T3 Scanning','templates.html#t3']]],
+  ['P7', 'Unit economics', 'Cost per scan instrumented from day one — which makes it a product surface, not a dashboard.', [['Cost in CTA','patterns.html#async'],['Stats','patterns.html#scoring']]],
+];
+const COVERAGE_MATRIX = [
+  ['P1 · Brand → identity', 'Candidate picker, confidence gauge, T2', 'done', 'Covered'],
+  ['P2 · Per-source coverage', 'Coverage list, source badge, processing frame', 'done', 'Covered'],
+  ['P3 · Attribution signal', 'Evidence panel, ranked reasons, metric rows', 'done', 'Covered'],
+  ['P4 · Tiered analysis', 'Tier indicator, option cards, navigator row', 'done', 'Covered'],
+  ['P5 · Storage & dedup', 'Placement rows, result card', 'partial', 'No dedup-conflict UI'],
+  ['P6 · Scan orchestration', 'Processing frame, segmented progress, skeletons', 'done', 'Covered'],
+  ['P7 · Unit economics', 'Cost in CTA, stat grid, usage table', 'done', 'Covered'],
+  ['Later · Campaign reconstruction', '—', 'todo', 'Out of PoC scope'],
+];
+
+
+/* --------------------------------------------- RENDER: spyy product patterns */
+const icon = (n, size) => `<svg class="spy-icon"${size ? ` data-size="${size}"` : ''}><use href="#i-${n}"/></svg>`;
+
+function metricRows(host, rows) {
+  if (!host) return;
+  host.innerHTML = '';
+  rows.forEach(([label, value, tone, conf]) => {
+    const m = el('div', { class: 'spy-metric' });
+    if (value === 0) m.setAttribute('data-pending', '');
+    m.innerHTML =
+      `<div class="spy-metric-head">
+         <span class="spy-metric-label">${label}</span>
+         <span class="spy-metric-value"${tone ? ` data-tone="${tone}"` : ''}>${value === 0 ? '—' : value}</span>
+       </div>
+       <div class="spy-metric-track"><div class="spy-metric-fill" style="width:${value}%"></div></div>
+       <div class="spy-metric-meta">${icon(conf === 'high' ? 'success' : conf === 'low' ? 'info' : 'list', 'xs')}${conf} confidence</div>`;
+    host.appendChild(m);
+  });
+}
+
+/* Any .spy-gauge[data-value] draws itself — templates can drop one in inline. */
+function paintGauges(root = document) {
+  root.querySelectorAll('.spy-gauge[data-value]').forEach(g => {
+    if (g.dataset.painted) return;
+    const v = Math.max(0, Math.min(100, parseFloat(g.dataset.value) || 0));
+    const suffix = g.dataset.suffix || '';
+    const verdictText = g.dataset.verdictLabel || '';
+    const stroke = parseFloat(getComputedStyle(g).getPropertyValue('--spy-gauge-stroke')) || 14;
+    const R = 50 - stroke / 2;
+    const C = 2 * Math.PI * R;
+    g.innerHTML =
+      `<svg viewBox="0 0 100 100" aria-hidden="true">
+         <circle class="spy-gauge-track" cx="50" cy="50" r="${R}"></circle>
+         <circle class="spy-gauge-arc" cx="50" cy="50" r="${R}"
+                 stroke-dasharray="${C.toFixed(2)}" stroke-dashoffset="${(C * (1 - v / 100)).toFixed(2)}"></circle>
+       </svg>
+       <span class="spy-gauge-center">
+         <span class="spy-gauge-number">${v}${suffix ? `<small>${suffix}</small>` : ''}</span>
+         ${verdictText ? `<span class="spy-gauge-verdict">${verdictText}</span>` : ''}
+       </span>`;
+    g.dataset.painted = '1';
+  });
+}
+
+function renderGauges() {
+  const host = $('#render-gauges'); if (!host) return;
+  host.innerHTML = '';
+  GAUGES.forEach(([v, verdict, label, suffix, vtext]) => {
+    const cell = el('div', { class: 'doc-gauge-cell' });
+    cell.innerHTML =
+      `<div class="spy-gauge" data-verdict="${verdict}" data-value="${v}" data-suffix="${suffix}" data-verdict-label="${vtext}"></div>
+       <span class="doc-state-label">${label} · ${verdict}</span>`;
+    host.appendChild(cell);
+  });
+  paintGauges(host);
+}
+
+function renderTiers() {
+  const host = $('#render-tiers'); if (!host) return;
+  host.innerHTML = '';
+  TIERS.forEach(([depth, name, note]) => {
+    const w = el('div', { class: 'doc-state-cell', style: 'gap:8px' });
+    const pips = [1, 2, 3, 4].map(i => `<span class="spy-tier-pip"${i <= depth ? ' data-on' : ''}></span>`).join('');
+    w.innerHTML =
+      `<span class="spy-tier"><span class="spy-tier-pips">${pips}</span><span class="spy-tier-label">${name}</span></span>
+       <span class="spy-caption-m spy-text-tertiary">${note}</span>`;
+    host.appendChild(w);
+  });
+}
+
+function coverageRows(host) {
+  if (!host) return;
+  host.innerHTML = '';
+  COVERAGE.forEach(([src, name, count, state, statusText]) => {
+    const r = el('div', { class: 'spy-coverage-row' });
+    const ico = state === 'done' ? 'check' : state === 'running' ? 'refresh' : state === 'failed' ? 'warning' : 'minus';
+    r.innerHTML =
+      `<span class="spy-coverage-name"><span class="spy-source" data-source="${src}"><span class="spy-source-dot"></span>${name}</span></span>
+       <span class="spy-coverage-count">${count}</span>
+       <span class="spy-coverage-status" data-state="${state}">${icon(ico, 'xs')}${statusText}</span>`;
+    host.appendChild(r);
+  });
+}
+
+function rankedRows(host, rows) {
+  if (!host) return;
+  host.innerHTML = '';
+  rows.forEach(([title, detail, level], i) => {
+    const r = el('div', { class: 'spy-ranked-item' });
+    r.innerHTML =
+      `<span class="spy-ranked-index">${i + 1}</span>
+       <span class="spy-ranked-title">${title}</span>
+       <span class="spy-ranked-detail">${detail}</span>
+       <span class="spy-impact" data-level="${level}">${level === 'high' ? 'High impact' : level === 'medium' ? 'Medium' : 'Low'}</span>`;
+    host.appendChild(r);
+  });
+}
+
+function placementRows(host) {
+  if (!host) return;
+  host.innerHTML = '';
+  PLACEMENTS.forEach(([src, where, first, last, live]) => {
+    const r = el('div', { class: 'spy-placement' });
+    r.innerHTML =
+      `<span class="spy-placement-where">
+         <span class="spy-source" data-source="${src}"><span class="spy-source-dot"></span>${where}</span>
+         ${live ? '<span class="spy-live-dot" title="Still running"></span>' : ''}
+       </span>
+       <span class="spy-placement-span">${first} ${icon('arrow-right', 'xs')} ${last}</span>`;
+    host.appendChild(r);
+  });
+}
+
+function candidateRows(host) {
+  if (!host) return;
+  host.innerHTML = '';
+  CANDIDATES.forEach(([initials, name, handle, src, srcLabel, conf, low], i) => {
+    const b = el('button', { class: 'spy-candidate', type: 'button' });
+    if (i === 0) b.setAttribute('data-selected', '');
+    if (low) b.setAttribute('data-confidence', 'low');
+    b.innerHTML =
+      `<span class="spy-candidate-avatar">${initials}</span>
+       <span class="spy-candidate-text">
+         <span class="spy-candidate-name">${name}</span>
+         <span class="spy-candidate-handle">${handle}</span>
+         <span class="spy-candidate-meta"><span class="spy-source" data-source="${src}"><span class="spy-source-dot"></span>${srcLabel}</span></span>
+       </span>
+       <span class="spy-candidate-confidence">
+         <span class="spy-candidate-confidence-value">${conf}</span>
+         <span class="spy-candidate-confidence-label">confidence</span>
+       </span>`;
+    b.addEventListener('click', () => {
+      [...host.children].forEach(x => x.removeAttribute('data-selected'));
+      b.setAttribute('data-selected', '');
+    });
+    host.appendChild(b);
+  });
+}
+
+function optionCards(host, items, kind) {
+  if (!host) return;
+  host.innerHTML = '';
+  items.forEach(([a, b, c, sel]) => {
+    const label = kind === 'tier' ? a : b;
+    const ico = kind === 'tier' ? b : c;
+    const cap = kind === 'tier' ? c : '';
+    const btn = el('button', { class: 'spy-option', type: 'button' });
+    if (sel) btn.setAttribute('data-selected', '');
+    btn.innerHTML = `${icon(ico.replace('i-', ''))}<span>${label}</span>${cap ? `<span class="spy-option-caption">${cap}</span>` : ''}`;
+    btn.addEventListener('click', () => {
+      if (kind === 'tier') [...host.children].forEach(x => x.removeAttribute('data-selected'));
+      btn.toggleAttribute('data-selected');
+      if (kind === 'tier') btn.setAttribute('data-selected', '');
+    });
+    host.appendChild(btn);
+  });
+}
+
+function resultCards(host, n) {
+  if (!host) return;
+  host.innerHTML = '';
+  RESULTS.slice(0, n || RESULTS.length).forEach(([title, src, tier, dur, attributed], i) => {
+    const c = el('div', { class: 'spy-result' });
+    const pips = [1, 2, 3, 4].map(k => `<span class="spy-tier-pip"${k <= tier ? ' data-on' : ''}></span>`).join('');
+    c.innerHTML =
+      `<div class="spy-result-media">
+         <span class="doc-media-fake" style="filter:hue-rotate(${i * 47}deg)"></span>
+         <div class="spy-result-top">
+           ${attributed ? '' : '<span class="spy-chip" data-size="xxs" data-variant="warning" data-selected>Uncertain</span>'}
+           <span class="spy-result-duration" style="margin-inline-start:auto">${dur}</span>
+         </div>
+         <div class="spy-result-actions">
+           <button class="spy-btn" data-variant="tertiary" data-size="xs" data-icon-only aria-label="Open">${icon('fullscreen')}</button>
+           <button class="spy-btn" data-variant="tertiary" data-size="xs" data-icon-only aria-label="Save">${icon('download')}</button>
+           <button class="spy-btn" data-variant="tertiary" data-size="xs" data-icon-only aria-label="Source">${icon('link')}</button>
+         </div>
+       </div>
+       <div class="spy-result-foot">
+         <span class="spy-result-title">${title}</span>
+         <span class="spy-result-meta">
+           <span class="spy-source" data-source="${src}"><span class="spy-source-dot"></span>${src === 'meta' ? 'Meta' : 'TikTok'}</span>
+           <span class="spy-tier"><span class="spy-tier-pips">${pips}</span></span>
+         </span>
+       </div>`;
+    host.appendChild(c);
+  });
+}
+
+
+/* ------------------------------------------- RENDER: overview + templates */
+function renderLevelCards() {
+  const host = $('#render-levelcards'); if (!host) return;
+  host.innerHTML = '';
+  LEVELS_DOC.forEach(([idx, title, href, q, items]) => {
+    const a = el('a', { class: 'doc-levelcard', href });
+    a.innerHTML =
+      `<span class="doc-levelcard-index">${idx}</span>
+       <span class="doc-levelcard-title">${title}</span>
+       <span class="doc-levelcard-q">${q}</span>
+       <ul class="doc-levelcard-list">${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+    host.appendChild(a);
+  });
+}
+
+function renderProblems() {
+  const host = $('#render-problems'); if (!host) return;
+  host.innerHTML = '';
+  PROBLEMS.forEach(([id, title, desc, links]) => {
+    const d = el('div', { class: 'doc-problem' });
+    d.innerHTML =
+      `<span class="doc-problem-id">${id}</span>
+       <span class="doc-problem-text">
+         <span class="doc-problem-title">${title}</span>
+         <span class="doc-problem-desc">${desc}</span>
+         <span class="doc-problem-links">${links.map(([l, h]) => `<a href="${h}">${l}</a>`).join('')}</span>
+       </span>`;
+    host.appendChild(d);
+  });
+}
+
+function renderTintSwitch() {
+  const host = $('#render-tintswitch'); if (!host) return;
+  const tints = [['Lime — audited brand', 'var(--hf-color-lime-500)'],
+                 ['Purple — closest to the mockup', 'var(--hf-color-purple-600)'],
+                 ['Magenta — Marketing Studio', 'var(--hf-color-pink-500)']];
+  host.innerHTML = '';
+  tints.forEach(([label, v], i) => {
+    const b = el('button', { type: 'button', title: label, style: `background:${v}` });
+    if (i === 0) b.setAttribute('data-active', '');
+    b.addEventListener('click', () => {
+      [...host.children].forEach(x => x.removeAttribute('data-active'));
+      b.setAttribute('data-active', '');
+      document.documentElement.style.setProperty('--q-tint', v);
+    });
+    host.appendChild(b);
+  });
+}
+
+function renderCoverageMatrix() {
+  const host = $('#render-coverage-matrix'); if (!host) return;
+  host.innerHTML = '';
+  COVERAGE_MATRIX.forEach(([req, by, state, note]) => {
+    const variant = state === 'done' ? 'success' : state === 'partial' ? 'warning' : 'neutral';
+    const label = state === 'done' ? 'Covered' : state === 'partial' ? 'Partial' : 'Not started';
+    const tr = el('tr');
+    tr.innerHTML =
+      `<td>${req}</td><td class="spy-text-secondary">${by}</td>
+       <td><span class="spy-chip" data-size="xxs" data-variant="${variant}" data-selected>${label}</span>
+       <span class="spy-caption-m spy-text-tertiary" style="margin-inline-start:8px">${note !== label ? note : ''}</span></td>`;
+    host.appendChild(tr);
+  });
+}
+
+function renderRail(id, activeIndex) {
+  const host = document.getElementById(id); if (!host) return;
+  const items = [
+    ['Home', 'i-grid'], ['Scans', 'i-search'], ['Saved', 'i-download'],
+    ['Boards', 'i-folder'], ['Creatives', 'i-video'], ['Brands', 'i-user'],
+  ];
+  host.className = 'spy-sidebar doc-app-rail';
+  host.innerHTML =
+    `<div class="spy-sidebar-header">
+       <button class="spy-sidebar-switcher">
+         <span class="spy-sidebar-thumb">${icon('layers', 'sm')}</span>
+         <span class="spy-sidebar-truncate">Nordic Labs</span>
+         ${icon('chevron-down', 'sm')}
+       </button>
+     </div>
+     <div class="spy-sidebar-section">
+       ${items.map(([l, i], k) =>
+         `<a class="spy-sidebar-row"${k === activeIndex ? ' data-active' : ''} href="#">${icon(i.replace('i-', ''))}<span class="spy-sidebar-truncate">${l}</span></a>`).join('')}
+     </div>
+     <div class="spy-sidebar-footer">
+       <div class="spy-notice" style="padding:10px">
+         <span class="spy-icon-tile">${icon('sparkle', 'sm')}</span>
+         <span class="spy-notice-text"><span class="spy-caption-m">148 credits left</span></span>
+       </div>
+     </div>`;
+}
+
+function renderRecentScans() {
+  const host = $('#t1-recent'); if (!host) return;
+  const rows = [
+    ['Aurora Skincare', 'meta', '312 creatives', '2 hours ago'],
+    ['Peak Supply Co.', 'tiktok', '96 creatives', 'Yesterday'],
+    ['Lumen Fitness', 'meta', '41 creatives', '3 days ago'],
+  ];
+  host.innerHTML = '';
+  rows.forEach(([name, src, count, when]) => {
+    const li = el('li', { class: 'spy-list-item', 'data-interactive': true });
+    li.innerHTML =
+      `<span class="spy-sidebar-thumb">${icon('search', 'sm')}</span>
+       <span class="spy-list-item-text"><span>${name}</span><span class="spy-list-item-meta">${count} · ${when}</span></span>
+       <span class="spy-source" data-source="${src}"><span class="spy-source-dot"></span>${src === 'meta' ? 'Meta' : 'TikTok'}</span>`;
+    host.appendChild(li);
+  });
+}
+
+function renderProduct() {
+  metricRows($('#render-metrics'), METRICS);
+  metricRows($('#t4-metrics'), T4_METRICS);
+  renderGauges();
+  renderTiers();
+  coverageRows($('#render-coverage'));
+  coverageRows($('#t3-coverage'));
+  rankedRows($('#render-ranked'), RANKED);
+  rankedRows($('#t4-ranked'), T4_RANKED);
+  placementRows($('#render-placements'));
+  placementRows($('#t4-placements'));
+  candidateRows($('#render-candidates'));
+  candidateRows($('#t2-candidates'));
+  optionCards($('#render-options-sources'), SOURCES_OPT, 'source');
+  optionCards($('#t1-sources'), SOURCES_OPT, 'source');
+  optionCards($('#render-options-tier'), TIER_OPT, 'tier');
+  resultCards($('#render-results'));
+  resultCards($('#t3-results'), 4);
+  renderLevelCards();
+  renderProblems();
+  renderTintSwitch();
+  renderCoverageMatrix();
+  renderRail('t3-rail', 1);
+  renderRail('t4-rail', 4);
+  renderRecentScans();
+  paintGauges();
+}
+
 /* -------------------------------------------------------------------- BOOT */
 function renderAll() {
   renderColorSemantic(); renderRamps(); renderAlpha();
@@ -795,6 +1236,7 @@ function renderAll() {
   renderRadius(); renderBorder(); renderElevation();
   renderIconSizes(); renderIconGrid(); renderMotion(); renderLayout();
   renderButtonStates(); renderControlsMatrix(); renderSwitches(); renderPickerGrid();
+  renderProduct();
   presetGrid($('#render-presets'), 2); presetGrid($('#render-presets-2'), 4);
   renderUsageRows(); renderTints();
 }
