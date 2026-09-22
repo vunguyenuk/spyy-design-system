@@ -693,3 +693,28 @@ The shipped pages, stylesheets and scripts no longer name the source products. T
 — this one, `MANYCHAT-AUDIT.md`, `GAPS.md` and `_audit/` — still do, because a provenance record
 that will not say where a value came from is worth nothing. They are not linked from the site's
 navigation. Decide separately whether they ship.
+
+### 17.8 The second wave of the same bug
+
+The first sweep caught literal colours in `docs.css`. It missed the ones inside `tokens.css` itself,
+in the semantic blocks, where they are easy to mistake for tokens because they sit among tokens. The
+light surface ladder was still `#eaeaea / #e0e0e0 / #fafafa / #e4e4e4` and the dark one still
+`#0f1113 / #131517 / #1c1e20 / #23262a` — values measured off the *previous*, blue-leaning ramp. So
+every card, track, section band, skeleton and disabled fill on the site was painted off the new
+neutral axis, which is exactly the thing the new palette was chosen for.
+
+Sixteen declarations now read the ramp. Two steps had to be added to reach them:
+
+| Token | Value | |
+|---|---|---|
+| `--hf-color-grey-125` | `#e5e5e5` | source neutral-75 `[C]` |
+| `--hf-color-grey-075` | `#fafafa` | half-step; the source has no value here `[I]` |
+
+Worth stating plainly, because it is the general lesson of §17.3 and this one together: **a literal
+colour anywhere outside the palette block is a colour that will not move when the palette moves.**
+Inside `tokens.css` it is harder to spot, not easier.
+
+A tidy-up of stale hex values quoted in comments broke four declarations on the way through —
+replacing `/* #1a1a1a  [C] */` with `[C] */` dropped the opening `/*` and left a dangling `*/`,
+which killed CSS parsing from that line down and took the whole light theme with it. Caught by the
+contrast run: 44 findings at ratio 1.07, which is what "foreground equals background" looks like.

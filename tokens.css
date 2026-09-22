@@ -192,6 +192,8 @@
      calmly on white instead of fighting the ground.                       */
   --hf-color-grey-050: #ffffff;   /* source neutral-0 */
   --hf-color-grey-100: #f5f5f5;   /* source neutral-50 */
+  --hf-color-grey-075: #fafafa;   /* [I] half-step; the source has no value here */
+  --hf-color-grey-125: #e5e5e5;   /* source neutral-75 */
   --hf-color-grey-150: #d6d6d6;   /* source neutral-100 */
   --hf-color-grey-200: #a8a8a8;   /* source neutral-300 */
   --hf-color-grey-250: #878787;   /* source neutral-400 */
@@ -262,8 +264,8 @@
   --hf-color-transparent-dark-100: #000000;
 
   /* -- Glass ----------------------------------------------------------- [C] */
-  --hf-color-glass-dark: #23262abf;   /* cool-250 @ 75% */
-  --hf-color-glass-light: #f4f4f4bf;
+  --hf-color-glass-dark: #212121bf;   /* shade-250 @ 75% */
+  --hf-color-glass-light: #f5f5f5bf;   /* grey-100 @ 75% */
 
   /* -- Spacing scale (4px base, 0.125rem granularity) ------------------ [C]
      Named by hundredths of a rem x 100, not by t-shirt size. */
@@ -513,11 +515,11 @@
   color-scheme: dark;
 
   /* Backgrounds */
-  --hf-color-background-primary: var(--hf-color-shade-400);           /* #131416 page  */
-  --hf-color-background-secondary: var(--hf-color-shade-300);         /* #1c1e21 card  */
-  --hf-color-background-secondary-strong: var(--hf-color-shade-250);  /* #23262a       */
-  --hf-color-background-tertiary: var(--hf-color-shade-200);          /* #2a2d32 track */
-  --hf-color-background-section: var(--hf-color-shade-350);           /* #18191c       */
+  --hf-color-background-primary: var(--hf-color-shade-400);           /* page floor */
+  --hf-color-background-secondary: var(--hf-color-shade-300);         /* card, panel */
+  --hf-color-background-secondary-strong: var(--hf-color-shade-250);  /* raised panel */
+  --hf-color-background-tertiary: var(--hf-color-shade-200);          /* track, well */
+  --hf-color-background-section: var(--hf-color-shade-350);           /* section band */
   --hf-color-background-elevated-start: var(--hf-color-shade-150);
   --hf-color-background-elevated-end: var(--hf-color-shade-350);
   --hf-color-background-glass: var(--hf-color-glass-dark);
@@ -538,10 +540,10 @@
   --hf-color-divider-secondary: #ffffff0f;  /* 6%  */
 
   /* Text */
-  --hf-color-text-primary: var(--hf-color-grey-050);     /* #ffffff */
-  --hf-color-text-secondary: var(--hf-color-grey-300);   /* #828282 */
+  --hf-color-text-primary: var(--hf-color-grey-050);     /* white */
+  --hf-color-text-secondary: var(--hf-color-grey-300);   
   --hf-color-text-tertiary: var(--hf-color-grey-250);   /* -325 measured 2.55:1 on the dark ground */
-  --hf-color-text-inverse: var(--hf-color-grey-550);     /* #1a1a1a */
+  --hf-color-text-inverse: var(--hf-color-grey-550);     
   --hf-color-text-disabled: var(--hf-color-grey-325);   /* shade-100 measured 1.39:1 */
   --hf-color-text-brand: var(--hf-color-lime-500);
   --hf-color-text-link: var(--hf-color-lime-500);
@@ -586,7 +588,7 @@
   --hf-color-button-destructive: var(--hf-color-red-600);   /* dark in both themes; label is always white */
   --hf-color-button-label-brand: var(--hf-color-grey-550);
   --hf-color-button-label-destructive: var(--hf-color-grey-050);
-  --hf-color-button-disabled: #292b2c;
+  --hf-color-button-disabled: var(--hf-color-shade-200);
 
   /* Overlays */
   /* Neutral fills — the quiet tinted surfaces underneath chips, code blocks,
@@ -649,7 +651,7 @@
 
   /* Notification */
   --hf-color-notification-unread: #7a58ff;
-  --hf-color-notification-unread-outline: #131416;
+  --hf-color-notification-unread-outline: var(--hf-color-shade-400);
 
   /* Accent hook: components read --q-tint so a subtree can be re-tinted
      without touching component CSS.                                    [C] */
@@ -667,14 +669,14 @@
 [data-theme="light"] {
   color-scheme: light;
 
-  --hf-color-background-primary: var(--hf-color-grey-050);        /* #ffffff   [C] */
-  --hf-color-background-secondary: var(--hf-color-grey-100);      /* #f4f4f4   [C] */
-  --hf-color-background-secondary-strong: #eaeaea;
-  --hf-color-background-tertiary: #e0e0e0;
-  --hf-color-background-section: #fafafa;
+  --hf-color-background-primary: var(--hf-color-grey-050);        /* [C] */
+  --hf-color-background-secondary: var(--hf-color-grey-100);      /* [C] */
+  --hf-color-background-secondary-strong: var(--hf-color-grey-125);
+  --hf-color-background-tertiary: var(--hf-color-grey-150);
+  --hf-color-background-section: var(--hf-color-grey-075);
   --hf-color-background-elevated-start: var(--hf-color-grey-050);
   --hf-color-background-elevated-end: var(--hf-color-grey-100);
-  --hf-color-background-glass: var(--hf-color-glass-light);       /* #f4f4f4bf [C] */
+  --hf-color-background-glass: var(--hf-color-glass-light);       /* [C] */
   --hf-color-background-inverse: var(--hf-color-grey-550);
 
   --hf-color-border-subtle: var(--hf-color-transparent-dark-05);  /* black/5  [C] */
@@ -686,8 +688,8 @@
   --hf-color-divider-primary: #00000014;
   --hf-color-divider-secondary: #0000000f;
 
-  --hf-color-text-primary: var(--hf-color-grey-550);              /* #1a1a1a  [C] */
-  --hf-color-text-secondary: var(--hf-color-grey-350);            /* #565656       */
+  --hf-color-text-primary: var(--hf-color-grey-550);              /* [C] */
+  --hf-color-text-secondary: var(--hf-color-grey-350);            
   --hf-color-text-tertiary: var(--hf-color-grey-325);   /* -250 measured 2.95:1 on white */
   --hf-color-text-inverse: var(--hf-color-grey-050);
   --hf-color-text-disabled: var(--hf-color-grey-150);
@@ -706,7 +708,7 @@
   --hf-color-button-primary: var(--hf-color-grey-550);  /* inverts: dark on light */
   --hf-color-button-secondary: var(--hf-color-grey-100);
   --hf-color-button-tertiary: var(--hf-color-grey-150);
-  --hf-color-button-disabled: #e4e4e4;
+  --hf-color-button-disabled: var(--hf-color-grey-125);
 
   --hf-color-fill-subtle: var(--hf-color-transparent-dark-05);
   --hf-color-fill-default: var(--hf-color-transparent-dark-10);
@@ -792,14 +794,14 @@
   /* Skeleton fill, sampled from the shipped loading states. Kept as its own
      token because it is not on the surface ramp — it is a hair darker than
      surface-control so a skeleton reads as absent content, not as a tile. [C] */
-  --hf-color-skeleton: #202227;
+  --hf-color-skeleton: var(--hf-color-shade-250);
 
   /* The four surfaces the whole product is actually built from. Every region
      sampled across the capture set returned one of these.                 [C] */
-  --hf-surface-app: #0f1113;       /* the settings / library page floor      */
-  --hf-surface-panel: #131517;     /* floating panels, editor rails          */
-  --hf-surface-card: #1c1e20;      /* cards, toolbars, active rows           */
-  --hf-surface-control: #23262a;   /* secondary buttons, count badges        */
+  --hf-surface-app: var(--hf-color-shade-400);    /* the page floor            */
+  --hf-surface-panel: var(--hf-color-shade-350);  /* floating panels, rails    */
+  --hf-surface-card: var(--hf-color-shade-300);   /* cards, toolbars, rows     */
+  --hf-surface-control: var(--hf-color-shade-250);/* secondary buttons, badges */
 
   /* Ink for anything FILLED with the brand lime or a product tint.          [C]
      --hf-color-text-inverse flips with the theme because the surface it sits
@@ -834,13 +836,13 @@
    floor lightest, then panel, card, control. The tints and the success green
    are NOT repeated here — they are the same colour in both themes.          */
 [data-theme="light"] {
-  --hf-surface-app: var(--hf-color-grey-050);      /* #ffffff */
-  --hf-surface-panel: #fafafa;
+  --hf-surface-app: var(--hf-color-grey-050);      /* white */
+  --hf-surface-panel: var(--hf-color-grey-075);
   --hf-surface-card: var(--hf-color-grey-100);     /* #f4f4f4 */
-  --hf-surface-control: #eaeaea;
+  --hf-surface-control: var(--hf-color-grey-125);
 
   /* Skeleton on light, derived at the same distance from the light ramp. [I] */
-  --hf-color-skeleton: #e4e4e4;
+  --hf-color-skeleton: var(--hf-color-grey-125);
 
   /* Tint used as TEXT (not as a fill) has to darken on a light background:
      lime-500 on white is 1.17:1. The mix keeps this tint-agnostic, so the
