@@ -59,8 +59,11 @@
   max-height: calc(100vh - var(--doc-topbar-h));
   overflow-y: auto; overscroll-behavior: contain;
   padding-block: var(--hf-space-1000) var(--hf-space-1600);
-  scrollbar-width: thin;
+  /* the rail still scrolls, it just doesn't draw a bar down the middle of
+     the page — the active marker is what tells you where you are */
+  scrollbar-width: none;
 }
+.doc-rail::-webkit-scrollbar { display: none; }
 .doc-rail-inner { display: flex; flex-direction: column; gap: var(--hf-space-800); }
 .doc-rail a { text-decoration: none; }
 .doc-rail-group { display: flex; flex-direction: column; gap: var(--hf-space-150); }
