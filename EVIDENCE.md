@@ -718,3 +718,34 @@ A tidy-up of stale hex values quoted in comments broke four declarations on the 
 replacing `/* #1a1a1a  [C] */` with `[C] */` dropped the opening `/*` and left a dangling `*/`,
 which killed CSS parsing from that line down and took the whole light theme with it. Caught by the
 contrast run: 44 findings at ratio 1.07, which is what "foreground equals background" looks like.
+
+### 17.9 The gradient was a mask, not a shadow — and it was one bug, not two
+
+Reported twice: the theme switch had a gradient on its selected pill, and its rounded corners had
+no border. Those were the same defect, and the first fix missed it.
+
+`.spy-tabs-list` carried a horizontal edge-fade:
+
+```css
+mask-image: linear-gradient(to right, transparent 0, #000 12px,
+                            #000 calc(100% - 20px), transparent 100%);
+```
+
+It was there so a tab row that overflows degrades by scrolling behind a fade. But a mask applies to
+the element whether or not it is scrolling, and it masks **everything the element paints** — fill,
+text and border alike. On a two-item switch that never scrolls it therefore:
+
+- faded the last 20px of the selected pill, which is the gradient, and
+- erased the hairline along the first 12px and last 20px of the track, which is the missing border
+  at both rounded corners.
+
+The first attempt removed `--hf-shadow-sheen` from the same element instead. The sheen was a real
+inconsistency and the removal stands, but it was not what was drawing the gradient, so nothing the
+reporter could see changed. Twice.
+
+The mask is gone from the base rule, not just from the switch: it dimmed the first 12px of *every*
+tab row on every page. A fade that should only appear while an element is scrolled cannot be
+expressed in CSS, and a fade that is always on is worse than none.
+
+Verified by pixel scan across the control rather than by eye: six consecutive samples of
+`rgb(21,21,21)` from the pill's centre to its right edge, no ramp.

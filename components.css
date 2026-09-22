@@ -1105,16 +1105,18 @@ body {
   isolation: isolate;
   display: inline-flex; align-items: center;
   max-width: 100%;
-  /* [I] the product caps the list at 100% and scrolls its nav rows behind a
-     mask; the same treatment is applied here so a long tab row degrades by
-     scrolling rather than by overflowing the page. */
+  /* A long tab row degrades by scrolling rather than by overflowing the page.
+     It does NOT carry an edge-fade mask. A mask applies to the whole element
+     whether or not it is scrolling, so it faded the first 12px and last 20px
+     of every tab row: the selected pill's right edge turned into a gradient,
+     and the track's rounded corners lost their hairline, because the mask ate
+     the border along with the fill. A fade that only makes sense while
+     scrolling cannot be expressed in CSS, so there is none.              [I] */
   overflow-x: auto;
   scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 20px), transparent 100%);
-          mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 20px), transparent 100%);
 }
 .spy-tabs-list::-webkit-scrollbar { display: none; }
-.spy-tabs-list[data-fill] { -webkit-mask-image: none; mask-image: none; overflow: visible; }
+.spy-tabs-list[data-fill] { overflow: visible; }
 .spy-tabs-tab {
   position: relative;
   z-index: 1;
@@ -1149,6 +1151,7 @@ body {
 
 /* segment variant */
 .spy-tabs[data-variant="segment"] .spy-tabs-list {
+  overflow: visible;          /* a fixed switch never scrolls */
   gap: var(--hf-space-050);
   padding: var(--hf-space-050);
   border-radius: var(--spy-tabs-segment-radius);
