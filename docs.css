@@ -235,8 +235,14 @@ code {
 
 /* --- token grids --- */
 .doc-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--hf-space-300); }
-.doc-swatch { display: flex; flex-direction: column; border-radius: var(--hf-radius-300); overflow: hidden; background-color: var(--hf-color-background-secondary); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle); cursor: pointer; text-align: start; border: none; padding: 0; font: inherit; color: inherit; }
-.doc-swatch-chip { height: 56px; display: block; box-shadow: inset 0 0 0 1px var(--hf-color-border-default); }
+/* A REAL border, not an inset ring. An inset box-shadow paints under the
+   element's own children, so the colour chip inside covered the card's hairline
+   along the whole top edge. A border sits outside the content box, where a
+   child cannot reach it. The chip's own ring is gone for the matching reason:
+   it was square, so overflow:hidden clipped it away at exactly the two rounded
+   corners, which is where the border looked missing. */
+.doc-swatch { display: flex; flex-direction: column; border-radius: var(--hf-radius-300); overflow: hidden; background-color: var(--hf-color-background-secondary); border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle); cursor: pointer; text-align: start; padding: 0; font: inherit; color: inherit; }
+.doc-swatch-chip { height: 56px; display: block; border-bottom: var(--hf-border-width-thin) solid var(--hf-color-border-subtle); }
 .doc-swatch-meta { padding: var(--hf-space-200) var(--hf-space-250); display: flex; flex-direction: column; gap: 2px; }
 .doc-swatch-name { font-family: var(--hf-type-family-mono); font-size: 10px; line-height: 14px; color: var(--hf-color-text-primary); word-break: break-all; }
 .doc-swatch-val { font-family: var(--hf-type-family-mono); font-size: 10px; line-height: 14px; color: var(--hf-color-text-tertiary); }
@@ -244,7 +250,7 @@ code {
 
 .doc-ramp { display: flex; flex-direction: column; gap: var(--hf-space-200); margin-bottom: var(--hf-space-500); }
 .doc-ramp-name { font-family: var(--hf-type-family-mono); font-size: var(--hf-type-size-100); color: var(--hf-color-text-secondary); }
-.doc-ramp-row { display: flex; border-radius: var(--hf-radius-200); overflow: hidden; box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle); }
+.doc-ramp-row { display: flex; border-radius: var(--hf-radius-200); overflow: hidden; border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle); }   /* border, not an inset ring: the steps inside reach every edge */
 .doc-ramp-step { flex: 1; min-width: 0; height: 48px; position: relative; cursor: pointer; }
 .doc-ramp-step span { position: absolute; inset-inline: 0; bottom: 3px; text-align: center; font-family: var(--hf-type-family-mono); font-size: 9px; opacity: 0; transition: opacity var(--hf-duration-150); }
 .doc-ramp-step:hover span { opacity: 1; }
@@ -435,7 +441,7 @@ code {
 /* ===========================================================================
    TEMPLATE FRAMES
    ======================================================================== */
-.doc-screen { border-radius: var(--hf-radius-500); overflow: hidden; background-color: var(--hf-surface-app, var(--hf-color-background-primary)); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-default), var(--hf-shadow-raised); }
+.doc-screen { border-radius: var(--hf-radius-500); overflow: hidden; background-color: var(--hf-surface-app, var(--hf-color-background-primary)); border: var(--hf-border-width-thin) solid var(--hf-color-border-default); box-shadow: var(--hf-shadow-raised); }   /* the title bar reaches the top edge and was covering an inset ring */
 .doc-screen-bar { display: flex; align-items: center; gap: var(--hf-space-200); padding: var(--hf-space-250) var(--hf-space-400); background-color: var(--hf-color-background-secondary); border-bottom: var(--hf-border-width-thin) solid var(--hf-color-border-subtle); }
 .doc-screen-bar > span { width: 10px; height: 10px; border-radius: var(--hf-radius-full); background-color: var(--hf-color-fill-strong); }
 .doc-screen-bar > em { margin-inline-start: var(--hf-space-300); font-style: normal; color: var(--hf-color-text-tertiary); font-size: var(--hf-type-size-100); font-family: var(--hf-type-family-mono); }

@@ -749,3 +749,33 @@ expressed in CSS, and a fade that is always on is worse than none.
 
 Verified by pixel scan across the control rather than by eye: six consecutive samples of
 `rgb(21,21,21)` from the pill's centre to its right edge, no ramp.
+
+### 17.10 An inset ring is not a border
+
+Third report on the same edge, third distinct cause. The colour swatch cards lost their hairline
+along the top edge, and at the two rounded corners entirely.
+
+The container drew its hairline as an **inset box-shadow**. An inset box-shadow paints on top of the
+element's own background but **underneath its children**, so the 56px colour chip inside painted
+straight over it wherever the chip was opaque — the whole top edge. The chip carried its own inset
+ring to compensate, but that ring is a *square* path, and `overflow: hidden` on the rounded
+container clipped it away at precisely the two corners. Hence: no border along the top, and less
+than none at the corners.
+
+The fix is to use a real `border`. A border lives outside the content box, so no child can reach it,
+at any corner, ever. The chip's square ring is replaced by a single `border-bottom`, which is the
+only edge it actually needed.
+
+A detector for the general pattern — *an element whose ring is an inset box-shadow and whose opaque
+child touches one of its edges* — found six instances across the five pages:
+
+| | |
+|---|---|
+| `.doc-swatch` > `.doc-swatch-chip` | fixed — real border |
+| `.doc-ramp-row` > `.doc-ramp-step` | fixed — real border |
+| `.doc-screen` > `.doc-screen-bar` | fixed — real border, drop shadow kept |
+| `.spy-nav-action` > `.spy-nav-dot` | left alone: an unread marker deliberately overlapping the edge with its own ring |
+
+Worth writing down, because three different reports on "the border is wrong" had three unrelated
+causes — a mask, a clipped square ring, and a shadow painting under its own children — and only the
+last one is visible by reading the rule for the element you are looking at.
