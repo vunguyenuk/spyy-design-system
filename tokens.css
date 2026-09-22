@@ -1,168 +1,230 @@
 /* ============================================================================
    SPYY DESIGN SYSTEM — Token layer
-   Reverse-engineered from higgsfield.ai (audited 2026-09-22).
+
+   Two sources, two jobs:
+     GEOMETRY  — spacing, radius, border, elevation, motion, layout, and the
+                 responsive type ladder — is Higgsfield's, audited 2026-09-22.
+     COLOUR and TYPE FAMILY are ManyChat's, audited 2026-09-22 from the
+                 product stylesheet at app.manychat.com. See MANYCHAT-AUDIT.md.
 
    Provenance legend used throughout:
-     [C] Confirmed   — read directly from Higgsfield's shipped stylesheet
-     [I] Inferred    — derived from repeated patterns across the product
+     [C] Confirmed   — read directly from a shipped stylesheet
+     [I] Inferred    — derived, most often because the source had no such case
      [A] Approximate — exact implementation not determinable
 
-   Architecture mirrors Higgsfield's own three-tier structure:
+   Three tiers. A component never reads tier 1, which is what made swapping
+   an entire palette a change to this file and almost nothing else:
      Tier 1  --hf-*          primitives      (raw values, theme-independent)
      Tier 2  --hf-color-*    semantics       (role -> primitive, theme-scoped)
      Tier 3  --q-*           component slots (component -> semantic)
+
+   The --hf- prefix is historical and now means nothing but "this system".
+   Renaming 1,600 tokens across five files would have buried the real diff.
    ========================================================================= */
 
 /* ---------------------------------------------------------------------------
    TIER 1 — PRIMITIVES                                                    [C]
    ------------------------------------------------------------------------ */
 :root {
-  /* -- Palette: lime (brand) ------------------------------------------- [C] */
-  --hf-color-lime-100: #fbffec;
-  --hf-color-lime-200: #f6ffd1;
-  --hf-color-lime-300: #eeffa7;
-  --hf-color-lime-400: #e1fe68;
-  --hf-color-lime-500: #d1fe17;   /* brand */
-  --hf-color-lime-600: #b2d814;
-  --hf-color-lime-700: #8ead10;
-  --hf-color-lime-800: #6d840c;
-  --hf-color-lime-900: #4f6109;
-  --hf-color-lime-1000: #344006;
-  --hf-color-lime-1100: #1f2603;
-  --hf-color-lime-1200: #111402;
-  --hf-color-lime-alpha-05: #d1fe170d;
-  --hf-color-lime-alpha-10: #d1fe171a;
-  --hf-color-lime-alpha-15: #d1fe1726;
-  --hf-color-lime-alpha-20: #d1fe1733;
-  --hf-color-lime-alpha-30: #d1fe174d;
-  --hf-color-lime-alpha-40: #d1fe1766;
-  --hf-color-lime-alpha-50: #d1fe1780;
-  --hf-color-lime-alpha-60: #d1fe1799;
-  --hf-color-lime-alpha-70: #d1fe17b2;
-  --hf-color-lime-alpha-80: #d1fe17cc;
-  --hf-color-lime-alpha-90: #d1fe17e5;
-  --hf-color-lime-alpha-100: #d1fe17;
+  /* -- Palette: hue ramps ---------------------------------------------- [C]
+     Ten steps per hue, transcribed from the product stylesheet. The -050
+     step is the tint a status background sits on and -500 is the bold fill.
+     -1000..-1200 are the only extrapolated steps, darkened from -900 so the
+     dark theme has floor values the light-only source never needed.  [I]  */
 
-  /* -- Palette: pink (secondary brand) --------------------------------- [C] */
-  --hf-color-pink-100: #ffebf2;
-  --hf-color-pink-200: #ffccde;
-  --hf-color-pink-300: #ff9ec1;
-  --hf-color-pink-400: #ff5994;
-  --hf-color-pink-500: #ff005b;
-  --hf-color-pink-600: #d9004d;
-  --hf-color-pink-700: #ad003e;
-  --hf-color-pink-800: #85002f;
-  --hf-color-pink-900: #610023;
-  --hf-color-pink-1000: #400017;
-  --hf-color-pink-1100: #26000e;
-  --hf-color-pink-1200: #140007;
-  --hf-color-pink-alpha-05: #ff005b0d;
-  --hf-color-pink-alpha-10: #ff005b1a;
-  --hf-color-pink-alpha-15: #ff005b26;
-  --hf-color-pink-alpha-20: #ff005b33;
-  --hf-color-pink-alpha-30: #ff005b4d;
-  --hf-color-pink-alpha-40: #ff005b66;
-  --hf-color-pink-alpha-50: #ff005b80;
-  --hf-color-pink-alpha-60: #ff005b99;
-  --hf-color-pink-alpha-70: #ff005bb2;
-  --hf-color-pink-alpha-80: #ff005bcc;
-  --hf-color-pink-alpha-90: #ff005be5;
-  --hf-color-pink-alpha-100: #ff005b;
+  /* blue - brand candidate, and information */
+  --hf-color-blue-050: #eff6ff;  --hf-color-blue-100: #c2dbff;
+  --hf-color-blue-200: #96c1ff;  --hf-color-blue-300: #65a4ff;
+  --hf-color-blue-400: #2e86fd;  --hf-color-blue-500: #006be2;
+  --hf-color-blue-600: #0059be;  --hf-color-blue-700: #00418f;
+  --hf-color-blue-800: #012a60;  --hf-color-blue-900: #00163a;
+  --hf-color-blue-1000: #000f26;  --hf-color-blue-1100: #000918;
+  --hf-color-blue-1200: #00060f;
 
-  /* -- Palette: cool (the real UI greys — blue-leaning) ---------------- [C]
-     This is the ramp that builds every app surface. Note it is NOT neutral:
-     every step carries a slight blue cast. Using true grey here is the single
-     fastest way to stop looking like Higgsfield.                             */
-  --hf-color-cool-050: #5c626a;
-  --hf-color-cool-100: #484e56;
-  --hf-color-cool-150: #383e46;
-  --hf-color-cool-200: #2a2d32;
-  --hf-color-cool-250: #23262a;
-  --hf-color-cool-300: #1c1e21;
-  --hf-color-cool-350: #18191c;
-  --hf-color-cool-400: #131416;
+  /* purple - brand candidate, and secondary */
+  --hf-color-purple-050: #f5f3ff;  --hf-color-purple-100: #dbd4ff;
+  --hf-color-purple-200: #c3b3ff;  --hf-color-purple-300: #ac91ff;
+  --hf-color-purple-400: #966efa;  --hf-color-purple-500: #7f53e0;
+  --hf-color-purple-600: #6e30d4;  --hf-color-purple-700: #5400af;
+  --hf-color-purple-800: #360076;  --hf-color-purple-900: #1e0047;
+  --hf-color-purple-1000: #14002f;  --hf-color-purple-1100: #0d001e;
+  --hf-color-purple-1200: #080012;
 
-  /* -- Palette: grey (marketing / text ramp — true neutral) ------------ [C] */
-  --hf-color-grey-050: #ffffff;
-  --hf-color-grey-100: #f4f4f4;
-  --hf-color-grey-150: #cecece;
-  --hf-color-grey-200: #a8a8a8;
-  --hf-color-grey-250: #7f7f7f;
-  --hf-color-grey-300: #828282;
-  --hf-color-grey-325: #626262;
-  --hf-color-grey-350: #565656;
-  --hf-color-grey-400: #454545;
-  --hf-color-grey-450: #323232;
-  --hf-color-grey-500: #2a2a2a;
-  --hf-color-grey-550: #1a1a1a;
-  --hf-color-grey-600: #000000;
+  /* magenta - brand candidate */
+  --hf-color-magenta-050: #fcf0ff;  --hf-color-magenta-100: #f6ccff;
+  --hf-color-magenta-200: #f0a3ff;  --hf-color-magenta-300: #e57cfd;
+  --hf-color-magenta-400: #c55dda;  --hf-color-magenta-500: #ab3ec1;
+  --hf-color-magenta-600: #9909b1;  --hf-color-magenta-700: #720085;
+  --hf-color-magenta-800: #4b0058;  --hf-color-magenta-900: #2b0033;
+  --hf-color-magenta-1000: #1c0022;  --hf-color-magenta-1100: #120015;
+  --hf-color-magenta-1200: #0b000d;
 
-  /* -- Palette: neutral ------------------------------------------------ [C] */
+  /* pink - same values as magenta in the source */
+  --hf-color-pink-050: #fcf0ff;  --hf-color-pink-100: #f6ccff;
+  --hf-color-pink-200: #f0a3ff;  --hf-color-pink-300: #e57cfd;
+  --hf-color-pink-400: #c55dda;  --hf-color-pink-500: #ab3ec1;
+  --hf-color-pink-600: #9909b1;  --hf-color-pink-700: #720085;
+  --hf-color-pink-800: #4b0058;  --hf-color-pink-900: #2b0033;
+  --hf-color-pink-1000: #1c0022;  --hf-color-pink-1100: #120015;
+  --hf-color-pink-1200: #0b000d;
+
+  /* cyan - accent */
+  --hf-color-cyan-050: #d9fff3;  --hf-color-cyan-100: #8cead0;
+  --hf-color-cyan-200: #72cfb6;  --hf-color-cyan-300: #57b59d;
+  --hf-color-cyan-400: #399a82;  --hf-color-cyan-500: #037e67;
+  --hf-color-cyan-600: #006b57;  --hf-color-cyan-700: #004f40;
+  --hf-color-cyan-800: #00342a;  --hf-color-cyan-900: #001e17;
+  --hf-color-cyan-1000: #00140f;  --hf-color-cyan-1100: #000d0a;
+  --hf-color-cyan-1200: #000806;
+
+  /* green - success */
+  --hf-color-green-050: #deffe6;  --hf-color-green-100: #8beea8;
+  --hf-color-green-200: #6fd28e;  --hf-color-green-300: #55b976;
+  --hf-color-green-400: #369d5c;  --hf-color-green-500: #0c8143;
+  --hf-color-green-600: #006d36;  --hf-color-green-700: #005127;
+  --hf-color-green-800: #003617;  --hf-color-green-900: #001f0b;
+  --hf-color-green-1000: #001407;  --hf-color-green-1100: #000d05;
+  --hf-color-green-1200: #000803;
+
+  /* lime - accent (olive here, not a highlight) */
+  --hf-color-lime-050: #e9ffc8;  --hf-color-lime-100: #c0e682;
+  --hf-color-lime-200: #a5ca66;  --hf-color-lime-300: #8eb14d;
+  --hf-color-lime-400: #749631;  --hf-color-lime-500: #5a7a03;
+  --hf-color-lime-600: #4b6700;  --hf-color-lime-700: #374c00;
+  --hf-color-lime-800: #233200;  --hf-color-lime-900: #121c00;
+  --hf-color-lime-1000: #0c1200;  --hf-color-lime-1100: #080c00;
+  --hf-color-lime-1200: #050700;
+
+  /* yellow - warning */
+  --hf-color-yellow-050: #fff2e0;  --hf-color-yellow-100: #fddb9b;
+  --hf-color-yellow-200: #f6be6f;  --hf-color-yellow-300: #e29932;
+  --hf-color-yellow-400: #c77d16;  --hf-color-yellow-500: #a35f00;
+  --hf-color-yellow-600: #794700;  --hf-color-yellow-700: #5a3500;
+  --hf-color-yellow-800: #3b2200;  --hf-color-yellow-900: #221400;
+  --hf-color-yellow-1000: #160d00;  --hf-color-yellow-1100: #0e0800;
+  --hf-color-yellow-1200: #090500;
+
+  /* orange - accent, and brand candidate */
+  --hf-color-orange-050: #fff2ec;  --hf-color-orange-100: #fecfb5;
+  --hf-color-orange-200: #ffa77c;  --hf-color-orange-300: #f18854;
+  --hf-color-orange-400: #d66a2f;  --hf-color-orange-500: #bb4f00;
+  --hf-color-orange-600: #9c4100;  --hf-color-orange-700: #742e00;
+  --hf-color-orange-800: #4d1c00;  --hf-color-orange-900: #2d0d00;
+  --hf-color-orange-1000: #1e0900;  --hf-color-orange-1100: #130500;
+  --hf-color-orange-1200: #0c0300;
+
+  /* red - danger */
+  --hf-color-red-050: #fff2ef;  --hf-color-red-100: #fdcdc7;
+  --hf-color-red-200: #ffa694;  --hf-color-red-300: #fe775f;
+  --hf-color-red-400: #f14d33;  --hf-color-red-500: #d52b0d;
+  --hf-color-red-600: #b41c00;  --hf-color-red-700: #861200;
+  --hf-color-red-800: #590900;  --hf-color-red-900: #340300;
+  --hf-color-red-1000: #220200;  --hf-color-red-1100: #160100;
+  --hf-color-red-1200: #0e0100;
+
+  /* Glow keys, used only by the focus and selected rings.            [I] */
+  --hf-color-red-glow: #f14d33;
+  --hf-color-green-glow: #369d5c;
+  --hf-color-yellow-glow: #e29932;
+
+  /* Alpha ladders for the two hues that can act as a tint.           [I] */
+  --hf-color-blue-alpha-05: #006be20d;
+  --hf-color-blue-alpha-10: #006be21a;
+  --hf-color-blue-alpha-15: #006be226;
+  --hf-color-blue-alpha-20: #006be233;
+  --hf-color-blue-alpha-30: #006be24c;
+  --hf-color-blue-alpha-40: #006be266;
+  --hf-color-blue-alpha-50: #006be280;
+  --hf-color-blue-alpha-60: #006be299;
+  --hf-color-blue-alpha-70: #006be2b2;
+  --hf-color-blue-alpha-80: #006be2cc;
+  --hf-color-blue-alpha-90: #006be2e6;
+  --hf-color-blue-alpha-100: #006be2;
+  --hf-color-purple-alpha-05: #7f53e00d;
+  --hf-color-purple-alpha-10: #7f53e01a;
+  --hf-color-purple-alpha-15: #7f53e026;
+  --hf-color-purple-alpha-20: #7f53e033;
+  --hf-color-purple-alpha-30: #7f53e04c;
+  --hf-color-purple-alpha-40: #7f53e066;
+  --hf-color-purple-alpha-50: #7f53e080;
+  --hf-color-purple-alpha-60: #7f53e099;
+  --hf-color-purple-alpha-70: #7f53e0b2;
+  --hf-color-purple-alpha-80: #7f53e0cc;
+  --hf-color-purple-alpha-90: #7f53e0e6;
+  --hf-color-purple-alpha-100: #7f53e0;
+
+  /* The brand-alpha names components already reference, now pointing at
+     the blue and purple ladders. Aliased rather than renamed so that no
+     component below the semantic layer has to move.                  [I] */
+  --hf-color-lime-alpha-05: var(--hf-color-blue-alpha-05);
+  --hf-color-lime-alpha-10: var(--hf-color-blue-alpha-10);
+  --hf-color-lime-alpha-15: var(--hf-color-blue-alpha-15);
+  --hf-color-lime-alpha-20: var(--hf-color-blue-alpha-20);
+  --hf-color-lime-alpha-30: var(--hf-color-blue-alpha-30);
+  --hf-color-lime-alpha-40: var(--hf-color-blue-alpha-40);
+  --hf-color-lime-alpha-50: var(--hf-color-blue-alpha-50);
+  --hf-color-lime-alpha-60: var(--hf-color-blue-alpha-60);
+  --hf-color-lime-alpha-70: var(--hf-color-blue-alpha-70);
+  --hf-color-lime-alpha-80: var(--hf-color-blue-alpha-80);
+  --hf-color-lime-alpha-90: var(--hf-color-blue-alpha-90);
+  --hf-color-lime-alpha-100: var(--hf-color-blue-alpha-100);
+  --hf-color-pink-alpha-05: var(--hf-color-purple-alpha-05);
+  --hf-color-pink-alpha-10: var(--hf-color-purple-alpha-10);
+  --hf-color-pink-alpha-15: var(--hf-color-purple-alpha-15);
+  --hf-color-pink-alpha-20: var(--hf-color-purple-alpha-20);
+  --hf-color-pink-alpha-30: var(--hf-color-purple-alpha-30);
+  --hf-color-pink-alpha-40: var(--hf-color-purple-alpha-40);
+  --hf-color-pink-alpha-50: var(--hf-color-purple-alpha-50);
+  --hf-color-pink-alpha-60: var(--hf-color-purple-alpha-60);
+  --hf-color-pink-alpha-70: var(--hf-color-purple-alpha-70);
+  --hf-color-pink-alpha-80: var(--hf-color-purple-alpha-80);
+  --hf-color-pink-alpha-90: var(--hf-color-purple-alpha-90);
+  --hf-color-pink-alpha-100: var(--hf-color-purple-alpha-100);
+
+  /* -- Palette: grey (text, and every light surface) ------------------ [C]
+     Transcribed step for step. This ramp replaces a blue-leaning one, and
+     the neutrality is the whole point: it is what lets the accents sit
+     calmly on white instead of fighting the ground.                       */
+  --hf-color-grey-050: #ffffff;   /* source neutral-0 */
+  --hf-color-grey-100: #f5f5f5;   /* source neutral-50 */
+  --hf-color-grey-150: #d6d6d6;   /* source neutral-100 */
+  --hf-color-grey-200: #a8a8a8;   /* source neutral-300 */
+  --hf-color-grey-250: #878787;   /* source neutral-400 */
+  --hf-color-grey-300: #878787;   /* source neutral-400 */
+  --hf-color-grey-325: #707070;   /* source neutral-500 */
+  --hf-color-grey-350: #595959;   /* source neutral-600 */
+  --hf-color-grey-400: #414141;   /* source neutral-700 */
+  --hf-color-grey-450: #292929;   /* source neutral-800 */
+  --hf-color-grey-500: #292929;   /* source neutral-800 */
+  --hf-color-grey-550: #151515;   /* source neutral-900 */
+  --hf-color-grey-600: #000000;   /* source neutral-1000 */
+
+  /* -- Palette: shade (dark-theme surfaces) --------------------------- [I]
+     The source product is light-only, so there is no dark surface ramp to
+     transcribe. Derived on the same true-neutral axis as the grey ramp,
+     stepped to the surface roles the dark theme needs.                    */
+  --hf-color-shade-050: #595959;
+  --hf-color-shade-100: #414141;
+  --hf-color-shade-150: #333333;
+  --hf-color-shade-200: #292929;
+  --hf-color-shade-250: #212121;
+  --hf-color-shade-300: #1c1c1c;
+  --hf-color-shade-350: #181818;
+  --hf-color-shade-400: #151515;
+
+  /* -- Palette: neutral (kept as an alias of grey for older refs) ----- [I] */
   --hf-color-neutral-050: #ffffff;
-  --hf-color-neutral-100: #ededed;
-  --hf-color-neutral-150: #b4b4b4;
-  --hf-color-neutral-200: #4a4a4a;
-  --hf-color-neutral-250: #3e3e3e;
-  --hf-color-neutral-300: #272727;
-  --hf-color-neutral-350: #232323;
-  --hf-color-neutral-400: #1e1e1e;
-  --hf-color-neutral-450: #1d1d1d;
-  --hf-color-neutral-500: #171717;
-  --hf-color-neutral-550: #0e0e0e;
+  --hf-color-neutral-100: #f5f5f5;
+  --hf-color-neutral-150: #d6d6d6;
+  --hf-color-neutral-200: #878787;
+  --hf-color-neutral-250: #707070;
+  --hf-color-neutral-300: #414141;
+  --hf-color-neutral-350: #414141;
+  --hf-color-neutral-400: #292929;
+  --hf-color-neutral-450: #292929;
+  --hf-color-neutral-500: #292929;
+  --hf-color-neutral-550: #151515;
   --hf-color-neutral-600: #000000;
-
-  /* -- Palette: status ------------------------------------------------- [C] */
-  --hf-color-red-100: #fff0f1;  --hf-color-red-200: #ffdfe1;
-  --hf-color-red-300: #ffc2c6;  --hf-color-red-400: #ff969d;
-  --hf-color-red-500: #ff5462;  --hf-color-red-600: #fa0019;
-  --hf-color-red-700: #d60016;  --hf-color-red-800: #9b0018;
-  --hf-color-red-900: #7a0013;  --hf-color-red-1000: #5c000f;
-  --hf-color-red-1100: #45000b; --hf-color-red-1200: #320008;
-  --hf-color-red-glow: #ff1f2e;
-
-  --hf-color-green-100: #e6ffea;  --hf-color-green-200: #bbf7c4;
-  --hf-color-green-300: #86f998;  --hf-color-green-400: #4ee466;
-  --hf-color-green-500: #2eb844;  --hf-color-green-600: #009919;
-  --hf-color-green-700: #016f13;  --hf-color-green-800: #0d4a17;
-  --hf-color-green-900: #003d0a;  --hf-color-green-1000: #082b0d;
-  --hf-color-green-1100: #061f09; --hf-color-green-1200: #041506;
-  --hf-color-green-glow: #00e62e;
-
-  --hf-color-yellow-100: #fffde5;  --hf-color-yellow-200: #fffac2;
-  --hf-color-yellow-300: #fff599;  --hf-color-yellow-400: #fff266;
-  --hf-color-yellow-500: #ffef33;  --hf-color-yellow-600: #ffeb00;
-  --hf-color-yellow-700: #dfab01;  --hf-color-yellow-800: #b58b00;
-  --hf-color-yellow-900: #8f6e00;  --hf-color-yellow-1000: #6e5500;
-  --hf-color-yellow-1100: #523f00; --hf-color-yellow-1200: #3a2d00;
-  --hf-color-yellow-glow: #fff05a;
-
-  --hf-color-orange-100: #fff8f5;  --hf-color-orange-200: #ffdbcc;
-  --hf-color-orange-300: #ffd1bd;  --hf-color-orange-400: #ffb494;
-  --hf-color-orange-500: #ff773d;  --hf-color-orange-600: #ff4f03;
-  --hf-color-orange-700: #db4200;  --hf-color-orange-800: #c73c00;
-  --hf-color-orange-900: #ad3400;  --hf-color-orange-1000: #8f2b00;
-  --hf-color-orange-1100: #732200; --hf-color-orange-1200: #571a00;
-
-  --hf-color-blue-100: #ebf1ff;  --hf-color-blue-200: #ccddff;
-  --hf-color-blue-300: #9fbfff;  --hf-color-blue-400: #5b91fe;
-  --hf-color-blue-500: #0256fe;  --hf-color-blue-600: #0249d8;
-  --hf-color-blue-700: #013aad;  --hf-color-blue-800: #012d84;
-  --hf-color-blue-900: #012161;  --hf-color-blue-1000: #001640;
-  --hf-color-blue-1100: #000d26; --hf-color-blue-1200: #000714;
-
-  --hf-color-purple-100: #ebecfe;  --hf-color-purple-200: #d5d5fc;
-  --hf-color-purple-300: #b9b8f5;  --hf-color-purple-400: #9e99f7;
-  --hf-color-purple-500: #8271f8;  --hf-color-purple-600: #7152f4;
-  --hf-color-purple-700: #623be2;  --hf-color-purple-800: #5230c2;
-  --hf-color-purple-900: #442aa1;  --hf-color-purple-1000: #361f83;
-  --hf-color-purple-1100: #2b1b6a; --hf-color-purple-1200: #221358;
-
-  --hf-color-cyan-100: #f7fdfe;  --hf-color-cyan-200: #ebfafd;
-  --hf-color-cyan-300: #d9f6fa;  --hf-color-cyan-400: #bfeff7;
-  --hf-color-cyan-500: #9ce6f3;  --hf-color-cyan-600: #85c4cf;
-  --hf-color-cyan-700: #6a9ca5;  --hf-color-cyan-800: #51787e;
-  --hf-color-cyan-900: #3b575c;  --hf-color-cyan-1000: #273a3d;
-  --hf-color-cyan-1100: #172324; --hf-color-cyan-1200: #0c1213;
 
   /* -- Alpha ladders (the workhorses of the whole system) -------------- [C] */
   --hf-color-transparent-light-05: #ffffff0d;
@@ -431,13 +493,13 @@
   color-scheme: dark;
 
   /* Backgrounds */
-  --hf-color-background-primary: var(--hf-color-cool-400);           /* #131416 page  */
-  --hf-color-background-secondary: var(--hf-color-cool-300);         /* #1c1e21 card  */
-  --hf-color-background-secondary-strong: var(--hf-color-cool-250);  /* #23262a       */
-  --hf-color-background-tertiary: var(--hf-color-cool-200);          /* #2a2d32 track */
-  --hf-color-background-section: var(--hf-color-cool-350);           /* #18191c       */
-  --hf-color-background-elevated-start: var(--hf-color-cool-150);
-  --hf-color-background-elevated-end: var(--hf-color-cool-350);
+  --hf-color-background-primary: var(--hf-color-shade-400);           /* #131416 page  */
+  --hf-color-background-secondary: var(--hf-color-shade-300);         /* #1c1e21 card  */
+  --hf-color-background-secondary-strong: var(--hf-color-shade-250);  /* #23262a       */
+  --hf-color-background-tertiary: var(--hf-color-shade-200);          /* #2a2d32 track */
+  --hf-color-background-section: var(--hf-color-shade-350);           /* #18191c       */
+  --hf-color-background-elevated-start: var(--hf-color-shade-150);
+  --hf-color-background-elevated-end: var(--hf-color-shade-350);
   --hf-color-background-glass: var(--hf-color-glass-dark);
   --hf-color-background-inverse: var(--hf-color-grey-050);
 
@@ -460,7 +522,7 @@
   --hf-color-text-secondary: var(--hf-color-grey-300);   /* #828282 */
   --hf-color-text-tertiary: var(--hf-color-grey-325);    /* #626262 */
   --hf-color-text-inverse: var(--hf-color-grey-550);     /* #1a1a1a */
-  --hf-color-text-disabled: var(--hf-color-cool-100);    /* #484e56 */
+  --hf-color-text-disabled: var(--hf-color-shade-100);    /* #484e56 */
   --hf-color-text-brand: var(--hf-color-lime-500);
   --hf-color-text-link: var(--hf-color-lime-500);
   --hf-color-text-danger: var(--hf-color-red-600);
@@ -475,7 +537,7 @@
   --hf-color-icon-secondary: var(--hf-color-grey-300);
   --hf-color-icon-tertiary: var(--hf-color-grey-325);
   --hf-color-icon-inverse: var(--hf-color-grey-550);
-  --hf-color-icon-disabled: var(--hf-color-cool-100);
+  --hf-color-icon-disabled: var(--hf-color-shade-100);
   --hf-color-icon-accent: var(--hf-color-lime-500);
   --hf-color-icon-brand: var(--hf-color-lime-500);
   --hf-color-icon-error: var(--hf-color-red-600);
@@ -499,8 +561,8 @@
   /* Buttons */
   --hf-color-button-brand: var(--hf-color-lime-500);
   --hf-color-button-primary: var(--hf-color-grey-050);      /* white-on-dark */
-  --hf-color-button-secondary: var(--hf-color-cool-250);
-  --hf-color-button-tertiary: var(--hf-color-cool-050);
+  --hf-color-button-secondary: var(--hf-color-shade-250);
+  --hf-color-button-tertiary: var(--hf-color-shade-050);
   --hf-color-button-destructive: var(--hf-color-red-600);
   --hf-color-button-label-brand: var(--hf-color-grey-550);
   --hf-color-button-label-destructive: var(--hf-color-grey-050);
