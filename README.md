@@ -22,7 +22,8 @@ improvise on the screen.
 |---|---|
 | `tokens.css` | Tier 1 primitives → Tier 2 semantics (dark + derived light) → text styles. Standalone. |
 | `components.css` | 44 components. Reads Tier-2 semantics only, so themes and tints flow through. Standalone. |
-| `patterns.css` | 18 composed product patterns. Introduces no new colour, radius, duration or type size. |
+| `patterns.css` | 18 composed product patterns for the **app**. Introduces no new colour, radius, duration or type size. |
+| `landing.css` | 13 marketing components for the **landing page** — section, hero, feature, grid, plan, quote, logos, CTA, nav, footer. Introduces no new colour or type size. |
 | `docs.css`, `shell.js`, `app.js`, `icons.js` | This reference site only. **Not** part of the system. |
 | `GAPS.md` | The audit of spyy's needs against the system, written before anything new was built. |
 | `EVIDENCE.md` | Provenance for every value — confirmed, inferred, approximate, and how each was established. |
@@ -33,10 +34,14 @@ improvise on the screen.
 ```html
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="components.css">
-<link rel="stylesheet" href="patterns.css">
+<link rel="stylesheet" href="patterns.css">   <!-- app screens -->
+<link rel="stylesheet" href="landing.css">    <!-- marketing pages -->
 
 <html data-theme="dark">   <!-- or "light" -->
 ```
+
+`patterns.css` and `landing.css` are the two surfaces, and a page loads one of them, not
+both. An app screen never needs a hero; a marketing page never needs a metric row.
 
 One class plus `data-*` properties — no modifier soup:
 

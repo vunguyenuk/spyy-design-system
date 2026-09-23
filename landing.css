@@ -1,0 +1,200 @@
+/* ============================================================================
+   SPYY DESIGN SYSTEM — Landing layer
+   The third layer, and the one that was missing. Counting every component on
+   the rendered DOM found the marketing surface using seven of them: icon,
+   button, tabs, field, badge. Everything else in the system serves the product.
+   That is not a lean system with a landing page — it is an app system with a
+   landing page bolted on.
+
+   These are the marketing objects. Two rules hold across all of them:
+
+     1  A section owns its vertical rhythm. Nothing inside a section sets its
+        own top or bottom margin, so bands can be reordered without the spacing
+        between them changing.
+     2  Landing type is the fixed scale (--text-*), not the responsive UI
+        ladder. A hero heading is the same size on a laptop and a desktop; only
+        the band around it changes.
+   ========================================================================= */
+
+/* -- Section — the band ----------------------------------------------------
+   Every landing page is a stack of these. Tone is the only variant, and it is
+   a surface not a decoration: default sits on the page, tinted lifts a band
+   out of the flow, inverse flips it for a break in rhythm.                 */
+.spy-section {
+  --spy-section-pad: var(--hf-space-2000);          /* 80px */
+  position: relative;
+  padding-block: var(--spy-section-pad);
+  background-color: var(--hf-color-background-primary);
+  color: var(--hf-color-text-primary);
+}
+@media (min-width: 64rem) { .spy-section { --spy-section-pad: var(--hf-space-2400); } }
+.spy-section[data-tone="tinted"]  { background-color: var(--hf-color-background-secondary); }
+.spy-section[data-tone="inverse"] {
+  background-color: var(--hf-color-background-inverse);
+  color: var(--hf-color-text-inverse);
+}
+.spy-section[data-density="compact"] { --spy-section-pad: var(--hf-space-1400); }
+
+/* A grid track sizes to max-content unless told otherwise, so a centred head
+   with a long heading grows past the viewport instead of wrapping. minmax(0,1fr)
+   is what lets the track shrink — every centred grid in this layer needs it. */
+.spy-section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--hf-space-300);
+  max-width: 44rem;
+  margin-bottom: var(--hf-space-1000);
+}
+.spy-section-head[data-align="center"] { justify-items: center; text-align: center; margin-inline: auto; }
+.spy-section-eyebrow {
+  font: var(--hf-type-weight-medium) var(--text-caption-l)/var(--text-caption-l--line-height) var(--hf-type-family-text);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--hf-color-text-link);
+}
+.spy-section-title { margin: 0; }
+.spy-section-lede { margin: 0; color: var(--hf-color-text-secondary); }
+.spy-section[data-tone="inverse"] .spy-section-lede { color: var(--hf-color-text-inverse); opacity: 0.72; }
+
+/* -- Hero — the first band -------------------------------------------------
+   Same anatomy as a section head plus an action row. It is its own component
+   because the first band carries the display step and a wider measure, and
+   because a page has exactly one.                                          */
+.spy-hero { --spy-section-pad: var(--hf-space-2400); }
+@media (min-width: 64rem) { .spy-hero { --spy-section-pad: var(--hf-space-2400); } }
+.spy-hero-inner { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--hf-space-500); max-width: 52rem; }
+.spy-hero[data-align="center"] .spy-hero-inner { justify-items: center; text-align: center; margin-inline: auto; }
+.spy-hero-title { margin: 0; }
+.spy-hero-lede { margin: 0; max-width: 40rem; color: var(--hf-color-text-secondary); }
+.spy-hero-actions { display: flex; flex-wrap: wrap; gap: var(--hf-space-300); align-items: center; }
+.spy-hero[data-align="center"] .spy-hero-actions { justify-content: center; }
+.spy-hero-note { color: var(--hf-color-text-tertiary); }
+
+/* -- Feature — one capability ----------------------------------------------
+   A card sized for a three-up grid. Highlighted is for the one feature a page
+   is actually selling; more than one defeats the point.                     */
+.spy-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--hf-space-250);
+  align-content: start;
+  padding: var(--hf-space-500);
+  border-radius: var(--hf-radius-400);
+  background-color: var(--hf-color-background-secondary);
+}
+.spy-feature[data-highlighted] {
+  background-color: var(--hf-color-transparent-lime-10);
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-button-brand);
+}
+.spy-feature-title { margin: 0; }
+.spy-feature-body { margin: 0; color: var(--hf-color-text-secondary); }
+
+/* -- Grid — the only layout primitive the landing layer needs -------------- */
+.spy-grid { display: grid; gap: var(--hf-space-500); }
+.spy-grid[data-cols="2"] { grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); }
+.spy-grid[data-cols="3"] { grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
+.spy-grid[data-cols="4"] { grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
+
+/* -- Pricing — one plan ----------------------------------------------------- */
+.spy-plan {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--hf-space-400);
+  align-content: start;
+  padding: var(--hf-space-500);
+  border-radius: var(--hf-radius-400);
+  background-color: var(--hf-color-background-secondary);
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle);
+}
+.spy-plan[data-featured] {
+  background-color: var(--hf-color-background-secondary-strong);
+  box-shadow: inset 0 0 0 var(--hf-border-width-thick) var(--hf-color-button-brand);
+}
+.spy-plan-name { margin: 0; color: var(--hf-color-text-secondary); }
+.spy-plan-price { display: flex; align-items: baseline; gap: var(--hf-space-150); }
+.spy-plan-amount { margin: 0; }
+.spy-plan-period { color: var(--hf-color-text-tertiary); }
+.spy-plan-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--hf-space-200); margin: 0; padding: 0; list-style: none; }
+.spy-plan-list > li { display: flex; gap: var(--hf-space-200); align-items: flex-start; color: var(--hf-color-text-secondary); }
+.spy-plan-list .spy-icon { color: var(--hf-color-text-link); flex: none; margin-top: 0.15em; }
+
+/* -- Quote — one testimonial ------------------------------------------------ */
+.spy-quote {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--hf-space-400);
+  padding: var(--hf-space-500);
+  border-radius: var(--hf-radius-400);
+  background-color: var(--hf-color-background-secondary);
+}
+.spy-quote-body { margin: 0; color: var(--hf-color-text-primary); }
+.spy-quote-by { display: flex; align-items: center; gap: var(--hf-space-250); }
+.spy-quote-name { color: var(--hf-color-text-primary); }
+.spy-quote-role { color: var(--hf-color-text-tertiary); }
+
+/* -- Logos — the proof strip ------------------------------------------------ */
+.spy-logos {
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: var(--hf-space-800);
+  opacity: 0.62;
+}
+.spy-logos > * { flex: none; }
+
+/* -- CTA band — the closing ask --------------------------------------------- */
+.spy-cta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--hf-space-500);
+  justify-items: center;
+  text-align: center;
+  padding: var(--hf-space-1400) var(--hf-space-500);
+  border-radius: var(--hf-radius-600);
+  background-color: var(--hf-color-background-secondary);
+}
+.spy-cta[data-tone="brand"] {
+  background-color: var(--hf-color-button-brand);
+  color: var(--hf-color-text-on-tint);
+}
+.spy-cta[data-tone="brand"] .spy-cta-lede { color: var(--hf-color-text-on-tint); opacity: 0.76; }
+.spy-cta-title { margin: 0; max-width: 32rem; }
+.spy-cta-lede { margin: 0; max-width: 34rem; color: var(--hf-color-text-secondary); }
+.spy-cta-actions { display: flex; flex-wrap: wrap; gap: var(--hf-space-300); justify-content: center; }
+
+/* -- Marketing nav ---------------------------------------------------------- */
+.spy-mnav {
+  display: flex; align-items: center; gap: var(--hf-space-600);
+  padding-block: var(--hf-space-400);
+}
+.spy-mnav-brand { display: flex; align-items: center; gap: var(--hf-space-200); margin-inline-end: auto; }
+.spy-mnav-links { display: flex; align-items: center; gap: var(--hf-space-500); }
+.spy-mnav-link {
+  color: var(--hf-color-text-secondary);
+  text-decoration: none;
+  transition: color var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-mnav-link:hover { color: var(--hf-color-text-primary); }
+.spy-mnav-actions { display: flex; align-items: center; gap: var(--hf-space-250); }
+@media (max-width: 48rem) { .spy-mnav-links { display: none; } }
+
+/* -- Footer ------------------------------------------------------------------ */
+.spy-footer {
+  padding-block: var(--hf-space-1400) var(--hf-space-800);
+  background-color: var(--hf-color-background-section);
+  color: var(--hf-color-text-secondary);
+}
+.spy-footer-cols {
+  display: grid; gap: var(--hf-space-800);
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  padding-bottom: var(--hf-space-800);
+}
+.spy-footer-col { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--hf-space-250); align-content: start; }
+.spy-footer-title { color: var(--hf-color-text-primary); }
+.spy-footer-link { color: var(--hf-color-text-secondary); text-decoration: none; }
+.spy-footer-link:hover { color: var(--hf-color-text-primary); }
+.spy-footer-legal {
+  display: flex; flex-wrap: wrap; gap: var(--hf-space-400);
+  justify-content: space-between; align-items: center;
+  padding-top: var(--hf-space-500);
+  border-top: var(--hf-border-width-thin) solid var(--hf-color-divider-secondary);
+  color: var(--hf-color-text-tertiary);
+}

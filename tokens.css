@@ -773,10 +773,15 @@
   --text-h6: 1.5rem;     --text-h6--line-height: 2rem;
   --text-h5: 1.875rem;   --text-h5--line-height: 2.25rem;
   --text-h4: 2.25rem;    --text-h4--line-height: 2.75rem;
-  --text-h3: 3rem;       --text-h3--line-height: 3.5rem;
-  --text-h2: 4rem;       --text-h2--line-height: 4.5rem;
-  --text-h1: 4.5rem;     --text-h1--line-height: 5rem;
-  --text-display: 6.125rem; --text-display--line-height: 6.25rem;
+  /* The four display steps are FLUID, not moded. They do not follow the app's
+     Desktop / Tablet / Mobile modes — a marketing page has one scale — but a
+     fixed 98px heading cannot fit a 390px phone, so each clamps between a
+     readable floor and the desktop size it was transcribed at. The max is the
+     value Figma holds; a clamp has no Figma equivalent.                  [I] */
+  --text-h3: clamp(1.75rem, 4.6vw, 3rem);       --text-h3--line-height: 1.16em;
+  --text-h2: clamp(2rem, 6vw, 4rem);            --text-h2--line-height: 1.13em;
+  --text-h1: clamp(2.25rem, 7vw, 4.5rem);       --text-h1--line-height: 1.11em;
+  --text-display: clamp(2.5rem, 9vw, 6.125rem); --text-display--line-height: 1.02em;
 
   /* Tracking rule, confirmed across the scale:
        <= 14px  ->  0%      (captions, labels, UI text)

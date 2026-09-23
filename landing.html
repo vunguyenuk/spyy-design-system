@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Landing · Spyy Design System</title>
+<meta name="description" content="The marketing surface, built only from the landing layer — section, hero, feature, plan, quote, CTA, nav and footer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Asta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="components.css">
+<link rel="stylesheet" href="landing.css">
+</head>
+<body>
+
+<header class="spy-container">
+  <nav class="spy-mnav">
+    <div class="spy-mnav-brand">
+      <span class="spy-badge" data-variant="lime"><span class="spy-badge-surface"><span class="spy-badge-text">Spyy</span></span></span>
+    </div>
+    <div class="spy-mnav-links spy-body-s">
+      <a class="spy-mnav-link" href="#features">Features</a>
+      <a class="spy-mnav-link" href="#pricing">Pricing</a>
+      <a class="spy-mnav-link" href="#proof">Customers</a>
+    </div>
+    <div class="spy-mnav-actions">
+      <button class="spy-btn" data-variant="landing-ghost" data-size="sm">Sign in</button>
+      <button class="spy-btn" data-variant="landing-primary" data-size="sm">Start free</button>
+    </div>
+  </nav>
+</header>
+
+<section class="spy-section spy-hero" data-align="center">
+  <div class="spy-container">
+    <div class="spy-hero-inner">
+      <p class="spy-section-eyebrow">Competitive intelligence</p>
+      <h1 class="spy-hero-title spy-h1">See every ad your competitors run</h1>
+      <p class="spy-hero-lede spy-body-l">Spyy watches the networks your category buys on, scores each creative
+        against what is already working, and tells you which ones are worth copying.</p>
+      <div class="spy-hero-actions">
+        <button class="spy-btn" data-variant="landing-primary" data-size="lg">Start free</button>
+        <button class="spy-btn" data-variant="landing-secondary" data-size="lg">Book a walkthrough</button>
+      </div>
+      <p class="spy-hero-note spy-caption-l">No card. 200 creatives scanned on the free tier.</p>
+    </div>
+  </div>
+</section>
+
+<section class="spy-section" data-tone="tinted" id="proof">
+  <div class="spy-container">
+    <div class="spy-section-head" data-align="center">
+      <p class="spy-section-eyebrow">Trusted by</p>
+      <h2 class="spy-section-title spy-h4">Teams that ship a lot of creative</h2>
+    </div>
+    <div class="spy-logos" style="justify-content:center">
+      <span class="spy-h6">Northwind</span><span class="spy-h6">Lumen</span>
+      <span class="spy-h6">Parcel</span><span class="spy-h6">Bevel</span><span class="spy-h6">Corestack</span>
+    </div>
+  </div>
+</section>
+
+<section class="spy-section" id="features">
+  <div class="spy-container">
+    <div class="spy-section-head">
+      <p class="spy-section-eyebrow">What it does</p>
+      <h2 class="spy-section-title spy-h3">Three jobs, done continuously</h2>
+      <p class="spy-section-lede spy-body-m">Not a dashboard you check. A process that runs and tells you when
+        something changed.</p>
+    </div>
+    <div class="spy-grid" data-cols="3">
+      <article class="spy-feature">
+        <span class="spy-icon-tile" data-tone="blue"><svg class="spy-icon"><use href="#i-search"/></svg></span>
+        <h3 class="spy-feature-title spy-h6">Find</h3>
+        <p class="spy-feature-body spy-body-s">Sweeps the networks your category buys on and pulls every creative,
+          with placement and spend signals attached.</p>
+      </article>
+      <article class="spy-feature" data-highlighted>
+        <span class="spy-icon-tile" data-tone="brand"><svg class="spy-icon"><use href="#i-sparkle"/></svg></span>
+        <h3 class="spy-feature-title spy-h6">Score</h3>
+        <p class="spy-feature-body spy-body-s">Rates each one against what already performs in your account, so
+          you copy the pattern and not the picture.</p>
+      </article>
+      <article class="spy-feature">
+        <span class="spy-icon-tile" data-tone="purple"><svg class="spy-icon"><use href="#i-bell"/></svg></span>
+        <h3 class="spy-feature-title spy-h6">Watch</h3>
+        <p class="spy-feature-body spy-body-s">Tells you the day a competitor changes its angle, instead of the
+          quarter you notice.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="spy-section" data-tone="tinted" id="pricing">
+  <div class="spy-container">
+    <div class="spy-section-head" data-align="center">
+      <p class="spy-section-eyebrow">Pricing</p>
+      <h2 class="spy-section-title spy-h3">Priced by what you scan</h2>
+    </div>
+    <div class="spy-grid" data-cols="3">
+      <article class="spy-plan">
+        <p class="spy-plan-name spy-body-s">Free</p>
+        <div class="spy-plan-price"><h3 class="spy-plan-amount spy-h3">$0</h3><span class="spy-plan-period spy-body-s">/ month</span></div>
+        <ul class="spy-plan-list spy-body-s">
+          <li><svg class="spy-icon" data-size="sm"><use href="#i-check"/></svg>200 creatives a month</li>
+          <li><svg class="spy-icon" data-size="sm"><use href="#i-check"/></svg>One competitor</li>
+        </ul>
+        <button class="spy-btn" data-variant="landing-secondary" data-size="md">Start free</button>
+      </article>
+      <article class="spy-plan" data-featured>
+        <p class="spy-plan-name spy-body-s">Team</p>
+        <div class="spy-plan-price"><h3 class="spy-plan-amount spy-h3">$149</h3><span class="spy-plan-period spy-body-s">/ month</span></div>
+        <ul class="spy-plan-list spy-body-s">
+          <li><svg class="spy-icon" data-size="sm"><use href="#i-check"/></svg>Unlimited creatives</li>
+          <li><svg class="spy-icon" data-size="sm"><use href="#i-check"/></svg>Ten competitors</li>
+          <li><svg class="spy-icon" data-size="sm"><use href="#i-check"/></svg>Change alerts</li>
+        </ul>
+        <button class="spy-btn" data-variant="landing-primary" data-size="md">Start free trial</button>
+      </article>
+      <article class="spy-plan">
+        <p class="spy-plan-name spy-body-s">Scale</p>
+        <div class="spy-plan-price"><h3 class="spy-plan-amount spy-h3">Talk</h3></div>
+        <ul class="spy-plan-list spy-body-s">
+          <li><svg class="spy-icon" data-size="sm"><use href="#i-check"/></svg>Your whole category</li>
+          <li><svg class="spy-icon" data-size="sm"><use href="#i-check"/></svg>API and exports</li>
+        </ul>
+        <button class="spy-btn" data-variant="landing-secondary" data-size="md">Contact us</button>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="spy-section">
+  <div class="spy-container">
+    <div class="spy-grid" data-cols="2">
+      <blockquote class="spy-quote">
+        <p class="spy-quote-body spy-body-m">We stopped guessing which angle to test next. It is the first tool
+          that told us something we did not already suspect.</p>
+        <footer class="spy-quote-by">
+          <span class="spy-avatar" data-size="lg">MR</span>
+          <span><span class="spy-quote-name spy-body-s">Mara Reyes</span><br>
+          <span class="spy-quote-role spy-caption-l">Growth lead, Northwind</span></span>
+        </footer>
+      </blockquote>
+      <blockquote class="spy-quote">
+        <p class="spy-quote-body spy-body-m">The scoring is the part that matters. Anyone can scrape ads; knowing
+          which ones are worth copying is the work.</p>
+        <footer class="spy-quote-by">
+          <span class="spy-avatar" data-size="lg">DK</span>
+          <span><span class="spy-quote-name spy-body-s">Dan Kim</span><br>
+          <span class="spy-quote-role spy-caption-l">Performance, Lumen</span></span>
+        </footer>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<section class="spy-section" data-density="compact">
+  <div class="spy-container">
+    <div class="spy-cta" data-tone="brand">
+      <h2 class="spy-cta-title spy-h3">Scan your category tonight</h2>
+      <p class="spy-cta-lede spy-body-m">Connect one network, pick a competitor, and have a scored set by morning.</p>
+      <div class="spy-cta-actions">
+        <button class="spy-btn" data-variant="secondary" data-size="lg">Start free</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="spy-footer">
+  <div class="spy-container">
+    <div class="spy-footer-cols spy-body-s">
+      <div class="spy-footer-col">
+        <p class="spy-footer-title spy-body-s">Product</p>
+        <a class="spy-footer-link" href="#features">Features</a>
+        <a class="spy-footer-link" href="#pricing">Pricing</a>
+        <a class="spy-footer-link" href="#">Changelog</a>
+      </div>
+      <div class="spy-footer-col">
+        <p class="spy-footer-title spy-body-s">Company</p>
+        <a class="spy-footer-link" href="#">About</a>
+        <a class="spy-footer-link" href="#">Careers</a>
+      </div>
+      <div class="spy-footer-col">
+        <p class="spy-footer-title spy-body-s">Resources</p>
+        <a class="spy-footer-link" href="components.html">Design system</a>
+        <a class="spy-footer-link" href="#">Docs</a>
+      </div>
+      <div class="spy-footer-col">
+        <p class="spy-footer-title spy-body-s">Legal</p>
+        <a class="spy-footer-link" href="#">Privacy</a>
+        <a class="spy-footer-link" href="#">Terms</a>
+      </div>
+    </div>
+    <div class="spy-footer-legal spy-caption-l">
+      <span>© 2026 Spyy</span>
+      <span>Built on the Spyy design system</span>
+    </div>
+  </div>
+</footer>
+
+<script src="icons.js"></script>
+</body>
+</html>
