@@ -1013,7 +1013,11 @@ body {
    ------------------------------------------------------------------------ */
 .spy-badge {
   --spy-badge-bg: var(--hf-color-brand-blue);
-  --spy-badge-fg: var(--hf-color-text-primary);
+  /* The badge surface is a saturated fill or one of the three radial gradients,
+     and none of them flip with the theme. Ink that flips therefore cannot be
+     used: --hf-color-text-primary turned near-black on the light theme and sat
+     on a deep blue gradient at 12px. Constant surface, constant ink.     [I] */
+  --spy-badge-fg: var(--hf-color-text-on-tint-inverse);
   --spy-badge-skew: -10.89deg;
   position: relative;
   display: inline-flex; align-items: center; justify-content: center;
