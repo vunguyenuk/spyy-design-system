@@ -219,6 +219,23 @@
   --hf-color-shade-350: #181818;
   --hf-color-shade-400: #151515;
 
+  /* -- Palette: light surfaces ---------------------------------------- [D]
+     The light theme's four surfaces used to point at the grey ramp, whose top
+     steps are audited product values and are spaced for text, not for stacked
+     panels. Measured as distance from the floor, the dark ladder steps 3 / 7 /
+     12 / 20 out of 255 and the light one stepped 5 / 10 / 26 / 41 — roughly
+     twice as far at every step, and 2.6x at the raised panel. The light theme
+     therefore read as grey blocks on white where the dark theme reads as one
+     surface with quiet depth. The comment below the light block claimed these
+     were "the dark ramp mirrored at the same relative steps"; they were not.
+     These are. Nothing audited moved — the grey ramp is untouched, and only the
+     four background roles point here.                                      */
+  --hf-color-light-400: #ffffff;   /* page floor, mirrors shade-400 */
+  --hf-color-light-350: #fbfbfb;   /* section band, mirrors shade-350 */
+  --hf-color-light-300: #f7f7f7;   /* card, panel,  mirrors shade-300 */
+  --hf-color-light-250: #f1f1f1;   /* raised panel, mirrors shade-250 */
+  --hf-color-light-200: #e8e8e8;   /* track, well,  mirrors shade-200 */
+
   /* -- Palette: neutral (kept as an alias of grey for older refs) ----- [I] */
   --hf-color-neutral-050: #ffffff;
   --hf-color-neutral-100: #f5f5f5;
@@ -290,31 +307,36 @@
   --hf-space-2400: 6rem;     /* 96px */
 
   /* -- Radius ---------------------------------------------------------- [C] */
-  /* Nine steps were in use across sixty declarations, which is a ladder, not a
-     rule: a component's corner came from whoever wrote it. Four of them now
-     carry the whole system, and each answers one question — what is this box?
+  /* Nine steps were in use across ninety declarations, which is a ladder, not a
+     rule: a component's corner came from whoever wrote it. Three now carry the
+     whole system, and each answers one question — what is this box?
 
        050   a sticker.   The badge, and nothing else.
-       200   a MARKER.    It labels, or it holds an icon: menu item, tag,
-                          tooltip, skeleton, list row, icon tile, compact button.
-       250   a CONTROL.   You click it or you type in it: button, field, select,
-                          textarea, toggle, nav action, tile. One value for every
-                          size — a large button is not a rounder button.
-       400   a PANEL.     It contains controls: card, modal, toast, alert, menu,
+       200   a CONTROL.   Anything you click, type in, or that labels one thing:
+                          button, field, select, textarea, toggle, menu item,
+                          tag, tooltip, list row, icon tile, skeleton.
+       300   a PANEL.     It contains controls: card, modal, toast, alert, menu,
                           sidebar, table, feature, plan, quote, the CTA band.
        full  a track or a dot: radio, switch, slider, avatar, progress, chip.
 
-     A box nested inside a panel steps down one tier, so the inner corner never
-     matches the outer one. 100, 150, 300, 500 and 600 stay in the scale for
-     product work, but no component reads them.                            [D] */
+     It was four steps for a while — a marker tier at 8 under a control tier at
+     10 — but 8 against 10 on a 28px box is a distinction nobody can see, and a
+     tier that cannot be seen is a tier that will be applied at random. They are
+     one tier now. The panel came down from 16 to 12 in the same pass: a nested
+     control at 8 inside a panel at 16 read as two unrelated shapes, and the
+     whole system was rounder than it needed to be.
+
+     A box nested inside a panel steps down a tier, so the inner corner never
+     matches the outer one. 100, 150, 250, 400, 500 and 600 stay in the scale
+     for product work, but no component reads them.                        [D] */
   --hf-radius-0: 0;
   --hf-radius-050: 0.125rem; /*  2px — sticker: badge */
   --hf-radius-100: 0.25rem;  /*  4px */
   --hf-radius-150: 0.375rem; /*  6px */
-  --hf-radius-200: 0.5rem;   /*  8px — MARKER */
-  --hf-radius-250: 0.625rem; /* 10px — CONTROL */
-  --hf-radius-300: 0.75rem;  /* 12px */
-  --hf-radius-400: 1rem;     /* 16px — PANEL */
+  --hf-radius-200: 0.5rem;   /*  8px — CONTROL */
+  --hf-radius-250: 0.625rem; /* 10px */
+  --hf-radius-300: 0.75rem;  /* 12px — PANEL */
+  --hf-radius-400: 1rem;     /* 16px */
   --hf-radius-500: 1.25rem;  /* 20px */
   --hf-radius-600: 1.5rem;   /* 24px */
   --hf-radius-full: 9999px;  /*        track, dot, pill */
@@ -695,11 +717,11 @@
 [data-theme="light"] {
   color-scheme: light;
 
-  --hf-color-background-primary: var(--hf-color-grey-050);        /* [C] */
-  --hf-color-background-secondary: var(--hf-color-grey-100);      /* [C] */
-  --hf-color-background-secondary-strong: var(--hf-color-grey-125);
-  --hf-color-background-tertiary: var(--hf-color-grey-150);
-  --hf-color-background-section: var(--hf-color-grey-075);
+  --hf-color-background-primary: var(--hf-color-light-400);
+  --hf-color-background-secondary: var(--hf-color-light-300);
+  --hf-color-background-secondary-strong: var(--hf-color-light-250);
+  --hf-color-background-tertiary: var(--hf-color-light-200);
+  --hf-color-background-section: var(--hf-color-light-350);
   --hf-color-background-elevated-start: var(--hf-color-grey-050);
   --hf-color-background-elevated-end: var(--hf-color-grey-100);
   --hf-color-background-glass: var(--hf-color-glass-light);       /* [C] */
@@ -829,6 +851,7 @@
      token because it is not on the surface ramp — it is a hair darker than
      surface-control so a skeleton reads as absent content, not as a tile. [C] */
   --hf-color-skeleton: var(--hf-color-shade-250);
+  --hf-color-shimmer: var(--hf-color-transparent-light-10);
 
   /* The four surfaces the whole product is actually built from. Every region
      sampled across the capture set returned one of these.                 [C] */
@@ -866,17 +889,23 @@
    block above: [data-theme="light"] and :root carry the same specificity, so
    whichever comes last wins — an earlier light block would be overridden.
    [I] the reference system ships no light build of the app chrome, so the four surfaces
-   are the dark ramp mirrored on the light ramp at the same relative steps:
+   are the dark ramp mirrored on the light surface ramp at the same relative steps:
    floor lightest, then panel, card, control. The tints and the success green
    are NOT repeated here — they are the same colour in both themes.          */
 [data-theme="light"] {
-  --hf-surface-app: var(--hf-color-grey-050);      /* white */
-  --hf-surface-panel: var(--hf-color-grey-075);
-  --hf-surface-card: var(--hf-color-grey-100);
-  --hf-surface-control: var(--hf-color-grey-125);
+  --hf-surface-app: var(--hf-color-light-400);
+  --hf-surface-panel: var(--hf-color-light-350);
+  --hf-surface-card: var(--hf-color-light-300);
+  --hf-surface-control: var(--hf-color-light-250);
 
   /* Skeleton on light, derived at the same distance from the light ramp. [I] */
-  --hf-color-skeleton: var(--hf-color-grey-125);
+  --hf-color-skeleton: var(--hf-color-light-250);
+  /* A shimmer is a highlight passing over the placeholder, so it moves toward
+     the page background — white on both themes. It used to be black at 20% on
+     both, which on a dark skeleton reads as a subtle sweep and on a light one
+     reads as a grey bar sliding down the block. Same bug as the toast ink and
+     the badge: a value picked on one surface and applied to the other.   [D] */
+  --hf-color-shimmer: var(--hf-color-transparent-light-80);
 
   /* Tint used as TEXT (not as a fill) has to darken on a light background:
      lime-500 on white is 1.17:1. The mix keeps this tint-agnostic, so the

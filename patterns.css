@@ -228,7 +228,7 @@
    itself: the signals that fired on the left, what argued against on the right.
    Note the negative side outlines its thumbnails in the error colour.
    ------------------------------------------------------------------------ */
-.spy-evidence { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); border-radius: var(--hf-radius-400); background-color: var(--hf-color-background-secondary); overflow: hidden; }
+.spy-evidence { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); border-radius: var(--hf-radius-300); background-color: var(--hf-color-background-secondary); overflow: hidden; }
 .spy-evidence-side { padding: var(--hf-space-400); display: flex; flex-direction: column; gap: var(--hf-space-300); }
 .spy-evidence-side + .spy-evidence-side { border-inline-start: var(--hf-border-width-thin) solid var(--hf-color-divider-primary); }
 .spy-evidence-head { display: flex; align-items: flex-start; gap: var(--hf-space-250); }
@@ -321,7 +321,7 @@
   min-height: var(--hf-space-2000);
   padding: var(--hf-space-300);
   border: var(--hf-border-width-thin) solid var(--hf-color-border-default);
-  border-radius: var(--hf-radius-250);
+  border-radius: var(--hf-radius-200);
   background-color: transparent;
   color: var(--hf-color-text-secondary);
   font-family: var(--hf-type-family-secondary);
@@ -359,7 +359,7 @@
   min-height: var(--hf-space-1400);
   padding: var(--hf-space-250) var(--hf-space-300);
   border: none;
-  border-radius: var(--hf-radius-250);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-overlay-dim-soft);
   color: var(--hf-color-text-primary);
   text-align: start; cursor: pointer; outline: none;
@@ -458,7 +458,7 @@
 .spy-processing {
   position: relative;
   border: var(--hf-border-width-thick) solid var(--q-tint);
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   /* top padding must clear the 32px badge that notches into the corner */
   padding: var(--hf-space-1000) var(--hf-space-400) var(--hf-space-400);
   background-color: var(--hf-color-background-primary);
@@ -468,7 +468,7 @@
   display: inline-flex; align-items: center; gap: var(--hf-space-200);
   height: var(--hf-space-800);
   padding-inline: var(--hf-space-300);
-  border-radius: var(--hf-radius-400) 0 var(--hf-radius-300) 0;
+  border-radius: var(--hf-radius-300) 0 var(--hf-radius-300) 0;
   background-color: var(--q-tint);
   color: var(--hf-color-text-on-tint);
   font-size: var(--hf-type-size-200); line-height: 1;
@@ -496,7 +496,7 @@
   width: 100%;
   padding: var(--hf-space-300);
   border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
-  border-radius: var(--hf-radius-250);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-fill-subtle);
   color: var(--hf-color-text-primary);
   text-align: start; cursor: pointer; outline: none;
@@ -556,7 +556,7 @@
   gap: var(--hf-space-200);
   min-height: var(--hf-space-2400);
   padding: var(--hf-space-600) var(--hf-space-400);
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   background-color: var(--hf-color-overlay-dim-soft);
   box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle);
   color: var(--hf-color-text-secondary);
@@ -578,7 +578,7 @@
    ------------------------------------------------------------------------ */
 .spy-results { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr)); gap: var(--hf-space-400); }
 .spy-result { display: flex; flex-direction: column; gap: var(--hf-space-250); }
-.spy-result-media { position: relative; border-radius: var(--hf-radius-400); overflow: hidden; aspect-ratio: 9 / 16; background-color: var(--hf-color-background-secondary); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle); }
+.spy-result-media { position: relative; border-radius: var(--hf-radius-300); overflow: hidden; aspect-ratio: 9 / 16; background-color: var(--hf-color-background-secondary); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle); }
 .spy-result-media > img, .spy-result-media > video { width: 100%; height: 100%; object-fit: cover; }
 .spy-result-actions {
   position: absolute; inset-inline: var(--hf-space-200); bottom: var(--hf-space-200);
@@ -615,7 +615,7 @@
    and a transport strip along the bottom. Overlay text uses the on-overlay
    colours, never the page text colours.
    ------------------------------------------------------------------------ */
-.spy-player { position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: var(--hf-radius-400); overflow: hidden; background-color: var(--hf-color-background-secondary); }
+.spy-player { position: relative; width: 100%; aspect-ratio: 9 / 16; border-radius: var(--hf-radius-300); overflow: hidden; background-color: var(--hf-color-background-secondary); }
 .spy-player > img, .spy-player > video { width: 100%; height: 100%; object-fit: cover; }
 .spy-player-caption { position: absolute; inset-inline: var(--hf-space-400); top: 22%; color: var(--hf-color-text-primary); font-size: var(--hf-type-size-500); line-height: var(--hf-type-line-height-700); font-weight: var(--hf-type-weight-semi-bold); text-shadow: 0 2px 12px rgba(0,0,0,.6); }
 .spy-player-rail { position: absolute; right: var(--hf-space-300); bottom: var(--hf-space-1600); display: flex; flex-direction: column; align-items: center; gap: var(--hf-space-400); }
@@ -644,7 +644,7 @@
 .spy-col { display: flex; flex-direction: column; gap: var(--hf-space-500); }
 
 /* Section card — the repeating container on analysis screens.             [C] */
-.spy-section-card { border-radius: var(--hf-radius-400); background-color: var(--hf-color-background-secondary); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle); padding: var(--hf-space-500); display: flex; flex-direction: column; gap: var(--hf-space-400); }
+.spy-section-card { border-radius: var(--hf-radius-300); background-color: var(--hf-color-background-secondary); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle); padding: var(--hf-space-500); display: flex; flex-direction: column; gap: var(--hf-space-400); }
 .spy-section-head { display: flex; align-items: center; gap: var(--hf-space-250); }
 .spy-section-head > .spy-icon { --spy-icon-size: var(--hf-icon-md); color: var(--q-tint-text); }
 .spy-section-title { flex: 1 1 0; min-width: 0; color: var(--hf-color-text-primary); font-size: var(--hf-type-size-400); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-semi-bold); }

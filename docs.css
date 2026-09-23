@@ -575,11 +575,20 @@ code {
 .doc-case-title { margin: 0; }
 .doc-case-when { margin: 0; max-width: 68ch; }
 
+/* One box, one border, one radius. The hairline between the example and its
+   code is a divider inside a card, not the gap between two cards — which is
+   what it was when both sat directly in the case's grid and inherited its row
+   gap. */
+.doc-case-body {
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
+  border-radius: var(--hf-radius-300);
+  overflow: hidden;
+}
+
 .doc-case-preview {
   display: flex; flex-wrap: wrap; align-items: center; gap: var(--hf-space-300);
   padding: var(--hf-space-500);
-  border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
-  border-radius: var(--hf-radius-400) var(--hf-radius-400) 0 0;
   background-color: var(--hf-color-background-primary);
 }
 /* a stacked case is rows, not a wrapping row — states, groups, anything with
@@ -591,9 +600,7 @@ code {
 
 .doc-case-code {
   position: relative;
-  border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
-  border-top: 0;
-  border-radius: 0 0 var(--hf-radius-400) var(--hf-radius-400);
+  border-top: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
   background-color: var(--hf-color-background-secondary);
 }
 .doc-case-code pre {
@@ -606,7 +613,23 @@ code {
   tab-size: 2;
 }
 .doc-case-code code { font: inherit; white-space: pre; background: none; padding: 0; border: 0; color: inherit; }
-.doc-case-copy { position: absolute; top: var(--hf-space-200); right: var(--hf-space-200); }
+/* The block scrolls horizontally, so a long line passes under the button
+   whatever padding the <pre> carries. Two things fix that: the button takes the
+   block's own fill and masks what runs beneath it, and it only appears when the
+   case is hovered or the button itself is focused — a copy button is a thing you
+   reach for, not a thing you read past on seventy-eight examples. */
+.doc-case-code .doc-case-copy.spy-btn {
+  position: absolute; top: var(--hf-space-200); right: var(--hf-space-200);
+  background-color: var(--hf-color-background-secondary);
+  box-shadow: 0 0 0 var(--hf-space-200) var(--hf-color-background-secondary);
+  opacity: 0;
+  transition: opacity var(--hf-duration-150) var(--hf-ease-out);
+}
+.doc-case-body:hover .doc-case-copy.spy-btn,
+.doc-case-code .doc-case-copy.spy-btn:focus-visible { opacity: 1; }
+@media (hover: none) {
+  .doc-case-code .doc-case-copy.spy-btn { opacity: 1; }
+}
 
 /* The state row is a documentation device: the component has no "force hover"
    property, so the doc paints one. It is deliberately not in components.css —

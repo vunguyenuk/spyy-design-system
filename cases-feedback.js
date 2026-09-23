@@ -172,7 +172,7 @@ C.push({
         `<div class="spy-modal-header">` +
         `<h3 class="spy-modal-title">Delete this scan?</h3>` +
         `<div class="spy-modal-actions">` +
-        `<button class="spy-btn" data-variant="ghost" data-size="xs" data-icon-only aria-label="Close">${ic('close')}</button>` +
+        `<button class="spy-btn" data-variant="ghost" data-size="sm" data-icon-only aria-label="Close">${ic('close')}</button>` +
         `</div></div>` +
         `<p class="spy-modal-description">Its results and every saved creative go with it. This cannot be undone.</p>` +
         `<div class="spy-modal-actions" data-full>` +

@@ -25,7 +25,7 @@ C.push({
         `<p class="spy-card-description">412 creatives, 3 networks. Last seen two hours ago.</p>` +
         `</div>` +
         `<div class="spy-card-footer"><span class="spy-tag">${v}</span>` +
-        `<button class="spy-btn" data-variant="ghost" data-size="xs">Open</button></div>` +
+        `<button class="spy-btn" data-variant="ghost" data-size="sm">Open</button></div>` +
         `</div>`).join('') },
     { id: 'glass', name: 'Glass',
       when: '75%-opaque fill, 40px blur, 1.6 saturate, and a two-sided inset rim — light on the top-left, dark on the bottom-right. The rim is the part that reads as thickness.',

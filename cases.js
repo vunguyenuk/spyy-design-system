@@ -98,12 +98,20 @@ function renderCase(c, componentId) {
     (c.when ? `<p class="doc-case-when spy-body-s spy-text-secondary">${c.when}</p>` : '');
   art.appendChild(head);
 
+  // The example and the code it produced are one object, so they are one box.
+  // They used to be two siblings of the case's grid, which put its row gap
+  // between them — two cards drifting apart, when what is meant is one card
+  // split by a hairline.
+  const body = document.createElement('div');
+  body.className = 'doc-case-body';
+  art.appendChild(body);
+
   const preview = document.createElement('div');
   preview.className = 'doc-case-preview';
   if (c.surface) preview.setAttribute('data-surface', c.surface);
   if (c.stack) preview.setAttribute('data-stack', '');
   preview.innerHTML = c.demo;
-  art.appendChild(preview);
+  body.appendChild(preview);
 
   if (c.noCode) { return art; }
 
@@ -119,7 +127,7 @@ function renderCase(c, componentId) {
       setTimeout(() => { this.textContent = 'Copy'; }, 1400);
     }, () => { this.textContent = 'Press ⌘C'; });
   });
-  art.appendChild(block);
+  body.appendChild(block);
   return art;
 }
 

@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Foundations · Spyy Design System</title>
 <meta name="description" content="Colour, type, space, radius, border, elevation, icons, motion and layout tokens for the Spyy design system.">
+<script>
+/* The saved theme has to be on <html> before the first paint. shell.js runs at
+   the end of <body>, so every page painted dark — the attribute below — and
+   then flipped, which reads as a white/black flash on every navigation. This is
+   the one script that has to be inline and in the head. */
+try { var t = localStorage.getItem('spyy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t); } catch (e) {}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Asta+Sans:wght@400;500;600;700;800;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">

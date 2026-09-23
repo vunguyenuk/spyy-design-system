@@ -166,7 +166,7 @@ body {
   min-width: var(--hf-space-1000);
   gap: var(--hf-space-200);
   padding-inline: var(--hf-space-400);
-  border-radius: var(--hf-radius-250);
+  border-radius: var(--hf-radius-200);
   letter-spacing: var(--hf-type-letter-spacing-none);
   text-align: center;
   text-overflow: ellipsis;
@@ -239,7 +239,7 @@ body {
 .spy-btn[data-size="sm"] {
   height: var(--hf-space-800); min-width: var(--hf-space-800);
   gap: var(--hf-space-150); padding-inline: var(--hf-space-300);
-  border-radius: var(--hf-radius-250);
+  border-radius: var(--hf-radius-200);
   font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-300);
   letter-spacing: var(--hf-type-letter-spacing-none);
   --spy-btn-icon: var(--hf-icon-sm);
@@ -247,7 +247,7 @@ body {
 .spy-btn[data-size="md"] {
   height: var(--hf-space-1000); min-width: var(--hf-space-1000);
   gap: var(--hf-space-200); padding-inline: var(--hf-space-400);
-  border-radius: var(--hf-radius-250);
+  border-radius: var(--hf-radius-200);
   font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500);
   letter-spacing: var(--hf-type-letter-spacing-none);
   --spy-btn-icon: var(--hf-icon-md);
@@ -255,7 +255,7 @@ body {
 .spy-btn[data-size="lg"] {
   height: var(--hf-space-1200); min-width: var(--hf-space-1200);
   gap: var(--hf-space-200); padding-inline: var(--hf-space-500);
-  border-radius: var(--hf-radius-250);
+  border-radius: var(--hf-radius-200);
   font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600);
   letter-spacing: var(--hf-type-letter-spacing-none);
   --spy-btn-icon: var(--hf-icon-md);
@@ -482,7 +482,7 @@ body {
   /* One radius for every text-entry surface — field, textarea, select trigger,
      composer. It used to be 12px here, 10px at sm and a full pill under a shape
      attribute, which meant three different roundings for one kind of object. [I] */
-  border-radius: var(--hf-radius-250);     /* 10px */
+  border-radius: var(--hf-radius-200);     /* 10px */
   background-color: var(--hf-color-overlay-dim-soft);
   color: var(--hf-color-icon-secondary);
   cursor: text;
@@ -611,7 +611,7 @@ body {
   min-width: 12rem;
   max-width: 22rem;
   padding: var(--hf-space-200);
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   background-color: var(--hf-color-background-glass);
   backdrop-filter: blur(var(--hf-space-1000));
   box-shadow:
@@ -893,7 +893,7 @@ body {
   gap: var(--hf-space-200);
   padding-inline: var(--hf-space-300);
   border: none;
-  border-radius: var(--hf-radius-250);
+  border-radius: var(--hf-radius-200);
   background-color: transparent;
   color: var(--hf-color-text-secondary);
   font-family: var(--hf-type-family-secondary);
@@ -1212,7 +1212,7 @@ body {
 .spy-card {
   display: flex; flex-direction: column;
   min-width: 0;
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   background-color: var(--hf-color-background-secondary);
   color: var(--hf-color-text-primary);
   overflow: hidden;
@@ -1235,7 +1235,7 @@ body {
   isolation: isolate;
   display: flex; flex-direction: column;
   min-width: 0;
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   background-color: var(--hf-color-background-glass);
   backdrop-filter: blur(var(--spy-glass-blur)) saturate(var(--spy-glass-saturate));
   color: var(--hf-color-text-primary);
@@ -1258,7 +1258,7 @@ body {
   width: 100%;
   aspect-ratio: var(--spy-tile-ratio, 16 / 9);
   border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
-  border-radius: var(--hf-radius-250);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-background-secondary);
   box-shadow: var(--hf-shadow-inset-tile);
   overflow: hidden;
@@ -1294,7 +1294,7 @@ body {
   width: min(var(--q-modal-width), calc(100vw - var(--hf-space-800)));
   max-height: calc(100dvh - var(--hf-space-1600));
   padding: var(--hf-space-200);
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   background-color: var(--hf-color-background-glass);
   backdrop-filter: blur(var(--hf-space-1000));
   box-shadow: var(--hf-shadow-modal);
@@ -1328,7 +1328,7 @@ body {
 .spy-modal-body { display: flex; flex-direction: column; gap: var(--hf-space-200); flex: auto; width: 100%; min-height: 0; overflow: auto; }
 .spy-modal-workspace {
   flex: auto; min-width: 0; min-height: 0; overflow: auto;
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   background-color: var(--hf-color-fill-subtle);
   color: var(--hf-color-text-primary);
 }
@@ -1373,7 +1373,7 @@ body {
   min-height: var(--hf-space-1000);
   max-width: 100%;
   padding: var(--hf-space-250);
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   /* The toast surface is theme-CONSTANT: the same near-black in both themes,
      the way a snackbar is. Ink that FLIPS with the theme therefore cannot be
      used inside it — in the light theme --hf-color-text-primary is near-black
@@ -1413,7 +1413,7 @@ body {
   gap: var(--hf-space-300);
   padding: var(--hf-space-300) var(--hf-space-400);
   border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   background-color: var(--hf-color-background-glass);
   backdrop-filter: blur(var(--hf-space-1000));
   box-shadow: var(--hf-shadow-overlay);
@@ -1437,7 +1437,7 @@ body {
   flex: none; align-self: center;
   padding: var(--hf-space-100) var(--hf-space-250);
   border: none;
-  border-radius: var(--hf-radius-250);
+  border-radius: var(--hf-radius-200);
   background-color: var(--spy-toast-action-bg);
   color: var(--spy-toast-action-ink);
   font-size: var(--hf-type-size-200);
@@ -1536,7 +1536,7 @@ body {
   height: 36px; min-width: 36px;
   padding-inline: var(--hf-space-300);
   border: none;
-  border-radius: var(--hf-radius-250);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-fill-subtle);
   box-shadow: inset 0 var(--hf-border-width-medium) 3px var(--hf-color-transparent-light-05);
   color: var(--hf-color-text-primary);
@@ -1564,7 +1564,7 @@ body {
 .spy-nav-popup {
   box-sizing: border-box;
   border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   background-color: var(--hf-color-background-glass);
   backdrop-filter: blur(var(--hf-space-1000));
   color: var(--hf-color-text-primary);
@@ -1589,7 +1589,7 @@ body {
   width: var(--spy-sidebar-width); height: 100%;
   min-height: 0;
   border: none;
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   background-color: var(--hf-color-background-elevated-end);
   box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle);
   color: var(--hf-color-text-primary);
@@ -1603,7 +1603,7 @@ body {
   flex: 1 1 0; min-width: 0;
   height: calc(var(--hf-space-600) + var(--hf-space-300));  /* 36px */
   padding: var(--hf-space-150);
-  border: none; border-radius: var(--hf-radius-250);
+  border: none; border-radius: var(--hf-radius-200);
   background-color: transparent;
   color: var(--hf-color-text-primary);
   font: inherit; text-align: start; cursor: pointer; overflow: hidden;
@@ -1640,7 +1640,7 @@ body {
   width: 100%;
   min-height: calc(var(--hf-space-600) + var(--hf-space-300));
   padding: var(--hf-space-150);
-  border-radius: var(--hf-radius-250);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-overlay-hover);
   color: var(--hf-color-icon-secondary);
 }
@@ -1782,7 +1782,7 @@ body {
 .spy-skeleton::after {
   content: ""; position: absolute; top: 100%; left: 0;
   width: 100%; height: 100%;
-  background: linear-gradient(transparent 0%, var(--hf-color-transparent-dark-20) 50%, transparent 100%);
+  background: linear-gradient(transparent 0%, var(--hf-color-shimmer) 50%, transparent 100%);
   animation: spy-shimmer-vertical 2s infinite;
 }
 @keyframes spy-shimmer-vertical { from { top: -100%; } to { top: 100%; } }
@@ -1796,7 +1796,7 @@ body {
    medium headers in the on-overlay-secondary colour, 5%-white hover — the
    same recipe as sidebar rows and menu items, so it sits in the system.
    ------------------------------------------------------------------------ */
-.spy-table-wrap { border-radius: var(--hf-radius-400); background-color: var(--hf-color-background-secondary); overflow: hidden; }
+.spy-table-wrap { border-radius: var(--hf-radius-300); background-color: var(--hf-color-background-secondary); overflow: hidden; }
 .spy-table { width: 100%; border-collapse: collapse; font-family: var(--hf-type-family-secondary); }
 .spy-table th {
   padding: var(--hf-space-200) var(--hf-space-300);
@@ -1880,7 +1880,7 @@ body {
   align-items: center; justify-content: center;
   gap: var(--hf-space-200);
   padding: var(--hf-space-1000) var(--hf-space-400);
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   background-color: var(--hf-color-background-elevated-start);
   color: var(--hf-color-text-tertiary);
   text-align: center;
@@ -1895,7 +1895,7 @@ body {
 .spy-alert {
   display: flex; align-items: flex-start; gap: var(--hf-space-200);
   padding: var(--hf-space-300);
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   background-color: var(--hf-color-fill-subtle);
   color: var(--hf-color-text-primary);
   font-size: var(--hf-type-size-200);
@@ -1926,7 +1926,7 @@ body {
   overflow: hidden;
 }
 .spy-media > img, .spy-media > video { width: 100%; height: 100%; object-fit: cover; display: block; }
-.spy-media[data-radius] { border-radius: var(--hf-radius-400); }
+.spy-media[data-radius] { border-radius: var(--hf-radius-300); }
 .spy-media-overlay {
   position: absolute;
   display: flex; align-items: center; justify-content: center;
@@ -1982,7 +1982,7 @@ body {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
-  border-radius: var(--hf-radius-250);
+  border-radius: var(--hf-radius-200);
   background: none; outline: none;
   cursor: pointer; user-select: none; touch-action: none;
   overflow: visible;
@@ -2000,7 +2000,7 @@ body {
   display: flex; flex-direction: column;
   gap: var(--hf-space-200);
   padding: var(--hf-space-200);
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   background-color: var(--hf-color-overlay-dim-soft);
   box-shadow: var(--hf-shadow-sheen);
   transition: box-shadow var(--hf-duration-150) var(--hf-ease-out);
@@ -2135,7 +2135,7 @@ body {
 .spy-notice {
   display: flex; align-items: center; gap: var(--hf-space-300);
   padding: var(--hf-space-300) var(--hf-space-400);
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   background-color: var(--hf-color-fill-subtle);
 }
 .spy-notice-text { display: flex; flex-direction: column; gap: 2px; flex: 1 1 0; min-width: 0; }
@@ -2154,7 +2154,7 @@ body {
 .spy-panel {
   display: flex; flex-direction: column;
   width: 26rem; max-width: 100%;
-  border-radius: var(--hf-radius-400);
+  border-radius: var(--hf-radius-300);
   background-color: var(--hf-surface-panel, var(--hf-color-background-primary));
   box-shadow:
     inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle),
