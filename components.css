@@ -155,6 +155,22 @@ body {
   background-color: transparent;
   color: var(--hf-color-text-primary);
   font-family: var(--hf-type-family-secondary);
+  /* A button with no data-size used to inherit nothing and fall back to the
+     browser's own 13.33px control font. Every button on the site carries a
+     size, so it never showed — but a default has to be a real step, not the
+     user agent's. md is that step.                                     [I] */
+  font-size: var(--hf-type-size-400);
+  line-height: var(--hf-type-line-height-600);
+  font-weight: var(--hf-type-weight-semi-bold);
+  /* Same gap as the font size, same reason: with no data-size the button had no
+     radius either, so it rendered as a sharp rectangle 30px tall — a height that
+     is not on the ladder at all. The md step is the default.               [I] */
+  height: var(--hf-space-1200);
+  min-width: var(--hf-space-1200);
+  gap: var(--hf-space-150);
+  padding: var(--hf-space-400);
+  border-radius: var(--hf-radius-300);
+  letter-spacing: var(--hf-type-letter-spacing-slight);
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
