@@ -629,7 +629,7 @@ body {
   display: flex;
   align-items: center;
   gap: var(--hf-space-200);
-  min-height: calc(var(--hf-space-800) + var(--hf-space-100)); /* 36px */
+  min-height: var(--hf-space-900);
   padding: var(--hf-space-200);
   border: none;
   border-radius: var(--hf-radius-200);
@@ -670,8 +670,8 @@ body {
 /* Leading media tile — the pattern used for model pickers. */
 .spy-menu-item-media {
   display: inline-flex; align-items: center; justify-content: center;
-  width: calc(var(--hf-space-800) + var(--hf-space-100));  /* 36px */
-  height: calc(var(--hf-space-800) + var(--hf-space-100));
+  width: var(--hf-space-900);
+  height: var(--hf-space-900);
   flex-shrink: 0; overflow: hidden;
   border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
   border-radius: var(--hf-radius-200);
@@ -718,7 +718,12 @@ body {
 .spy-checkbox,
 .spy-radio {
   --spy-control-fill: var(--hf-color-icon-accent);
-  --spy-control-fg: var(--hf-color-icon-inverse);
+  /* The checked fill is the brand lime, which is the same colour in both
+     themes — so the tick on it has to be too. `icon/inverse` flips, which put a
+     white tick on lime in the light theme. Same rule as the toast ink, the
+     badge and the icon tile: a surface that does not flip cannot carry ink
+     that does.                                                          [D] */
+  --spy-control-fg: var(--hf-color-text-on-tint);
   --spy-control-hover-border: var(--hf-color-lime-900);
   --spy-control-ring: var(--hf-color-transparent-lime-20);
   --spy-control-target: var(--hf-space-600);   /* 24px */
@@ -1224,7 +1229,18 @@ body {
 .spy-card[data-variant="raised"] { box-shadow: var(--hf-shadow-raised); }
 .spy-card-header { display: flex; align-items: center; justify-content: space-between; gap: var(--hf-space-300); padding: var(--hf-space-500); flex: none; }
 .spy-card-body   { padding: var(--hf-space-500); flex: auto; min-height: 0; }
-.spy-card-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--hf-space-300); padding: var(--hf-space-500); flex: none; border-top: var(--hf-border-width-thin) solid var(--hf-color-border-subtle); }
+/* The footer holds one tag and one button, both about 32px tall, and it was
+   padded like the body — 20px on every side, so a 32px row sat in a 72px band.
+   A region is padded for what is in it: the body holds paragraphs and keeps its
+   20, the footer holds controls and takes 12 with 20 at the sides, so it still
+   lines up with the text above it.                                        [D] */
+.spy-card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--hf-space-300);
+  padding: var(--hf-space-300) var(--hf-space-500);
+  flex: none;
+  border-top: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
+}
 .spy-card-title { font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-semi-bold); color: var(--hf-color-text-primary); margin: 0; }
 .spy-card-description { font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); letter-spacing: var(--hf-type-letter-spacing-loose); color: var(--hf-color-text-secondary); margin: 0; }
 
@@ -1810,7 +1826,7 @@ body {
   white-space: nowrap;
 }
 .spy-table td {
-  height: calc(var(--hf-space-800) + var(--hf-space-100));  /* 36px */
+  height: var(--hf-space-900);
   padding: var(--hf-space-150) var(--hf-space-300);
   color: var(--hf-color-text-primary);
   font-size: var(--hf-type-size-200);
@@ -1831,7 +1847,7 @@ body {
 .spy-list { display: flex; flex-direction: column; gap: var(--hf-space-050); margin: 0; padding: 0; list-style: none; }
 .spy-list-item {
   display: flex; align-items: center; gap: var(--hf-space-300);
-  min-height: calc(var(--hf-space-800) + var(--hf-space-100));
+  min-height: var(--hf-space-900);
   padding: var(--hf-space-200);
   border-radius: var(--hf-radius-200);
   color: var(--hf-color-text-primary);
@@ -2100,12 +2116,18 @@ body {
 }
 .spy-icon-tile > .spy-icon { --spy-icon-size: var(--hf-icon-sm); }
 .spy-icon-tile[data-size="lg"] { width: var(--hf-space-800); height: var(--hf-space-800); border-radius: var(--hf-radius-200); }
-.spy-icon-tile[data-tone="brand"]   { background-color: var(--hf-color-brand-primary); color: var(--hf-color-text-on-tint); }
-.spy-icon-tile[data-tone="pink"]    { background-color: var(--hf-color-brand-pink); color: var(--hf-color-text-primary); }
-.spy-icon-tile[data-tone="purple"]  { background-color: var(--hf-color-purple-600); color: var(--hf-color-text-primary); }
-.spy-icon-tile[data-tone="orange"]  { background-color: var(--hf-color-orange-600); color: var(--hf-color-text-primary); }
-.spy-icon-tile[data-tone="blue"]    { background-color: var(--hf-color-blue-500); color: var(--hf-color-text-primary); }
-.spy-icon-tile[data-tone="success"] { background-color: var(--hf-color-state-success-fg); color: var(--hf-color-text-inverse); }
+/* A tone's fill does not flip with the theme, so its ink cannot either. These
+   pointed at `text/primary`, which is white in dark and near-black in light —
+   so a blue tile that read correctly in dark rendered a black icon on blue in
+   light. The categorical palette already ships the pairs; the tile now uses
+   them as pairs instead of reaching for the ramp step on one side and a text
+   role on the other.                                                     [D] */
+.spy-icon-tile[data-tone="brand"]   { background-color: var(--hf-color-brand-primary);      color: var(--hf-color-text-on-tint); }
+.spy-icon-tile[data-tone="pink"]    { background-color: var(--hf-color-palette-pink-bg);    color: var(--hf-color-palette-pink-text); }
+.spy-icon-tile[data-tone="purple"]  { background-color: var(--hf-color-palette-purple-bg);  color: var(--hf-color-palette-purple-text); }
+.spy-icon-tile[data-tone="orange"]  { background-color: var(--hf-color-palette-orange-bg);  color: var(--hf-color-palette-orange-text); }
+.spy-icon-tile[data-tone="blue"]    { background-color: var(--hf-color-palette-blue-bg);    color: var(--hf-color-palette-blue-text); }
+.spy-icon-tile[data-tone="success"] { background-color: var(--hf-color-palette-mint-bg);    color: var(--hf-color-palette-mint-text); }
 
 /* ---------------------------------------------------------------------------
    COUNT                                                                  [C]
@@ -2401,3 +2423,270 @@ code, kbd, samp, pre,
   font-feature-settings: "tnum" 1, "lnum" 1, "calt" 0;
   letter-spacing: 0.01em;
 }
+
+/* ===========================================================================
+   NAVIGATION, DATA AND CONVERSATION                                      [D]
+
+   Nine components the system was missing, built from what is already here
+   rather than beside it: every one of them reads the same semantic tokens, the
+   same two radius tiers and the same 36px row height as the menu item and the
+   sidebar row, so a table row, a timeline entry and a command-palette result
+   line up when they sit on the same screen.
+   ======================================================================== */
+
+/* -- Breadcrumb ---------------------------------------------------------- */
+.spy-breadcrumb {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: var(--hf-space-200);
+  font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500);
+}
+.spy-breadcrumb-item {
+  display: inline-flex; align-items: center; gap: var(--hf-space-150);
+  color: var(--hf-color-text-secondary);
+  text-decoration: none;
+  border-radius: var(--hf-radius-200);
+  transition: color var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-breadcrumb a.spy-breadcrumb-item:hover { color: var(--hf-color-text-primary); }
+.spy-breadcrumb-item[aria-current="page"] { color: var(--hf-color-text-primary); font-weight: var(--hf-type-weight-medium); }
+.spy-breadcrumb-item > .spy-icon { --spy-icon-size: var(--hf-icon-sm); }
+.spy-breadcrumb-sep { display: inline-flex; color: var(--hf-color-text-tertiary); }
+.spy-breadcrumb-sep > .spy-icon { --spy-icon-size: var(--hf-icon-xs); }
+/* The collapsed middle of a deep trail. It is a button, because the one thing
+   a reader wants from an ellipsis is the part it is hiding. */
+.spy-breadcrumb-more {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: var(--hf-space-600); min-width: var(--hf-space-600);
+  padding-inline: var(--hf-space-150);
+  border: 0; border-radius: var(--hf-radius-200);
+  background-color: var(--hf-color-fill-subtle);
+  color: var(--hf-color-text-secondary);
+  cursor: pointer;
+}
+.spy-breadcrumb-more:hover { background-color: var(--hf-color-overlay-hover); color: var(--hf-color-text-primary); }
+
+/* -- Navigation menu ------------------------------------------------------
+   The vertical variant is the product's left rail; the horizontal one is a
+   section bar. One component, because an item is an item either way — only the
+   axis and what the active mark looks like change.                          */
+.spy-navmenu { display: flex; flex-direction: column; gap: var(--hf-space-050); }
+.spy-navmenu[data-orientation="horizontal"] {
+  flex-direction: row; align-items: center; gap: var(--hf-space-100);
+  border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-primary);
+}
+.spy-navmenu-label {
+  padding: var(--hf-space-200) var(--hf-space-300) var(--hf-space-100);
+  font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium);
+  letter-spacing: var(--hf-type-letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--hf-color-text-tertiary);
+}
+.spy-navmenu-item {
+  display: flex; align-items: center; gap: var(--hf-space-250);
+  min-height: var(--hf-space-900);                 /* 36px, the row height */
+  padding: var(--hf-space-150) var(--hf-space-300);
+  border-radius: var(--hf-radius-200);
+  color: var(--hf-color-text-secondary);
+  font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500);
+  text-decoration: none; cursor: pointer;
+  transition: background-color var(--hf-duration-150) var(--hf-ease-out),
+              color var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-navmenu-item:hover { background-color: var(--hf-color-overlay-hover); color: var(--hf-color-text-primary); }
+.spy-navmenu-item[data-active] { background-color: var(--hf-color-fill-subtle); color: var(--hf-color-text-primary); font-weight: var(--hf-type-weight-medium); }
+.spy-navmenu-item[data-disabled] { opacity: 0.5; pointer-events: none; }
+.spy-navmenu-item > .spy-icon { --spy-icon-size: var(--hf-icon-md); flex: none; }
+.spy-navmenu-item-label { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spy-navmenu-item-trailing { flex: none; display: inline-flex; align-items: center; gap: var(--hf-space-150); color: var(--hf-color-text-tertiary); }
+/* Horizontal drops the pill and marks the active item with a rule that meets
+   the bar's own bottom edge — the same idea as the line tab, for the same
+   reason: the mark ties the item to what is under it. */
+.spy-navmenu[data-orientation="horizontal"] .spy-navmenu-item {
+  border-radius: var(--hf-radius-200) var(--hf-radius-200) 0 0;
+  margin-bottom: calc(-1 * var(--hf-border-width-thin));
+  border-bottom: var(--hf-border-width-medium) solid transparent;
+}
+.spy-navmenu[data-orientation="horizontal"] .spy-navmenu-item[data-active] {
+  background-color: transparent;
+  border-bottom-color: var(--q-tint);
+}
+/* A nested list steps in by exactly one icon plus its gap, so children line up
+   under their parent's label rather than under its icon. */
+.spy-navmenu-children { display: flex; flex-direction: column; gap: var(--hf-space-050); margin-inline-start: var(--hf-space-700); }
+
+/* -- Data table ----------------------------------------------------------
+   The base table above is rows and dividers. This is what a table needs once
+   it holds data someone works with: a header you can sort by, a selection
+   column, a sticky head, and a bar underneath for the count and the pager.  */
+.spy-table[data-sortable] th[data-sort] { cursor: pointer; user-select: none; }
+.spy-table th[data-sort] > span { display: inline-flex; align-items: center; gap: var(--hf-space-150); }
+.spy-table th[data-sort] .spy-icon { --spy-icon-size: var(--hf-icon-xs); opacity: 0; transition: opacity var(--hf-duration-150) var(--hf-ease-out); }
+.spy-table th[data-sort]:hover .spy-icon { opacity: 0.5; }
+.spy-table th[data-sort="asc"] .spy-icon,
+.spy-table th[data-sort="desc"] .spy-icon { opacity: 1; color: var(--hf-color-text-primary); }
+.spy-table th[data-sort="desc"] .spy-icon { rotate: 180deg; }
+.spy-table [data-select] { width: var(--hf-space-1000); padding-inline-end: 0; }
+.spy-table[data-sticky] thead th {
+  position: sticky; top: 0; z-index: 1;
+  background-color: var(--hf-color-background-secondary);
+}
+/* A dense table is the same table with the rows closed up — it does not change
+   the type, because a smaller row with smaller text is two changes and only
+   one of them was asked for. */
+.spy-table[data-density="compact"] td,
+.spy-table[data-density="compact"] th { padding-block: var(--hf-space-150); }
+.spy-table-bar {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+  gap: var(--hf-space-300);
+  padding: var(--hf-space-300) var(--hf-space-400);
+  border-top: var(--hf-border-width-thin) solid var(--hf-color-divider-secondary);
+  font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300);
+  color: var(--hf-color-text-tertiary);
+}
+.spy-table-empty { padding: var(--hf-space-800) var(--hf-space-400); text-align: center; color: var(--hf-color-text-tertiary); }
+
+/* -- Timeline -------------------------------------------------------------
+   What happened, in order, with the rail drawn by the items themselves rather
+   than by a background on the container — so a timeline can end anywhere
+   without a line running past its last entry.                              */
+.spy-timeline { display: flex; flex-direction: column; }
+.spy-timeline-item { position: relative; display: flex; gap: var(--hf-space-300); padding-bottom: var(--hf-space-500); }
+.spy-timeline-item:last-child { padding-bottom: 0; }
+.spy-timeline-item::before {
+  content: ""; position: absolute; top: var(--hf-space-500); bottom: 0;
+  left: calc(var(--hf-space-300) - (var(--hf-border-width-thin) / 2));
+  width: var(--hf-border-width-thin);
+  background-color: var(--hf-color-divider-primary);
+}
+.spy-timeline-item:last-child::before { display: none; }
+.spy-timeline-marker {
+  position: relative; z-index: 1; flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hf-space-600); height: var(--hf-space-600);
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-background-secondary-strong);
+  color: var(--hf-color-text-secondary);
+}
+.spy-timeline-marker > .spy-icon { --spy-icon-size: var(--hf-icon-xs); }
+.spy-timeline-item[data-state="done"] .spy-timeline-marker { background-color: var(--q-tint); color: var(--hf-color-text-on-tint); }
+.spy-timeline-item[data-state="active"] .spy-timeline-marker {
+  background-color: var(--hf-color-background-primary);
+  color: var(--q-tint-text);
+  box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--q-tint);
+}
+.spy-timeline-item[data-status="error"] .spy-timeline-marker { background-color: var(--hf-color-state-error-bg); color: var(--hf-color-state-error-fg); }
+.spy-timeline-body { display: grid; gap: var(--hf-space-050); padding-block: var(--hf-space-050); min-width: 0; }
+.spy-timeline-title { font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); font-weight: var(--hf-type-weight-medium); color: var(--hf-color-text-primary); margin: 0; }
+.spy-timeline-time { font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); color: var(--hf-color-text-tertiary); font-variant-numeric: tabular-nums; }
+.spy-timeline-description { font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); color: var(--hf-color-text-secondary); margin: 0; }
+
+/* -- Content search -------------------------------------------------------
+   The palette. It is a modal that holds a field and a menu, so it introduces
+   no new fill, radius or row height — only the arrangement and the footer
+   that tells you which keys work.                                          */
+.spy-cmdk { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; max-height: min(28rem, 70dvh); }
+.spy-cmdk-field {
+  display: flex; align-items: center; gap: var(--hf-space-250);
+  padding: var(--hf-space-300) var(--hf-space-400);
+  border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-secondary);
+}
+.spy-cmdk-field > .spy-icon { --spy-icon-size: var(--hf-icon-md); color: var(--hf-color-text-tertiary); flex: none; }
+.spy-cmdk-input {
+  flex: 1 1 auto; min-width: 0;
+  border: 0; background: none; outline: none; padding: 0;
+  color: var(--hf-color-text-primary);
+  font-family: inherit;
+  font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600);
+}
+.spy-cmdk-input::placeholder { color: var(--hf-color-text-tertiary); opacity: 1; }
+.spy-cmdk-results { overflow-y: auto; padding: var(--hf-space-200); display: flex; flex-direction: column; gap: var(--hf-space-050); }
+.spy-cmdk-foot {
+  display: flex; align-items: center; gap: var(--hf-space-400);
+  padding: var(--hf-space-250) var(--hf-space-400);
+  border-top: var(--hf-border-width-thin) solid var(--hf-color-divider-secondary);
+  font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300);
+  color: var(--hf-color-text-tertiary);
+}
+.spy-cmdk-hint { display: inline-flex; align-items: center; gap: var(--hf-space-150); }
+
+/* -- Chat prompt ----------------------------------------------------------
+   Three regions — attachments, the input, the controls — so a prompt that has
+   no attachments has no empty band above its text.                         */
+.spy-prompt {
+  display: grid; gap: var(--hf-space-300);
+  padding: var(--hf-space-300);
+  border-radius: var(--hf-radius-300);
+  background-color: var(--hf-color-background-secondary);
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle);
+  transition: box-shadow var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-prompt:focus-within { box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus); }
+.spy-prompt-head { display: flex; flex-wrap: wrap; gap: var(--hf-space-150); }
+.spy-prompt-input {
+  width: 100%; resize: none;
+  border: 0; background: none; outline: none; padding: 0;
+  color: var(--hf-color-text-primary);
+  font-family: inherit;
+  font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500);
+}
+.spy-prompt-input::placeholder { color: var(--hf-color-text-tertiary); opacity: 1; }
+.spy-prompt-foot { display: flex; align-items: center; gap: var(--hf-space-200); }
+.spy-prompt-foot-end { margin-inline-start: auto; display: flex; align-items: center; gap: var(--hf-space-200); }
+
+/* -- Chat tool ------------------------------------------------------------
+   What the agent is doing, and what it got back. The trigger is a row; the
+   output is a disclosure under it; approval turns the row into a question. */
+.spy-toolcall { display: grid; gap: var(--hf-space-200); }
+.spy-toolcall[data-variant="card"] {
+  padding: var(--hf-space-300);
+  border-radius: var(--hf-radius-300);
+  background-color: var(--hf-color-background-secondary);
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle);
+}
+.spy-toolcall-trigger {
+  display: flex; align-items: center; gap: var(--hf-space-250);
+  width: 100%; min-height: var(--hf-space-900);
+  padding: var(--hf-space-150) var(--hf-space-250);
+  border: 0; border-radius: var(--hf-radius-200);
+  background: none; cursor: pointer; text-align: start;
+  color: var(--hf-color-text-secondary);
+  font-family: inherit;
+  font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500);
+}
+.spy-toolcall-trigger:hover { background-color: var(--hf-color-overlay-hover); color: var(--hf-color-text-primary); }
+.spy-toolcall-trigger > .spy-icon { --spy-icon-size: var(--hf-icon-sm); flex: none; }
+.spy-toolcall-label { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spy-toolcall-suffix { color: var(--hf-color-text-tertiary); font-variant-numeric: tabular-nums; flex: none; }
+.spy-toolcall-chevron { flex: none; color: var(--hf-color-text-tertiary); transition: rotate var(--hf-duration-200) var(--hf-ease-out); }
+.spy-toolcall[data-open] .spy-toolcall-chevron { rotate: 90deg; }
+.spy-toolcall-output {
+  padding: var(--hf-space-300);
+  border-radius: var(--hf-radius-200);
+  background-color: var(--hf-color-background-secondary-strong);
+  font-family: var(--hf-type-family-mono);
+  font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-400);
+  color: var(--hf-color-text-secondary);
+  white-space: pre-wrap; overflow-x: auto;
+}
+.spy-toolcall:not([data-open]) .spy-toolcall-output { display: none; }
+.spy-toolcall-actions { display: flex; align-items: center; gap: var(--hf-space-200); padding-inline: var(--hf-space-250); }
+/* Streaming is a sweep across the label, not a spinner beside it: the row is
+   already saying what is happening, and a spinner would say it twice. */
+.spy-toolcall[data-streaming] .spy-toolcall-label {
+  background: linear-gradient(90deg,
+    var(--hf-color-text-tertiary) 0%,
+    var(--hf-color-text-primary) 50%,
+    var(--hf-color-text-tertiary) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  animation: spy-toolcall-sweep 1.8s var(--hf-ease-linear) infinite;
+}
+@keyframes spy-toolcall-sweep { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .spy-toolcall[data-streaming] .spy-toolcall-label { animation: none; color: var(--hf-color-text-primary); }
+}
+.spy-toolcall[data-state="denied"] .spy-toolcall-label { text-decoration: line-through; color: var(--hf-color-text-tertiary); }
+.spy-toolcall[data-state="denied"] .spy-toolcall-trigger > .spy-icon { color: var(--hf-color-state-error-fg); }
+.spy-toolcall[data-state="approval"] .spy-toolcall-trigger > .spy-icon { color: var(--hf-color-state-warning-fg); }

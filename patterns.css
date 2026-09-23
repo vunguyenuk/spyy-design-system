@@ -14,11 +14,7 @@
    tertiary, the trailing crumb goes primary. The header row below it carries
    the title and its actions.
    ------------------------------------------------------------------------ */
-.spy-breadcrumb { display: flex; align-items: center; gap: var(--hf-space-200); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
-.spy-breadcrumb a { color: var(--hf-color-text-secondary); text-decoration: none; transition: color var(--hf-duration-150) var(--hf-ease-out); }
-.spy-breadcrumb a:hover { color: var(--hf-color-text-primary); }
-.spy-breadcrumb-sep { color: var(--hf-color-text-tertiary); }
-.spy-breadcrumb [aria-current="page"] { color: var(--hf-color-text-primary); }
+/* Breadcrumb moved to components.css — it is a primitive, not a spyy pattern. */
 
 .spy-page-header { display: flex; align-items: flex-start; gap: var(--hf-space-400); flex-wrap: wrap; padding-block: var(--hf-space-400) var(--hf-space-600); }
 .spy-page-header-text { flex: 1 1 24rem; min-width: 0; display: flex; flex-direction: column; gap: var(--hf-space-200); }

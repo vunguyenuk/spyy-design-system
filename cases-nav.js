@@ -49,7 +49,7 @@ C.push({
 C.push({
   id: 'nav',
   name: 'Navigation',
-  base: '.spy-nav · .spy-nav-item · .spy-sidebar-row · .spy-pagination-item',
+  base: '.spy-nav-item · .spy-sidebar-row · .spy-pagination-item · .spy-stepper',
   lede: 'Three navigation rows for three scopes. The hierarchy is carried by <em>colour</em>, not by weight or a pill: dim at rest, white when active, and brand plus a glow for the one promoted item.',
   purpose: [
     ['Nav item',        'Top-bar navigation. A nav item goes somewhere.',              'An action.'],
@@ -98,14 +98,6 @@ C.push({
         `<span class="spy-pagination-ellipsis">…</span>` +
         `<button class="spy-pagination-item">24</button>` +
         `<button class="spy-pagination-item" data-icon-only aria-label="Next">${ic('chevron-right', 'sm')}</button>` +
-        `</nav>` },
-    { id: 'breadcrumb', name: 'Breadcrumb',
-      when: 'Where you are in a hierarchy. The last item is the current page and is not a link.',
-      demo:
-        `<nav class="spy-breadcrumb" aria-label="Breadcrumb">` +
-        `<a href="#nav">Scans</a><span class="spy-breadcrumb-sep">${ic('chevron-right', 'xs')}</span>` +
-        `<a href="#nav">Running shoes — Q3</a><span class="spy-breadcrumb-sep">${ic('chevron-right', 'xs')}</span>` +
-        `<span aria-current="page">Creative 4182</span>` +
         `</nav>` },
     { id: 'stepper', name: 'Stepper',
       when: 'A sequence with a position. Done, current and to-do are the only three states; there is no error step — a step that failed is still the current one.',

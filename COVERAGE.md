@@ -9,12 +9,20 @@ for**, and finding places where spyy has something close but not the thing.
 Counted against the class names actually declared in `components.css`,
 `patterns.css` and `landing.css` — not against memory:
 
-| | | |
+| | first count | now |
 |---|---|---|
-| ● have | **50** | a declared component covers it |
-| ◐ partial | **9** | something close exists, but it is not that component |
-| ○ missing | **22** | nothing covers it |
-| – n/a | **7** | framework plumbing, not a design-system piece |
+| ● have | 50 | **54** |
+| ◐ partial | 9 | **8** |
+| ○ missing | 22 | **21** |
+| – n/a | 7 | **7** |
+
+Nine were built in one pass — Breadcrumb, Navigation menu, Data table, Timeline,
+Content search, Chat prompt, Chat tool, and the two that already existed but only
+as sketches, Pagination and Stepper. The count moves by less than nine because
+three of them replaced partials and two were already counted as *have*: the
+point was never the number, it was that a breadcrumb lived in `patterns.css`
+among the spyy-specific rows, a "command palette" was a search field with no
+result list, and a "table" had no way to sort.
 
 ## What matters, and in what order
 
@@ -25,23 +33,23 @@ select and a date range far more than it needs a colour picker.
 
 | | Why spyy needs it |
 |---|---|
-| **SelectMenu** — searchable select | Picking one competitor out of hundreds. A plain select is unusable past ~20 options, and every filter on the scan screen is past 20. |
-| **InputDate** + **Calendar** — date range | Every scan is *over a window*. There is currently no way to express one. |
-| **Carousel** | The creative is the product's core object and it comes in sets. A grid is the index; a carousel is how you actually look at them. |
-| **Drawer / Slideover** | The creative detail opens beside the list, not over it. `.spy-panel` is close but it is a static right rail, not an overlay with a backdrop and a close. |
-| **Popover** | Filters, quick actions, the score explainer. `.spy-nav-popup` is one popover hard-wired to the nav. |
-| **CommandPalette** | The product is a search product. `.spy-modal-search` is the input, not the palette — no result list, no groups, no keyboard model. |
-| **InputTags** | Keyword sets, competitor lists, negative terms. Currently a plain text field and a convention. |
-| **Timeline** | When an ad started, when it stopped, when the scan ran. The verdict rows say *what*; nothing says *when*. |
-| **Tree** | The category taxonomy. `.spy-menu` nests one level; a taxonomy does not. |
-| **InputNumber** | Score thresholds, spend floors, result caps. |
-| **Form** + **FormField** grouping | `.spy-field` is one field. Nothing owns the group: no shared error summary, no required/optional rhythm, no submit row. |
-| **CheckboxGroup** | Every filter list is one. Currently repeated `.spy-checkbox` with the spacing re-decided each time. |
-| **ScrollArea** | Long lists inside a panel. Right now they inherit the browser's scrollbar, which is the one piece of chrome the system does not control. |
-| **Banner** | "You have used 180 of 200 scans." A quota warning is not a toast — it does not dismiss and it is not an event. |
-| **Splitter** | List beside detail, resizable. The app shell assumes fixed widths. |
-| **PricingTable** | The landing page has `.spy-plan` cards but no comparison table, which is the page every pricing page eventually needs. |
-| **AuthForm** | There are two Sign-in frames in Figma and no CSS behind them. |
+| **SelectMenu** — searchable select ○ | Picking one competitor out of hundreds. A plain select is unusable past ~20 options, and every filter on the scan screen is past 20. |
+| **InputDate** + **Calendar** — date range ○ | Every scan is *over a window*. There is currently no way to express one. |
+| **Carousel** ○ | The creative is the product's core object and it comes in sets. A grid is the index; a carousel is how you actually look at them. |
+| **Drawer / Slideover** ○ | The creative detail opens beside the list, not over it. `.spy-panel` is close but it is a static right rail, not an overlay with a backdrop and a close. |
+| **Popover** ○ | Filters, quick actions, the score explainer. `.spy-nav-popup` is one popover hard-wired to the nav. |
+| **CommandPalette** ● built | The product is a search product. `.spy-modal-search` is the input, not the palette — no result list, no groups, no keyboard model. |
+| **InputTags** ○ | Keyword sets, competitor lists, negative terms. Currently a plain text field and a convention. |
+| **Timeline** ● built | When an ad started, when it stopped, when the scan ran. The verdict rows say *what*; nothing says *when*. |
+| **Tree** ○ | The category taxonomy. `.spy-menu` nests one level; a taxonomy does not. |
+| **InputNumber** ○ | Score thresholds, spend floors, result caps. |
+| **Form** + **FormField** grouping ○ | `.spy-field` is one field. Nothing owns the group: no shared error summary, no required/optional rhythm, no submit row. |
+| **CheckboxGroup** ○ | Every filter list is one. Currently repeated `.spy-checkbox` with the spacing re-decided each time. |
+| **ScrollArea** ○ | Long lists inside a panel. Right now they inherit the browser's scrollbar, which is the one piece of chrome the system does not control. |
+| **Banner** ○ | "You have used 180 of 200 scans." A quota warning is not a toast — it does not dismiss and it is not an event. |
+| **Splitter** ○ | List beside detail, resizable. The app shell assumes fixed widths. |
+| **PricingTable** ○ | The landing page has `.spy-plan` cards but no comparison table, which is the page every pricing page eventually needs. |
+| **AuthForm** ○ | There are two Sign-in frames in Figma and no CSS behind them. |
 
 Deliberately not building: **ColorPicker**, **InputRating**, **InputTime**,
 **PinInput** — spyy has no use for any of them, and a design system that ships
@@ -126,14 +134,14 @@ Legend: ● have · ◐ partial · ○ missing · – framework plumbing
 | – | Marquee | — |  |
 | ○ | ScrollArea | — |  |
 | ● | Table | `.spy-table` | components |
-| ○ | Timeline | — |  |
+| ● | Timeline | `.spy-timeline` | components |
 | ○ | Tree | — |  |
 | ● | User | `.spy-candidate` | patterns |
 | **Navigation** | | | |
-| ● | Breadcrumb | `.spy-breadcrumb` | patterns |
-| ◐ | CommandPalette | `.spy-modal-search` | components |
+| ● | Breadcrumb | `.spy-breadcrumb` | components |
+| ● | CommandPalette | `.spy-cmdk` | components |
 | ○ | Link | — |  |
-| ● | NavigationMenu | `.spy-nav` | components |
+| ● | NavigationMenu | `.spy-navmenu` | components |
 | ● | Pagination | `.spy-pagination` | components |
 | ● | Stepper | `.spy-stepper` | components |
 | ● | Tabs | `.spy-tabs` | components |
@@ -165,7 +173,9 @@ Legend: ● have · ◐ partial · ○ missing · – framework plumbing
 | **Content** | | | |
 | – | ContentNavigation / Search / Toc / Surround | — |  |
 | **AI Chat** | | | |
-| ◐ | ChatMessage / Messages / Prompt / Reasoning / Shimmer / Tool | `.spy-composer` | components |
+| ● | ChatPrompt | `.spy-prompt` | components |
+| ● | ChatTool | `.spy-toolcall` | components |
+| ◐ | ChatMessage / Messages / Reasoning | `.spy-composer` | components |
 | **Editor** | | | |
 | – | Editor / Toolbar / menus | — |  |
 | **Color mode** | | | |

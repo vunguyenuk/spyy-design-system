@@ -299,6 +299,12 @@
   --hf-space-650: 1.5rem;    /* 24px (alias present in source) */
   --hf-space-700: 1.75rem;   /* 28px */
   --hf-space-800: 2rem;      /* 32px */
+  /* 36px is the system's row height — menu item, sidebar row, table row, nav
+     action, navigation-menu item. It was being written as
+     `calc(var(--hf-space-800) + var(--hf-space-100))` in five places, each with
+     a `/* 36px */` comment beside it explaining the arithmetic. A number
+     the system quotes by name is a number the scale should carry.        [D] */
+  --hf-space-900: 2.25rem;   /* 36px — the row height */
   --hf-space-1000: 2.5rem;   /* 40px */
   --hf-space-1200: 3rem;     /* 48px */
   --hf-space-1400: 3.5rem;   /* 56px */
