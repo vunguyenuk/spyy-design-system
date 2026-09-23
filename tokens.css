@@ -659,7 +659,7 @@
   --hf-color-transparent-lime-20: var(--hf-color-lime-alpha-20);
 
   /* Notification */
-  --hf-color-notification-unread: #7a58ff;
+  --hf-color-notification-unread: var(--hf-color-purple-500);
   --hf-color-notification-unread-outline: var(--hf-color-shade-400);
 
   /* Accent hook: components read --q-tint so a subtree can be re-tinted
@@ -798,7 +798,10 @@
 :root {
   /* Success green as a semantic, because the switch's checked track uses it
      rather than the brand colour. Sampled #01c317 in the shipped editor.  [C] */
-  --hf-color-separator-success: #00c314;
+  /* A bold success fill (the switch track, for one). Theme-constant like a
+     tint fill: it carries white ink on both themes, so it must not flip.
+     Was a literal #00c314 left over from the previous palette.       [I] */
+  --hf-color-separator-success: var(--hf-color-green-500);
 
   /* Skeleton fill, sampled from the shipped loading states. Kept as its own
      token because it is not on the surface ramp — it is a hair darker than
@@ -834,7 +837,7 @@
      Confirmed by three differently-tinted surfaces in the capture set.       */
   --q-tint-default: var(--hf-color-lime-500);   /* core product            */
   --q-tint-marketing: var(--hf-color-pink-500); /* a second surface        */
-  --q-tint-compute: #35c6a8;                    /* a third surface (approx)  */
+  --q-tint-compute: var(--hf-color-cyan-300); /* a third surface          */
 }
 
 /* Light counterpart of the addendum. It has to live here, after the :root
@@ -847,7 +850,7 @@
 [data-theme="light"] {
   --hf-surface-app: var(--hf-color-grey-050);      /* white */
   --hf-surface-panel: var(--hf-color-grey-075);
-  --hf-surface-card: var(--hf-color-grey-100);     /* #f4f4f4 */
+  --hf-surface-card: var(--hf-color-grey-100);
   --hf-surface-control: var(--hf-color-grey-125);
 
   /* Skeleton on light, derived at the same distance from the light ramp. [I] */
@@ -856,7 +859,7 @@
   /* Tint used as TEXT (not as a fill) has to darken on a light background:
      lime-500 on white is 1.17:1. The mix keeps this tint-agnostic, so the
      Marketing pink and a third surface teal darken the same way.          [I] */
-  --q-tint-text: color-mix(in oklab, var(--q-tint) 62%, #000000);
+  --q-tint-text: color-mix(in oklab, var(--q-tint) 62%, var(--hf-color-grey-600));
 
   /* Disabled text derived at grey-150 is 1.24:1 on white — far below the
      3:1 that even a disabled control needs to stay readable.            [I] */

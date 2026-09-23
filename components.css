@@ -835,11 +835,11 @@ body {
   --spy-switch-thumb: var(--hf-space-300);          /* 12px */
   --spy-switch-pad: var(--hf-space-050);            /*  2px */
   --spy-switch-track-bg: var(--hf-color-button-tertiary);
-  /* [C] Corrected against Mobbin capture #153: the checked track is the
-     SUCCESS green (#00c314), not the brand lime. Sampled #01c317 from the
-     shipped editor panel. The tint variant below is available where a panel
-     re-tints its controls. */
-  --spy-switch-track-bg-on: var(--hf-color-separator-success, #00c314);
+  /* [C] The checked track is the SUCCESS green, not the brand tint: a switch
+     reports state, and state green is the system's word for "on". It reads
+     from the palette so it moves when the palette moves. The tint variant
+     below is available where a panel re-tints its controls. */
+  --spy-switch-track-bg-on: var(--hf-color-separator-success);
   --spy-switch-thumb-bg: var(--hf-color-button-primary);
   --spy-switch-ring: var(--hf-color-transparent-lime-20);
   position: relative;
@@ -1366,8 +1366,20 @@ body {
   max-width: 100%;
   padding: var(--hf-space-250);
   border-radius: var(--hf-radius-300);
+  /* The toast surface is theme-CONSTANT: the same near-black in both themes,
+     the way a snackbar is. Ink that FLIPS with the theme therefore cannot be
+     used inside it — in the light theme --hf-color-text-primary is near-black
+     and the label vanished into its own panel (measured 1.00:1). These locals
+     pin the toast's ink to the constant side of the palette; every child below
+     reads them instead of the theme-flipping text-* tokens.            [I] */
+  --spy-toast-ink: var(--hf-color-text-on-tint-inverse);
+  --spy-toast-ink-soft: var(--hf-color-transparent-light-70);
+  --spy-toast-ink-dim: var(--hf-color-transparent-light-50);
+  --spy-toast-ink-hover-bg: var(--hf-color-transparent-light-10);
+  --spy-toast-action-bg: var(--hf-color-grey-050);
+  --spy-toast-action-ink: var(--hf-color-grey-550);
   background: var(--hf-color-grey-550);
-  color: var(--hf-color-text-primary);
+  color: var(--spy-toast-ink);
   font-size: var(--hf-type-size-100);
   line-height: var(--hf-type-line-height-300);
   font-weight: var(--hf-type-weight-medium);
@@ -1379,6 +1391,16 @@ body {
 .spy-toast[data-closed] { opacity: 0; }
 .spy-toast:focus-visible { outline: var(--hf-border-width-medium) solid var(--hf-color-border-focus); }
 .spy-toast[data-variant="stacked"] {
+  /* This variant's surface FLIPS with the theme (glass over the page), unlike
+     the base toast's constant near-black. So it puts the theme-flipping inks
+     BACK. The locals declared on .spy-toast are the seam that lets one
+     component carry both kinds of surface without either going invisible. */
+  --spy-toast-ink: var(--hf-color-text-primary);
+  --spy-toast-ink-soft: var(--hf-color-text-secondary);
+  --spy-toast-ink-dim: var(--hf-color-text-tertiary);
+  --spy-toast-ink-hover-bg: var(--hf-color-fill-subtle);
+  --spy-toast-action-bg: var(--hf-color-background-inverse);
+  --spy-toast-action-ink: var(--hf-color-text-inverse);
   align-items: flex-start;
   gap: var(--hf-space-300);
   padding: var(--hf-space-300) var(--hf-space-400);
@@ -1388,21 +1410,28 @@ body {
   backdrop-filter: blur(var(--hf-space-1000));
   box-shadow: var(--hf-shadow-overlay);
 }
-.spy-toast-icon { display: flex; align-items: center; justify-content: center; flex: none; height: var(--hf-type-line-height-500); color: var(--hf-color-text-secondary); }
-.spy-toast-icon[data-status="success"] { color: var(--hf-color-state-success-fg); }
-.spy-toast-icon[data-status="error"]   { color: var(--hf-color-state-error-fg); }
-.spy-toast-icon[data-status="warning"] { color: var(--hf-color-state-warning-fg); }
+.spy-toast-icon { display: flex; align-items: center; justify-content: center; flex: none; height: var(--hf-type-line-height-500); color: var(--spy-toast-ink-soft); }
+/* On the constant near-black base the glow keys, not the state -fg steps:
+   -fg flips with the theme and its light step is tuned for white, which is
+   far too dark to read on this panel. The stacked variant, whose surface
+   does flip, gets the -fg steps back below. */
+.spy-toast:not([data-variant="stacked"]) .spy-toast-icon[data-status="success"] { color: var(--hf-color-state-success-glow); }
+.spy-toast:not([data-variant="stacked"]) .spy-toast-icon[data-status="error"]   { color: var(--hf-color-state-error-glow); }
+.spy-toast:not([data-variant="stacked"]) .spy-toast-icon[data-status="warning"] { color: var(--hf-color-state-warning-glow); }
+.spy-toast[data-variant="stacked"] .spy-toast-icon[data-status="success"] { color: var(--hf-color-state-success-fg); }
+.spy-toast[data-variant="stacked"] .spy-toast-icon[data-status="error"]   { color: var(--hf-color-state-error-fg); }
+.spy-toast[data-variant="stacked"] .spy-toast-icon[data-status="warning"] { color: var(--hf-color-state-warning-fg); }
 .spy-toast-text { display: flex; flex-direction: column; gap: var(--hf-space-050); flex: auto; min-width: 0; }
-.spy-toast-title { margin: 0; color: var(--hf-color-text-primary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); font-weight: var(--hf-type-weight-medium); letter-spacing: var(--hf-type-letter-spacing-loose); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.spy-toast-description { margin: 0; color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); font-weight: var(--hf-type-weight-regular); max-height: calc(3 * var(--hf-type-line-height-300)); overflow: hidden; }
+.spy-toast-title { margin: 0; color: var(--spy-toast-ink); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); font-weight: var(--hf-type-weight-medium); letter-spacing: var(--hf-type-letter-spacing-loose); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spy-toast-description { margin: 0; color: var(--spy-toast-ink-soft); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); font-weight: var(--hf-type-weight-regular); max-height: calc(3 * var(--hf-type-line-height-300)); overflow: hidden; }
 /* Toast action is the INVERSE button — white on dark. High contrast on purpose. */
 .spy-toast-action {
   flex: none; align-self: center;
   padding: var(--hf-space-100) var(--hf-space-250);
   border: none;
   border-radius: var(--hf-radius-250);
-  background-color: var(--hf-color-background-inverse);
-  color: var(--hf-color-text-inverse);
+  background-color: var(--spy-toast-action-bg);
+  color: var(--spy-toast-action-ink);
   font-size: var(--hf-type-size-200);
   line-height: var(--hf-type-line-height-300);
   font-weight: var(--hf-type-weight-medium);
@@ -1414,10 +1443,10 @@ body {
   display: flex; align-items: center; justify-content: center; flex: none;
   width: var(--hf-space-500); height: var(--hf-space-500);
   border: none; border-radius: var(--hf-radius-full);
-  background: none; color: var(--hf-color-text-tertiary); cursor: pointer;
+  background: none; color: var(--spy-toast-ink-dim); cursor: pointer;
   transition: background-color var(--hf-duration-150) var(--hf-ease-out), color var(--hf-duration-150) var(--hf-ease-out);
 }
-.spy-toast-close:hover { background-color: var(--hf-color-overlay-dim-soft); color: var(--hf-color-text-primary); }
+.spy-toast-close:hover { background-color: var(--spy-toast-ink-hover-bg); color: var(--spy-toast-ink); }
 
 /* ---------------------------------------------------------------------------
    TOOLTIP                                                               [C]
@@ -1657,7 +1686,10 @@ body {
   border: var(--hf-border-width-thin) solid var(--hf-color-border-default);
   border-radius: var(--hf-radius-full);
   background-color: var(--hf-color-fill-default);
-  color: var(--hf-color-transparent-light-50);
+  /* --hf-color-fill-default FLIPS (white alpha on dark, black alpha on light),
+     so the ink has to flip with it. A hardcoded white measured 1.12:1 on the
+     light theme.                                                       [I] */
+  color: var(--hf-color-text-secondary);
   font-size: var(--hf-type-size-050);
   white-space: nowrap; z-index: 1;
 }

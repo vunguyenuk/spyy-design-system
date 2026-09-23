@@ -803,3 +803,102 @@ reading the stylesheet: exactly two families appear, `Archivo Black` and `Asta S
 
 The type specimen now labels each row with the face actually painted, read off the rendered element
 at run time, so the label cannot drift from the CSS the way a hand-written one does.
+
+---
+
+## 18. Into Figma, and what the trip found
+
+File: **Spyy Design Tokens** — `https://www.figma.com/design/HxFdyOnSbDlrZ6tNhblWtD`, in the
+Design team. `FIGMA-TOKENS.md` carries the full map; this section records what the export proved
+about the CSS, because that turned out to be the more valuable half.
+
+### 18.1 The three tiers survive the trip
+
+Figma collections nest the way CSS variables do, so the architecture transferred intact rather than
+being flattened: **1. Primitives** (292, one `Value` mode), **2. Semantic** (115, modes `Dark` and
+`Light`), **3. Type scale** (55, modes `Desktop`/`Tablet`/`Mobile`). 462 variables, 0 broken
+aliases, and every one created with an explicit `scopes` array rather than Figma's `ALL_SCOPES`
+default — otherwise a text colour offers itself as a corner radius.
+
+105 of the 115 semantic variables are `VARIABLE_ALIAS` values pointing at a primitive. That is the
+same indirection as `var(--hf-color-grey-550)`, and it is what makes the Figma file re-skinnable the
+way §17 made the stylesheet re-skinnable: change the ramp, every role follows.
+
+The responsive type ladder is the reason collection 3 exists at all. Its three modes are the three
+breakpoints, so a text style bound to `size/700` is 24px on mobile and 28px on desktop without
+anyone maintaining three styles.
+
+### 18.2 What has no representation in Figma
+
+Gradients and shadows are not variable types, so they became styles: `elevation/*` (9) and
+`gradient/*` (8). Two things about that conversion are easy to get wrong:
+
+- Most of the elevation ladder is an **inset sheen plus a drop shadow**, so each style holds two
+  effects — a Figma `INNER_SHADOW` and a `DROP_SHADOW`. Read only the first and you lose half of
+  every elevation.
+- CSS paints the **first** background layer on top; Figma paints the **last** paint in the array on
+  top. The two-layer glass styles are therefore stored in reverse order, which is correct.
+
+Nothing carries `color-mix()`, `calc()`, `backdrop-filter`, the motion tokens or the breakpoints.
+Those stay CSS-only, and the Figma file is honest about not having them rather than approximating.
+
+### 18.3 The export is an audit
+
+Resolving every token in a real browser, at three widths and both themes, is a different act from
+reading the stylesheet — it reports what the cascade *produces*, not what the declarations *say*.
+Doing it surfaced four literals that had survived the palette swap of §17 because they sat outside
+the palette block, which is exactly where §17.8 said to look and exactly where a search for the old
+brand colours would not:
+
+| Token | Was | Now |
+|---|---|---|
+| `--hf-color-separator-success` | `#00c314` | `var(--hf-color-green-500)` |
+| `--hf-color-notification-unread` | `#7a58ff` | `var(--hf-color-purple-500)` |
+| `--q-tint-compute` | `#35c6a8` | `var(--hf-color-cyan-300)` |
+| `--q-tint-text` mix operand | `#000000` | `var(--hf-color-grey-600)` |
+
+Plus a fallback in `components.css` — `var(--hf-color-separator-success, #00c314)` — where the
+fallback was the stale colour the variable had just been moved off. A fallback is a second place to
+forget.
+
+### 18.4 Two more instances of the §14 bug, in a component that carries both kinds of surface
+
+The contrast detector, re-run over the resolved set, found the light-theme toast at **1.00:1** —
+foreground equal to background, the same signature as the parse break in §14.4.
+
+The cause is the pairing rule §17 established: **a surface that does not flip cannot carry ink that
+does.** `.spy-toast` is a constant near-black in both themes, the way a snackbar is, but its title
+read `--hf-color-text-primary`, which in the light theme *is* near-black. The label disappeared into
+its own panel. `.spy-avatar-count` was the mirror image at 1.12:1 — a fill that flips
+(`--hf-color-fill-default`) under ink hardcoded white.
+
+What makes the toast worth recording is that one component carries **both kinds of surface**: the
+base toast is constant, and the `stacked` variant is glass over the page, which flips. Neither a
+constant ink nor a flipping ink is right for the component as a whole. The fix is a seam — five
+locals declared on `.spy-toast` (`--spy-toast-ink`, `-ink-soft`, `-ink-dim`, `-ink-hover-bg`,
+`-action-bg`, `-action-ink`) pointing at the constant side, which the variant re-points at the
+flipping side. Children read the locals and never the theme tokens directly, so adding a third kind
+of toast surface is one block, not an audit.
+
+The status icons needed the same split: on the constant panel they use the theme-constant
+`state/*-glow` keys, because the `-fg` steps flip and the light-theme step is tuned for white and
+far too dark on near-black; on the flipping variant they use `-fg` as usual.
+
+**The generalisation.** §14 said a theme is not a colour swap. §18 narrows it: every element has a
+surface and an ink, and the two must agree about whether they flip. Most of the light-theme bugs in
+this system have been one side of that pair moving without the other. It is checkable — the ratio
+falls to ~1.0 when both land on the same value — which is why the detector finds it and reading the
+rule does not.
+
+### 18.5 The sync path
+
+`extract.mjs` → `prep.mjs` → `w3c.mjs`, all three now repo-relative and runnable from the project
+root, producing `tokens.w3c.json`: 462 tokens in W3C Design Tokens format, 75 distinct references,
+all resolving. That file is the committed source the Figma variables are built from; `tokens.css`
+remains the source of truth above it.
+
+One hand-maintained thing remains, and it is worth knowing before trusting a diff: `prep.mjs` parses
+the two main theme blocks, so the ten roles that live in the `:root` addendum and its light
+counterpart are listed explicitly in the `EXTRA` array at the bottom of `w3c.mjs`. Add a token there
+and it exports; forget, and it is silently missing. The array is small and commented, but it is the
+one place the pipeline can lie by omission.
