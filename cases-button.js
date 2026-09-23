@@ -43,22 +43,13 @@ window.SPY_CASES.push({
         `<button class="spy-btn" data-variant="danger-quiet">Remove</button>` },
 
     { id: 'size', name: 'Size',
-      when: 'Five steps — 24 / 32 / 40 / 48 / 56. The radius does not change with them: a large button is a larger button, not a rounder one.',
+      when: 'Five steps — 24 / 28 / 32 / 40 / 48 — and <code>md</code>, the default, is 40. It used to be 48, which made every button written without a size a landing-page CTA. The radius does not change with the step: a large button is a larger button, not a rounder one.',
       demo:
         `<button class="spy-btn" data-variant="brand" data-size="xxs">xxs</button>` +
         `<button class="spy-btn" data-variant="brand" data-size="xs">xs</button>` +
         `<button class="spy-btn" data-variant="brand" data-size="sm">sm</button>` +
         `<button class="spy-btn" data-variant="brand" data-size="md">md</button>` +
         `<button class="spy-btn" data-variant="brand" data-size="lg">lg</button>` },
-
-    { id: 'density', name: 'App density',
-      when: 'The product shell runs tighter than the marketing ladder: the same five names at 16 / 24 / 32 / 40 / 48, semibold at every step. Opt in with <code>data-scale="app"</code> — it changes height and type, never the variant.',
-      demo:
-        `<button class="spy-btn" data-scale="app" data-variant="brand" data-size="xxs">xxs</button>` +
-        `<button class="spy-btn" data-scale="app" data-variant="brand" data-size="xs">xs</button>` +
-        `<button class="spy-btn" data-scale="app" data-variant="brand" data-size="sm">sm</button>` +
-        `<button class="spy-btn" data-scale="app" data-variant="brand" data-size="md">md</button>` +
-        `<button class="spy-btn" data-scale="app" data-variant="brand" data-size="lg">lg</button>` },
 
     { id: 'icon', name: 'Icon',
       when: 'An icon goes in as a child, before or after the label. It sizes itself from the button — there is no icon size to set.',
@@ -128,7 +119,6 @@ window.SPY_CASES.push({
     props: [
       ['data-variant', 'brand · secondary · tertiary · outline · ghost · danger · danger-quiet · landing-primary · landing-secondary · landing-ghost', 'brand'],
       ['data-size', 'xxs · xs · sm · md · lg', 'md'],
-      ['data-scale', 'app', '—'],
       ['data-icon-only', 'present', '—'],
       ['data-full-width', 'present', '—'],
       ['aria-busy', 'true', '—'],
@@ -142,7 +132,7 @@ window.SPY_CASES.push({
       ['hover', '<code>filter: brightness(0.8)</code> on filled variants; a fill change on the quiet ones'],
       ['active', '<code>filter: brightness(0.6)</code>, and the landing primary drops 2px'],
       ['focus-visible', '2px page-coloured gap inside a 4px brand ring, via <code>box-shadow</code>'],
-      ['disabled', 'opacity on the primary ladder; a flat fill on <code>data-scale="app"</code>'],
+      ['disabled', 'opacity, on every variant'],
       ['aria-busy', 'spinner in the icon slot, label unchanged'],
     ],
   },

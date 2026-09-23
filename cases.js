@@ -62,6 +62,28 @@ function serialize(node, depth) {
 const codeOf = host => [...host.children].map(n => serialize(n, 0)).join('\n');
 const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
+/* The code block is coloured by one pass over the escaped string. Four roles,
+   not eight: the tag, the attribute name, the attribute value, and the text
+   that is actually the content. A highlighter with a colour per token type
+   turns a six-line example into a rainbow and buries the one word that
+   differs between two cases — which, on a page built entirely out of pairs of
+   nearly-identical examples, is the only thing worth seeing. */
+function highlight(escaped) {
+  return escaped.replace(/&lt;(\/?)([a-z0-9-]+)((?:[^&]|&(?!gt;))*)(\/?)&gt;/gi,
+    (m, close, tag, attrs, selfClose) => {
+      const painted = attrs.replace(/([a-z-]+[a-z0-9-]*)(=&quot;[^&]*&quot;|="[^"]*")?/gi,
+        (am, name, val) => {
+          if (!name.trim()) return am;
+          const n = '<span class="tok-attr">' + name + '</span>';
+          if (!val) return n;
+          return n + '=<span class="tok-val">' + val.slice(1) + '</span>';
+        });
+      return '<span class="tok-punc">&lt;' + close + '</span>' +
+             '<span class="tok-tag">' + tag + '</span>' + painted +
+             '<span class="tok-punc">' + selfClose + '&gt;</span>';
+    });
+}
+
 /* -- the renderer ----------------------------------------------------------- */
 
 function renderCase(c, componentId) {
@@ -90,7 +112,7 @@ function renderCase(c, componentId) {
   block.className = 'doc-case-code';
   block.innerHTML =
     `<button class="doc-case-copy spy-btn" data-variant="ghost" data-size="xxs" type="button">Copy</button>` +
-    `<pre><code>${esc(code)}</code></pre>`;
+    `<pre><code>${highlight(esc(code))}</code></pre>`;
   block.querySelector('.doc-case-copy').addEventListener('click', function () {
     navigator.clipboard.writeText(code).then(() => {
       this.textContent = 'Copied';

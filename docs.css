@@ -655,3 +655,14 @@ code {
 }
 .doc-case-preview .doc-tip-wrap { margin-top: var(--hf-space-800); }
 .doc-case-preview .doc-tip-wrap .spy-tooltip { opacity: 1; }
+
+/* Four roles, and the colours come from the state palette rather than a new
+   set: the tag is the brand, an attribute name is the info blue, its value is
+   the success green, and the punctuation recedes. Plain text inside an element
+   stays the code block's own ink, because that text is the content — the one
+   part of the example that is not markup. */
+.doc-case-code .tok-tag  { color: var(--hf-color-state-success-fg); }
+.doc-case-code .tok-attr { color: var(--hf-color-state-info-fg); }
+.doc-case-code .tok-val  { color: var(--hf-color-text-primary); }
+.doc-case-code .tok-punc { color: var(--hf-color-text-tertiary); }
+.doc-case-code code { color: var(--hf-color-text-secondary); }

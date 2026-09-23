@@ -109,16 +109,15 @@ const SEMANTIC_GROUPS = [
 ];
 const HEIGHTS = [
   ['Badge', 14, 'skewed marker'],
-  ['Button xxs / Chip xs', 24, 'inline actions'],
-  ['Chip sm / Nav item', 28, 'top bar'],
-  ['Chip md / Button xs', 32, ''],
+  ['Button xxs / Chip xs', 24, 'inside a table cell'],
+  ['Button xs / Chip sm / Nav item', 28, 'top bar, filter row'],
+  ['Button sm / Chip md / Field sm', 32, 'toolbars'],
   ['Nav action', 36, 'icon buttons in the bar'],
   ['Menu item / table row', 36, 'minimum, can grow'],
   ['Sidebar row', 36, ''],
-  ['Field / Select / Button sm', 40, 'the workhorse control height'],
-  ['Button md / Toggle lg', 48, ''],
+  ['Button md / Field md / Select', 40, 'the default, and the workhorse height'],
+  ['Button lg / Field lg / Toggle lg', 48, 'the one action on a page'],
   ['Nav bar', 52, 'minimum'],
-  ['Button lg', 56, 'inferred'],
   ['Textarea floor', 80, ''],
 ];
 // Family and weight per step. display carries one weight because the display

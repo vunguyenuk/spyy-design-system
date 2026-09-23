@@ -156,21 +156,18 @@ body {
   color: var(--hf-color-text-primary);
   font-family: var(--hf-type-family-secondary);
   /* A button with no data-size used to inherit nothing and fall back to the
-     browser's own 13.33px control font. Every button on the site carries a
-     size, so it never showed — but a default has to be a real step, not the
-     user agent's. md is that step.                                     [I] */
-  font-size: var(--hf-type-size-400);
-  line-height: var(--hf-type-line-height-600);
+     browser's own 13.33px control font in a sharp rectangle 30px tall — a
+     height that is not on the ladder at all. The default is the md step, and
+     the md step is 40.                                                  [I] */
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-500);
   font-weight: var(--hf-type-weight-semi-bold);
-  /* Same gap as the font size, same reason: with no data-size the button had no
-     radius either, so it rendered as a sharp rectangle 30px tall — a height that
-     is not on the ladder at all. The md step is the default.               [I] */
-  height: var(--hf-space-1200);
-  min-width: var(--hf-space-1200);
-  gap: var(--hf-space-150);
-  padding: var(--hf-space-400);
+  height: var(--hf-space-1000);
+  min-width: var(--hf-space-1000);
+  gap: var(--hf-space-200);
+  padding-inline: var(--hf-space-400);
   border-radius: var(--hf-radius-250);
-  letter-spacing: var(--hf-type-letter-spacing-slight);
+  letter-spacing: var(--hf-type-letter-spacing-none);
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -207,50 +204,61 @@ body {
 .spy-btn[aria-disabled="true"] { pointer-events: none; opacity: 0.5; }
 .spy-btn[aria-busy="true"] { cursor: wait; }
 
-/* -- Size ladder ----------------------------------------------------- [C]
-   Heights 24 / 32 / 40 / 48 with radius stepping 6 / 8 / 10 / 12.
-   The radius:height relationship is not proportional — it plateaus. The lg
-   step (56 / 14) is [I], continuing the ladder and cross-checked against the
-   app-scale button at the same height.                                     */
+/* -- Size ladder ------------------------------------------------------ [D]
+   24 / 28 / 32 / 40 / 48, and `md` — the default — is 40.
+
+   It used to be 24 / 32 / 40 / 48 / 56, which put `md` fourth of five: a button
+   with no size written on it came out 48px tall with a 16px semibold label,
+   which is a landing-page CTA, not a product button. Every default button in
+   the system was therefore a size too big, and the fix people reached for was
+   writing data-size="sm" on almost everything.
+
+   The second ladder is gone with it. `data-scale="app"` ran 16/24/32/40/48 for
+   exactly this reason — the product needed smaller buttons than the default —
+   and once the default is 40 the two ladders are the same ladder. One axis
+   fewer, and nobody has to know which scale a screen is on.
+
+   One radius at every step (the control tier) and semibold at every step, so
+   size changes the box and nothing else.                                   */
 .spy-btn[data-size="xxs"] {
   height: var(--hf-space-600); min-width: var(--hf-space-600);
-  gap: var(--hf-space-150); padding: 0 var(--hf-space-300);
+  gap: var(--hf-space-150); padding-inline: var(--hf-space-200);
   border-radius: var(--hf-radius-200);
   font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300);
-  font-weight: var(--hf-type-weight-medium); letter-spacing: var(--hf-type-letter-spacing-none);
+  letter-spacing: var(--hf-type-letter-spacing-none);
   --spy-btn-icon: var(--hf-icon-xs);
 }
 .spy-btn[data-size="xs"] {
-  height: var(--hf-space-800); min-width: var(--hf-space-800);
-  gap: var(--hf-space-150); padding: var(--hf-space-150) var(--hf-space-300);
+  height: var(--hf-space-700); min-width: var(--hf-space-700);
+  gap: var(--hf-space-150); padding-inline: var(--hf-space-250);
   border-radius: var(--hf-radius-200);
-  font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-300);
-  font-weight: var(--hf-type-weight-medium); letter-spacing: var(--hf-type-letter-spacing-none);
+  font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300);
+  letter-spacing: var(--hf-type-letter-spacing-none);
   --spy-btn-icon: var(--hf-icon-sm);
 }
 .spy-btn[data-size="sm"] {
-  height: var(--hf-space-1000); min-width: var(--hf-space-1000);
-  gap: var(--hf-space-150); padding: var(--hf-space-200) var(--hf-space-400);
+  height: var(--hf-space-800); min-width: var(--hf-space-800);
+  gap: var(--hf-space-150); padding-inline: var(--hf-space-300);
   border-radius: var(--hf-radius-250);
   font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-300);
-  font-weight: var(--hf-type-weight-medium); letter-spacing: var(--hf-type-letter-spacing-none);
-  --spy-btn-icon: var(--hf-icon-md);
+  letter-spacing: var(--hf-type-letter-spacing-none);
+  --spy-btn-icon: var(--hf-icon-sm);
 }
 .spy-btn[data-size="md"] {
-  height: var(--hf-space-1200); min-width: var(--hf-space-1200);
-  gap: var(--hf-space-150); padding: var(--hf-space-400);
+  height: var(--hf-space-1000); min-width: var(--hf-space-1000);
+  gap: var(--hf-space-200); padding-inline: var(--hf-space-400);
   border-radius: var(--hf-radius-250);
-  font-size: var(--hf-type-size-400); line-height: var(--hf-type-line-height-600);
-  font-weight: var(--hf-type-weight-semi-bold); letter-spacing: var(--hf-type-letter-spacing-slight);
-  --spy-btn-icon: var(--hf-icon-lg);
+  font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500);
+  letter-spacing: var(--hf-type-letter-spacing-none);
+  --spy-btn-icon: var(--hf-icon-md);
 }
 .spy-btn[data-size="lg"] {
-  height: var(--hf-space-1400); min-width: var(--hf-space-1400);
-  gap: var(--hf-space-200); padding: var(--hf-space-400) var(--hf-space-500);
-  border-radius: var(--hf-radius-250);   /* was 14px, the one value off the scale */
-  font-size: var(--hf-type-size-500); line-height: var(--hf-type-line-height-800);
-  font-weight: var(--hf-type-weight-semi-bold); letter-spacing: var(--hf-type-letter-spacing-slight);
-  --spy-btn-icon: var(--hf-icon-lg);
+  height: var(--hf-space-1200); min-width: var(--hf-space-1200);
+  gap: var(--hf-space-200); padding-inline: var(--hf-space-500);
+  border-radius: var(--hf-radius-250);
+  font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600);
+  letter-spacing: var(--hf-type-letter-spacing-none);
+  --spy-btn-icon: var(--hf-icon-md);
 }
 
 .spy-btn[data-icon-only] { padding-inline: 0; }
@@ -424,30 +432,14 @@ body {
 }
 .spy-btn-group[data-spaced] { gap: var(--hf-space-200); }
 
-/* ---------------------------------------------------------------------------
-   APP-SCALE BUTTON LADDER                                               [C]
-   A second, older ladder still shipping inside the product shell. Heights run
-   16/24/32/40/48/56/64 with tighter padding and a semibold label at every
-   step. Kept because product density depends on the 16 and 24 steps, which
-   the primary ladder does not reach. Opt in per instance.
-   ------------------------------------------------------------------------ */
-.spy-btn[data-scale="app"] { font-weight: var(--hf-type-weight-semi-bold); }
-.spy-btn[data-scale="app"][data-size="xxs"] { height: 16px; min-width: 16px; gap: 4px; padding-inline: 4px;  border-radius: var(--hf-radius-200); font-size: 0.625rem; line-height: 0.875rem; --spy-btn-icon: 8px; }
-.spy-btn[data-scale="app"][data-size="xs"]  { height: 24px; min-width: 24px; gap: 4px; padding: 0 8px 0 6px; border-radius: var(--hf-radius-200); font-size: 0.625rem; line-height: 0.875rem; --spy-btn-icon: 14px; }
-.spy-btn[data-scale="app"][data-size="sm"]  { height: 32px; min-width: 32px; gap: 6px; padding-inline: 8px;  border-radius: var(--hf-radius-250); font-size: 0.75rem;  line-height: 1.125rem; --spy-btn-icon: 16px; }
-.spy-btn[data-scale="app"][data-size="md"]  { height: 40px; min-width: 40px; gap: 6px; padding-inline: 10px; border-radius: var(--hf-radius-250); font-size: 0.875rem; line-height: 1.25rem;  --spy-btn-icon: 18px; }
-.spy-btn[data-scale="app"][data-size="lg"]  { height: 48px; min-width: 48px; gap: 8px; padding-inline: 12px; border-radius: var(--hf-radius-250); font-size: 1rem;     line-height: 1.5rem;   --spy-btn-icon: 20px; }
-
-/* The app ladder's disabled treatment is a flat fill, not opacity.       [C] */
-.spy-btn[data-scale="app"]:disabled,
-.spy-btn[data-scale="app"][aria-disabled="true"] {
-  opacity: 1;
-  background-color: var(--hf-color-button-disabled);
-  color: var(--hf-color-text-disabled);
-  box-shadow: none;
-  filter: none;
-}
-.spy-btn[data-scale="app"]:disabled .spy-icon { color: var(--hf-color-icon-disabled); }
+/* The app-scale ladder that used to sit here is gone. It existed because the
+   product needed buttons smaller than the primary ladder's default — 16/24/32/
+   40/48 against 24/32/40/48/56 — which is the same complaint as "the default
+   button is too big", answered by adding a second ladder instead of moving the
+   first. Now that `md` is 40 the two are the same ladder, and `data-scale` is
+   one axis nobody has to reason about. Its one genuinely different idea, a flat
+   disabled fill instead of opacity, went with it: opacity works on every
+   variant, a fill has to be chosen per variant.                           [D] */
 
 /* ---------------------------------------------------------------------------
    FIELD  (input · textarea · search · select trigger)                   [C]
