@@ -600,8 +600,8 @@ code {
   margin: 0; min-width: 0; padding: var(--hf-space-400) var(--hf-space-500);
   overflow-x: auto;
   font-family: var(--hf-type-family-mono);
-  font-size: var(--hf-type-size-100);
-  line-height: var(--hf-type-line-height-400);
+  font-size: var(--hf-type-size-200);
+  line-height: var(--hf-type-line-height-600);
   color: var(--hf-color-text-secondary);
   tab-size: 2;
 }
@@ -634,7 +634,7 @@ code {
 
 @media (max-width: 48rem) {
   .doc-case-preview { padding: var(--hf-space-400); }
-  .doc-case-code pre { padding: var(--hf-space-300) var(--hf-space-400); font-size: 11px; }
+  .doc-case-code pre { padding: var(--hf-space-300) var(--hf-space-400); font-size: var(--hf-type-size-100); }
 }
 
 /* The field's focus ring lives on :focus-within, which a static example cannot
@@ -656,13 +656,49 @@ code {
 .doc-case-preview .doc-tip-wrap { margin-top: var(--hf-space-800); }
 .doc-case-preview .doc-tip-wrap .spy-tooltip { opacity: 1; }
 
-/* Four roles, and the colours come from the state palette rather than a new
-   set: the tag is the brand, an attribute name is the info blue, its value is
-   the success green, and the punctuation recedes. Plain text inside an element
-   stays the code block's own ink, because that text is the content — the one
-   part of the example that is not markup. */
-.doc-case-code .tok-tag  { color: var(--hf-color-state-success-fg); }
-.doc-case-code .tok-attr { color: var(--hf-color-state-info-fg); }
-.doc-case-code .tok-val  { color: var(--hf-color-text-primary); }
-.doc-case-code .tok-punc { color: var(--hf-color-text-tertiary); }
-.doc-case-code code { color: var(--hf-color-text-secondary); }
+/* ---------------------------------------------------------------------------
+   Syntax colours
+
+   Five roles, and the hue says what kind of thing each one is rather than how
+   important it is: the element is purple, an attribute name is blue, a value is
+   yellow, the text a person will actually read is green, and the brackets that
+   hold it together recede to grey.
+
+   These are documentation tokens, not system tokens — nothing that ships reads
+   them, which is why they live here and not in tokens.css. They are declared
+   per theme rather than pointing at a semantic role, because the semantic
+   layer has no opinion about syntax: it has four status colours and a brand,
+   and borrowing those would say "attribute names are informational" when what
+   is meant is "attribute names are blue". The light-theme steps are 600–700
+   rather than 300, so every role clears 4.5:1 on the block's own fill. The one
+   role that does point at a semantic token is the punctuation: it is not a hue,
+   it is ink that has to recede, and `text/tertiary` already flips with the
+   theme. Pointing it at a raw grey step gave 1.17:1 in dark — invisible.
+--------------------------------------------------------------------------- */
+:root,
+[data-theme="dark"] {
+  --doc-syn-tag:   var(--hf-color-purple-300);
+  --doc-syn-attr:  var(--hf-color-blue-300);
+  --doc-syn-val:   var(--hf-color-yellow-300);
+  --doc-syn-text:  var(--hf-color-green-300);
+  --doc-syn-punc:  var(--hf-color-text-tertiary);
+}
+[data-theme="light"] {
+  --doc-syn-tag:   var(--hf-color-purple-600);
+  --doc-syn-attr:  var(--hf-color-blue-600);
+  --doc-syn-val:   var(--hf-color-yellow-600);
+  --doc-syn-text:  var(--hf-color-cyan-700);
+  --doc-syn-punc:  var(--hf-color-text-tertiary);
+}
+
+.doc-case-code .tok-tag  { color: var(--doc-syn-tag); }
+.doc-case-code .tok-attr { color: var(--doc-syn-attr); }
+.doc-case-code .tok-val  { color: var(--doc-syn-val); }
+.doc-case-code .tok-punc { color: var(--doc-syn-punc); }
+.doc-case-code code      { color: var(--doc-syn-text); }
+
+/* A swatch label is a single token name and its value — "full · 9999px". In a
+   proportional face it fitted; in a monospace it wraps, and a two-line label
+   under a one-line swatch throws the row out. These are labels, not code that
+   can be long, so they do not wrap. */
+.doc-radius-cell code, .doc-scale-row > code { white-space: nowrap; }

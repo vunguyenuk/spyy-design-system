@@ -565,22 +565,11 @@ function renderPickerGrid() {
 }
 
 /* --------------------------------------------------------------- BEHAVIOUR */
-function wireTheme() {
-  const set = (theme) => {
-    document.documentElement.setAttribute('data-theme', theme);
-    $$('#theme-switch [data-theme-set]').forEach(b =>
-      b.toggleAttribute('data-active', b.dataset.themeSet === theme));
-    renderAll();
-  };
-  $$('#theme-switch [data-theme-set]').forEach(btn =>
-    btn.addEventListener('click', () => {
-      set(btn.dataset.themeSet);
-      try { localStorage.setItem('spyy-theme', btn.dataset.themeSet); } catch (e) {}
-    }));
-  let saved = null;
-  try { saved = localStorage.getItem('spyy-theme'); } catch (e) {}
-  if (saved === 'light' || saved === 'dark') set(saved);
-}
+/* The theme switch is wired in shell.js, beside the markup that creates it.
+   What is left here is the part only this page needs: several renderers read
+   resolved colour values out of getComputedStyle and bake them into the DOM,
+   so they have to run again when the theme flips. shell.js calls this hook. */
+window.SPY_ON_THEME = () => renderAll();
 
 function openModal(id) {
   const m = document.getElementById(id); if (!m) return;
@@ -1359,6 +1348,5 @@ function renderAll() {
   renderUsageRows(); renderTints();
 }
 renderAll();
-wireTheme();
 wireInteractions();
 })();

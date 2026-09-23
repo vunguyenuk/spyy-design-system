@@ -169,6 +169,29 @@ if (filter) {
   });
 }
 
+/* ------------------------------------------------------------------- theme
+   The switch is built in this file, so it is wired in this file. It used to be
+   built here and wired in app.js, which meant the control worked on the four
+   pages that load app.js and was dead on the one that does not — the components
+   page, which is now generated from cases.js and has no use for the rest of
+   app.js. A control created in one file and made to work in another is a
+   control that will be dead somewhere.
+
+   A page that bakes resolved colour values into its own DOM — the swatch grids
+   on Foundations read getComputedStyle — hangs a re-render on SPY_ON_THEME.
+   Pages whose markup is plain CSS need no hook and register none.          */
+const themeButtons = [...top.querySelectorAll('[data-theme-set]')];
+const setTheme = (theme, persist) => {
+  document.documentElement.setAttribute('data-theme', theme);
+  themeButtons.forEach(b => b.toggleAttribute('data-active', b.dataset.themeSet === theme));
+  if (persist) { try { localStorage.setItem('spyy-theme', theme); } catch (e) {} }
+  if (typeof window.SPY_ON_THEME === 'function') window.SPY_ON_THEME(theme);
+};
+themeButtons.forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.themeSet, true)));
+let savedTheme = null;
+try { savedTheme = localStorage.getItem('spyy-theme'); } catch (e) {}
+setTheme(savedTheme === 'light' ? 'light' : 'dark', false);
+
 /* ------------------------------------------------- rail drawer on a phone */
 const toggle = top.querySelector('.doc-railtoggle');
 const closeRail = () => { document.body.removeAttribute('data-rail-open'); toggle.setAttribute('aria-expanded', 'false'); };

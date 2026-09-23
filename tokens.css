@@ -344,12 +344,12 @@
   --hf-type-family-display: "Archivo Black", "Arial Black", system-ui, sans-serif;
   --hf-type-family-text: "Asta Sans", system-ui, sans-serif;
 
-  /* There is no third face. The mono slot is kept as a ROLE, because plenty of
-     rules ask for it, but it now resolves to the text face with tabular
-     figures turned on. Token names and hex values stay in a column; a block of
-     code loses its fixed advance width, which is the cost of two faces. To put
-     a monospace back, this is the only line that changes.               [I] */
-  --hf-type-family-mono-base: var(--hf-type-family-text-base);
+  /* The mono slot resolved to the text face for a while, on the argument that a
+     third face was not worth its weight. That held until the component page
+     started printing real markup: a code block in a proportional face loses its
+     fixed advance width, and nested markup stops lining up down the page, which
+     is most of what indentation is for. DM Mono is the third face.       [D] */
+  --hf-type-family-mono-base: "DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* The old four-slot names, now pointing at the two real faces so that no
      component had to be rewritten. primary and secondary are both text;
@@ -360,7 +360,7 @@
   --hf-type-family-primary: var(--hf-type-family-text);
   --hf-type-family-secondary: var(--hf-type-family-text);
   --hf-type-family-grotesk: var(--hf-type-family-display);
-  --hf-type-family-mono: var(--hf-type-family-text);
+  --hf-type-family-mono: var(--hf-type-family-mono-base);
 
   /* -- Typography: weights --------------------------------------------- [C] */
   --hf-type-weight-regular: 400;
