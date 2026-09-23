@@ -28,6 +28,20 @@ const TREE = [
 
 const here = (location.pathname.split('/').pop() || 'index.html');
 
+/* The current page's sections are read off the page itself rather than trusted
+   from the table above. The components page now builds its sections from data,
+   so a hand-maintained copy of their names in this file would be wrong the
+   first time one was added. Other pages fall back to the table, which is still
+   needed for the pages you are not on. */
+(() => {
+  const live = [...document.querySelectorAll('[data-nav]')]
+    .map(el => [el.id, el.getAttribute('data-nav')])
+    .filter(([id]) => id);
+  if (!live.length) return;
+  const row = TREE.find(([href]) => href === here);
+  if (row) row[3] = live;
+})();
+
 /* ---------------------------------------------------------------- top bar */
 const top = document.createElement('header');
 top.className = 'doc-topbar';

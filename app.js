@@ -495,9 +495,9 @@ function renderButtonStates() {
     const cell = el('div', { class: 'doc-state-cell' });
     cell.appendChild(el('span', { class: 'doc-state-label' }, label));
     cell.insertAdjacentHTML('beforeend',
-      `<button class="spy-btn" data-variant="brand" data-size="sm" ${attr}><span class="spy-btn-label">Generate</span></button>
-       <button class="spy-btn" data-variant="outline" data-size="sm" ${attr}><span class="spy-btn-label">Outline</span></button>
-       <button class="spy-btn" data-variant="danger" data-size="sm" ${attr}><span class="spy-btn-label">Delete</span></button>`);
+      `<button class="spy-btn" data-variant="brand" data-size="sm" ${attr}>Generate</button>
+       <button class="spy-btn" data-variant="outline" data-size="sm" ${attr}>Outline</button>
+       <button class="spy-btn" data-variant="danger" data-size="sm" ${attr}>Delete</button>`);
     host.appendChild(cell);
   });
 }
@@ -690,8 +690,7 @@ function wireInteractions() {
     const set = (clientX) => {
       const r = track.getBoundingClientRect();
       const pct = Math.min(100, Math.max(0, ((clientX - r.left) / r.width) * 100));
-      fill.style.width = pct + '%';
-      thumb.style.left = pct + '%';
+      s.style.setProperty('--spy-slider-value', pct + '%');
       if (out) out.textContent = (pct / 100 * max).toFixed(2);
     };
     let dragging = false;
@@ -1234,85 +1233,11 @@ function renderProduct() {
 /* Extracted from components.css with a script, not written by hand: every row
    below corresponds to a selector that exists. If the CSS changes, re-run the
    extraction rather than editing this list, or the docs start lying.        */
-const COMPONENT_API = [
-  ['Button', '.spy-btn', 'full-width · gloss · icon-only · scale app · size lg/md/sm/xs/xxs · variant brand/secondary/tertiary/outline/ghost/danger/danger-quiet · landing-primary/landing-secondary/landing-ghost', 'default · hover · active · focus-visible · disabled · loading'],
-  ['Button', '.spy-btn-group', 'attached · spaced', 'default'],
-  ['Button', '.spy-toggle', 'disabled · pressed · size lg/sm', 'default · hover · focus-visible · disabled'],
-  ['Button', '.spy-tool', 'active', 'default · hover · active · focus-visible'],
-  ['Field', '.spy-field-control', 'disabled · invalid · multiline · size lg/sm', 'default · hover · focus-within · disabled · error'],
-  ['Field', '.spy-field-label', 'invalid', 'default · error'],
-  ['Field', '.spy-field-clear', '—', 'default · hover · focus-visible'],
-  ['Field', '.spy-composer', '—', 'default · focus-within'],
-  ['Field', '.spy-slider', 'disabled', 'default · disabled'],
-  ['Field', '.spy-slider-thumb', '—', 'default · active · focus-visible'],
-  ['Select', '.spy-select-trigger', 'invalid · open', 'default · focus-visible · open · error'],
-  ['Select', '.spy-menu', 'closed', 'default · open'],
-  ['Select', '.spy-menu-item', 'danger · disabled · highlighted · selected', 'default · hover · focus-visible · selected · disabled'],
-  ['Controls', '.spy-checkbox', 'checked · disabled · indeterminate · size lg/sm · variant white', 'default · hover · focus-visible · checked · disabled'],
-  ['Controls', '.spy-radio', 'checked · disabled · size lg/sm · variant error/neutral/success/warning/white', 'default · hover · focus-visible · checked · disabled'],
-  ['Controls', '.spy-switch', 'checked · disabled · size default/medium · variant brand/tint', 'default · active · focus-visible · checked · disabled'],
-  ['Controls', '.spy-step', 'state active/done/todo', 'default'],
-  ['Controls', '.spy-preset', 'selected', 'default · hover · selected'],
-  ['Chip', '.spy-chip', 'disabled · selected · size md/sm/xs/xxs · variant error/info/neutral/success/warning', 'default · hover · focus-visible · selected · disabled'],
-  ['Chip', '.spy-badge', 'shape square · variant blue/lime/lime-subtle/pink/purple', 'default'],
-  ['Chip', '.spy-tag', 'variant glass', 'default'],
-  ['Chip', '.spy-icon', 'fill solid · size lg/md/sm/xl/xs', 'default'],
-  ['Chip', '.spy-icon-tile', 'size lg · tone blue/brand/orange/pink/purple/success', 'default'],
-  ['Tabs', '.spy-tabs', 'variant line/segment', 'default'],
-  ['Tabs', '.spy-tabs-list', 'fill', 'default'],
-  ['Tabs', '.spy-tabs-tab', 'active · disabled', 'default · hover · active · focus-visible · disabled'],
-  ['Overlay', '.spy-modal', 'closed · size lg/md/sm/xl/xs', 'default · open'],
-  ['Overlay', '.spy-modal-backdrop', 'closed', 'default · open'],
-  ['Overlay', '.spy-modal-actions', 'full', 'default'],
-  ['Overlay', '.spy-tooltip', 'closed', 'default · open'],
-  ['Overlay', '.spy-tooltip-arrow', 'side bottom/top', 'default'],
-  ['Surface', '.spy-card', 'variant outline/raised', 'default'],
-  ['Surface', '.spy-panel-section', 'open', 'default · open'],
-  ['Surface', '.spy-glass', 'interactive · tinted', 'default · hover'],
-  ['Surface', '.spy-divider', 'orientation vertical · variant subtle', 'default'],
-  ['Surface', '.spy-media', 'radius', 'default'],
-  ['Surface', '.spy-media-overlay', 'place bottom/center/fill/top', 'default'],
-  ['Surface', '.spy-accordion-item', 'open', 'default · open'],
-  ['Feedback', '.spy-progress', 'indeterminate', 'default'],
-  ['Feedback', '.spy-skeleton', 'shape circle/text', 'default'],
-  ['Feedback', '.spy-empty', 'status error', 'default'],
-  ['Feedback', '.spy-alert', 'status error/info/success/warning', 'default'],
-  ['Feedback', '.spy-toast', 'closed · variant stacked', 'default · focus-visible · open'],
-  ['Feedback', '.spy-toast-icon', 'status error/success/warning', 'default'],
-  ['Feedback', '.spy-toast-viewport', 'position bottom-center/bottom-right/top-right', 'default'],
-  ['Data', '.spy-list', 'divided', 'default'],
-  ['Data', '.spy-list-item', 'interactive', 'default · hover'],
-  ['Data', '.spy-table-value', 'delta positive', 'default'],
-  ['Data', '.spy-avatar', 'size lg/sm', 'default'],
-  ['Data', '.spy-pagination-item', 'active · disabled', 'default · hover · active · disabled'],
-  ['Navigation', '.spy-nav-item', 'accent · active · disabled · open', 'default · hover · active · open · disabled'],
-  ['Navigation', '.spy-nav-action', 'icon-only', 'default · hover · active · focus-visible'],
-  ['Navigation', '.spy-sidebar', 'collapsed', 'default'],
-  ['Navigation', '.spy-sidebar-row', 'active', 'default · hover · active · focus-visible'],
-  ['Navigation', '.spy-sidebar-pin', 'pinned', 'default · hover'],
-];
+/* The per-component API table that used to live here is gone. Every component
+   now carries its own Properties / Parts / States tables, generated from the
+   same data that renders its examples — so a property cannot be listed in one
+   place and missing from the other. See cases.js.                          */
 
-function renderComponentApi() {
-  const host = $('#render-component-api'); if (!host) return;
-  host.innerHTML = '';
-  let lastGroup = null;
-  COMPONENT_API.forEach(([group, base, props, states]) => {
-    const tr = el('tr');
-    const g = group === lastGroup ? '' : group;
-    lastGroup = group;
-    const p = props === '\u2014'
-      ? '<span class="spy-text-tertiary">\u2014</span>'
-      : props.split(' \u00b7 ').map(x => `<code>${x}</code>`).join(' ');
-    tr.innerHTML =
-      `<td class="spy-text-tertiary">${g}</td>
-       <td><code>${base}</code></td>
-       <td class="spy-text-secondary">${p}</td>
-       <td class="spy-text-secondary">${states}</td>`;
-    host.appendChild(tr);
-  });
-}
-
-/* --------------------------------------------- RENDER: states & properties */
 const PROP_TABLE = [
   ['Metric row', 'label · value 0–100 · tone · confidence · pending',
    'default · pending · zero (—)', 'P3 P4'],
@@ -1432,7 +1357,7 @@ function renderAll() {
   renderButtonStates(); renderControlsMatrix(); renderSwitches(); renderPickerGrid();
   renderProduct();
   presetGrid($('#render-presets'), 2); presetGrid($('#render-presets-2'), 4);
-  renderUsageRows(); renderTints(); renderComponentApi();
+  renderUsageRows(); renderTints();
 }
 renderAll();
 wireTheme();

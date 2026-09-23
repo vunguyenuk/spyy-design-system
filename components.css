@@ -384,18 +384,29 @@ body {
   backdrop-filter: blur(var(--hf-space-300));
 }
 
-/* -- Loading --------------------------------------------------------------- */
-.spy-btn[aria-busy="true"] .spy-btn-label { visibility: hidden; }
+/* -- Loading ----------------------------------------------------------------
+   The spinner takes the leading icon slot; the label stays. The previous rule
+   hid `.spy-btn-label` and centred the spinner over it, which meant a button
+   whose label was a bare text node — every button anyone actually writes —
+   rendered the spinner on top of its own words. A helper span nothing documents
+   is not an API, it is a trap. The button is `inline-grid` with
+   `grid-auto-flow: column`, so ::before is simply the first column.
+
+   A button without a leading icon does grow by one icon and one gap while it
+   works. That is the honest trade: the alternative is hiding the label, and a
+   control that erases what it says while it is busy tells you nothing about
+   what it is doing.                                                       [D] */
+.spy-btn[aria-busy="true"] > .spy-icon:first-child { display: none; }
 .spy-btn[aria-busy="true"]::before {
   content: "";
-  position: absolute;
-  inset: 0;
-  margin: auto;
   width: 1em; height: 1em;
   border-radius: var(--hf-radius-full);
   border: var(--hf-border-width-medium) solid currentColor;
   border-top-color: transparent;
   animation: spy-spin var(--hf-duration-800) var(--hf-ease-linear) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .spy-btn[aria-busy="true"]::before { animation-duration: var(--hf-duration-1200); }
 }
 @keyframes spy-spin { to { transform: rotate(360deg); } }
 
@@ -919,7 +930,10 @@ body {
    12px hit track containing a 4px visual rail; 12px thumb in white; the
    thumb's outline (not a shadow) is the brand separator colour.
    ------------------------------------------------------------------------ */
-.spy-slider { position: relative; display: flex; align-items: center; width: 100%; }
+/* The position is one custom property. It used to be two inline styles — a
+   width on the fill and a left on the thumb — which meant every slider in the
+   product carried hand-written CSS and the two could disagree.           [D] */
+.spy-slider { --spy-slider-value: 50%; position: relative; display: flex; align-items: center; width: 100%; }
 .spy-slider-track { position: relative; width: 100%; height: 12px; cursor: pointer; }
 .spy-slider-track::after {
   content: ""; position: absolute; top: 50%; left: 0;
@@ -929,11 +943,12 @@ body {
 }
 .spy-slider-fill {
   position: absolute; top: 50%; left: 0; height: 4px; translate: 0 -50%;
+  width: var(--spy-slider-value);
   border-radius: var(--hf-radius-full);
   background-color: var(--q-tint);
 }
 .spy-slider-thumb {
-  position: absolute; top: 50%; translate: -50% -50%;
+  position: absolute; top: 50%; left: var(--spy-slider-value); translate: -50% -50%;
   width: 12px; height: 12px;
   border: none; padding: 0;
   border-radius: var(--hf-radius-full);
