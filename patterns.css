@@ -33,7 +33,7 @@
   display: inline-flex; align-items: center; justify-content: center;
   min-width: var(--hf-space-500); height: var(--hf-space-500);
   padding-inline: var(--hf-space-150);
-  border-radius: var(--hf-radius-150);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-fill-default);
   color: var(--hf-color-text-secondary);
   font-family: var(--hf-type-family-secondary);
@@ -158,7 +158,7 @@
 .spy-gauge-verdict {
   display: inline-flex; align-items: center;
   padding: 2px var(--hf-space-200);
-  border-radius: var(--hf-radius-150);
+  border-radius: var(--hf-radius-200);
   font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300);
   font-weight: var(--hf-type-weight-medium);
 }
@@ -276,7 +276,7 @@
   display: inline-flex; align-items: center;
   height: var(--hf-space-600);
   padding-inline: var(--hf-space-250);
-  border-radius: var(--hf-radius-150);
+  border-radius: var(--hf-radius-200);
   font-size: var(--hf-type-size-100); line-height: 1;
   font-weight: var(--hf-type-weight-medium);
 }
@@ -298,7 +298,7 @@
   display: inline-flex; align-items: center;
   height: var(--hf-space-600);
   padding-inline: var(--hf-space-250);
-  border-radius: var(--hf-radius-150);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-fill-default);
   color: var(--hf-color-text-primary);
   font-size: var(--hf-type-size-200); line-height: 1;
@@ -321,7 +321,7 @@
   min-height: var(--hf-space-2000);
   padding: var(--hf-space-300);
   border: var(--hf-border-width-thin) solid var(--hf-color-border-default);
-  border-radius: var(--hf-radius-300);
+  border-radius: var(--hf-radius-250);
   background-color: transparent;
   color: var(--hf-color-text-secondary);
   font-family: var(--hf-type-family-secondary);
@@ -359,7 +359,7 @@
   min-height: var(--hf-space-1400);
   padding: var(--hf-space-250) var(--hf-space-300);
   border: none;
-  border-radius: var(--hf-radius-300);
+  border-radius: var(--hf-radius-250);
   background-color: var(--hf-color-overlay-dim-soft);
   color: var(--hf-color-text-primary);
   text-align: start; cursor: pointer; outline: none;
@@ -382,7 +382,7 @@
   display: inline-flex; align-items: center; gap: var(--hf-space-150);
   height: var(--hf-space-600);
   padding-inline: var(--hf-space-150) var(--hf-space-250);
-  border-radius: var(--hf-radius-150);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-fill-subtle);
   color: var(--hf-color-text-primary);
   font-size: var(--hf-type-size-100); line-height: 1;
@@ -425,7 +425,7 @@
   display: inline-flex; align-items: center; gap: var(--hf-space-150);
   height: var(--hf-space-600);
   padding-inline: var(--hf-space-250);
-  border-radius: var(--hf-radius-150);
+  border-radius: var(--hf-radius-200);
   font-size: var(--hf-type-size-100); line-height: 1; font-weight: var(--hf-type-weight-medium);
 }
 .spy-coverage-status > .spy-icon { --spy-icon-size: var(--hf-icon-xs); }
@@ -496,7 +496,7 @@
   width: 100%;
   padding: var(--hf-space-300);
   border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
-  border-radius: var(--hf-radius-300);
+  border-radius: var(--hf-radius-250);
   background-color: var(--hf-color-fill-subtle);
   color: var(--hf-color-text-primary);
   text-align: start; cursor: pointer; outline: none;
@@ -514,7 +514,7 @@
 .spy-candidate-avatar {
   flex-shrink: 0;
   width: var(--hf-space-1200); height: var(--hf-space-1200);
-  border-radius: var(--hf-radius-250);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-background-secondary-strong);
   box-shadow: var(--hf-shadow-inset-tile-hairline);
   overflow: hidden;
@@ -556,7 +556,7 @@
   gap: var(--hf-space-200);
   min-height: var(--hf-space-2400);
   padding: var(--hf-space-600) var(--hf-space-400);
-  border-radius: var(--hf-radius-300);
+  border-radius: var(--hf-radius-400);
   background-color: var(--hf-color-overlay-dim-soft);
   box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle);
   color: var(--hf-color-text-secondary);
@@ -578,7 +578,7 @@
    ------------------------------------------------------------------------ */
 .spy-results { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr)); gap: var(--hf-space-400); }
 .spy-result { display: flex; flex-direction: column; gap: var(--hf-space-250); }
-.spy-result-media { position: relative; border-radius: var(--hf-radius-300); overflow: hidden; aspect-ratio: 9 / 16; background-color: var(--hf-color-background-secondary); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle); }
+.spy-result-media { position: relative; border-radius: var(--hf-radius-400); overflow: hidden; aspect-ratio: 9 / 16; background-color: var(--hf-color-background-secondary); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle); }
 .spy-result-media > img, .spy-result-media > video { width: 100%; height: 100%; object-fit: cover; }
 .spy-result-actions {
   position: absolute; inset-inline: var(--hf-space-200); bottom: var(--hf-space-200);
@@ -593,7 +593,7 @@
 .spy-result-duration {
   display: inline-flex; align-items: center;
   height: var(--hf-space-500); padding-inline: var(--hf-space-200);
-  border-radius: var(--hf-radius-150);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-transparent-dark-60);
   backdrop-filter: blur(var(--hf-space-200));
   /* sits on a 60% black scrim over media, which does not flip with the theme,

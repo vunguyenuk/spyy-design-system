@@ -549,3 +549,9 @@ code {
   .doc-purpose-table td:nth-child(3)::before { content: 'Not for — '; color: var(--hf-color-text-tertiary); }
   .doc-purpose-table td:nth-child(3) { margin-top: var(--hf-space-100); color: var(--hf-color-text-tertiary); }
 }
+
+/* A purpose table standing on its own in a foundations section needs the same
+   breathing room a demo block gets, or the note underneath collides with the
+   swatch grid that follows it. */
+.doc-section > .doc-purpose-table { margin-block: var(--hf-space-500) var(--hf-space-300); }
+.doc-section > .doc-note + [id^="render-"] { margin-top: var(--hf-space-600); }

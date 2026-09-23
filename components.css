@@ -169,7 +169,7 @@ body {
   min-width: var(--hf-space-1200);
   gap: var(--hf-space-150);
   padding: var(--hf-space-400);
-  border-radius: var(--hf-radius-300);
+  border-radius: var(--hf-radius-250);
   letter-spacing: var(--hf-type-letter-spacing-slight);
   text-align: center;
   text-overflow: ellipsis;
@@ -215,7 +215,7 @@ body {
 .spy-btn[data-size="xxs"] {
   height: var(--hf-space-600); min-width: var(--hf-space-600);
   gap: var(--hf-space-150); padding: 0 var(--hf-space-300);
-  border-radius: var(--hf-radius-150);
+  border-radius: var(--hf-radius-200);
   font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300);
   font-weight: var(--hf-type-weight-medium); letter-spacing: var(--hf-type-letter-spacing-none);
   --spy-btn-icon: var(--hf-icon-xs);
@@ -239,7 +239,7 @@ body {
 .spy-btn[data-size="md"] {
   height: var(--hf-space-1200); min-width: var(--hf-space-1200);
   gap: var(--hf-space-150); padding: var(--hf-space-400);
-  border-radius: var(--hf-radius-300);
+  border-radius: var(--hf-radius-250);
   font-size: var(--hf-type-size-400); line-height: var(--hf-type-line-height-600);
   font-weight: var(--hf-type-weight-semi-bold); letter-spacing: var(--hf-type-letter-spacing-slight);
   --spy-btn-icon: var(--hf-icon-lg);
@@ -247,7 +247,7 @@ body {
 .spy-btn[data-size="lg"] {
   height: var(--hf-space-1400); min-width: var(--hf-space-1400);
   gap: var(--hf-space-200); padding: var(--hf-space-400) var(--hf-space-500);
-  border-radius: var(--hf-radius-400);   /* was 14px, the one value off the scale */
+  border-radius: var(--hf-radius-250);   /* was 14px, the one value off the scale */
   font-size: var(--hf-type-size-500); line-height: var(--hf-type-line-height-800);
   font-weight: var(--hf-type-weight-semi-bold); letter-spacing: var(--hf-type-letter-spacing-slight);
   --spy-btn-icon: var(--hf-icon-lg);
@@ -421,11 +421,11 @@ body {
    the primary ladder does not reach. Opt in per instance.
    ------------------------------------------------------------------------ */
 .spy-btn[data-scale="app"] { font-weight: var(--hf-type-weight-semi-bold); }
-.spy-btn[data-scale="app"][data-size="xxs"] { height: 16px; min-width: 16px; gap: 4px; padding-inline: 4px;  border-radius: var(--hf-radius-100); font-size: 0.625rem; line-height: 0.875rem; --spy-btn-icon: 8px; }
+.spy-btn[data-scale="app"][data-size="xxs"] { height: 16px; min-width: 16px; gap: 4px; padding-inline: 4px;  border-radius: var(--hf-radius-200); font-size: 0.625rem; line-height: 0.875rem; --spy-btn-icon: 8px; }
 .spy-btn[data-scale="app"][data-size="xs"]  { height: 24px; min-width: 24px; gap: 4px; padding: 0 8px 0 6px; border-radius: var(--hf-radius-200); font-size: 0.625rem; line-height: 0.875rem; --spy-btn-icon: 14px; }
-.spy-btn[data-scale="app"][data-size="sm"]  { height: 32px; min-width: 32px; gap: 6px; padding-inline: 8px;  border-radius: var(--hf-radius-200); font-size: 0.75rem;  line-height: 1.125rem; --spy-btn-icon: 16px; }
+.spy-btn[data-scale="app"][data-size="sm"]  { height: 32px; min-width: 32px; gap: 6px; padding-inline: 8px;  border-radius: var(--hf-radius-250); font-size: 0.75rem;  line-height: 1.125rem; --spy-btn-icon: 16px; }
 .spy-btn[data-scale="app"][data-size="md"]  { height: 40px; min-width: 40px; gap: 6px; padding-inline: 10px; border-radius: var(--hf-radius-250); font-size: 0.875rem; line-height: 1.25rem;  --spy-btn-icon: 18px; }
-.spy-btn[data-scale="app"][data-size="lg"]  { height: 48px; min-width: 48px; gap: 8px; padding-inline: 12px; border-radius: var(--hf-radius-300); font-size: 1rem;     line-height: 1.5rem;   --spy-btn-icon: 20px; }
+.spy-btn[data-scale="app"][data-size="lg"]  { height: 48px; min-width: 48px; gap: 8px; padding-inline: 12px; border-radius: var(--hf-radius-250); font-size: 1rem;     line-height: 1.5rem;   --spy-btn-icon: 20px; }
 
 /* The app ladder's disabled treatment is a flat fill, not opacity.       [C] */
 .spy-btn[data-scale="app"]:disabled,
@@ -553,7 +553,7 @@ body {
   display: inline-flex; align-items: center; justify-content: center;
   width: var(--hf-space-500); height: var(--hf-space-500);
   flex-shrink: 0; padding: 0;
-  border: none; border-radius: var(--hf-radius-100);
+  border: none; border-radius: var(--hf-radius-200);
   background: none; color: var(--hf-color-icon-secondary);
   cursor: pointer; outline: none;
   transition-property: color, background-color;
@@ -608,7 +608,7 @@ body {
   min-width: 12rem;
   max-width: 22rem;
   padding: var(--hf-space-200);
-  border-radius: var(--hf-radius-300);
+  border-radius: var(--hf-radius-400);
   background-color: var(--hf-color-background-glass);
   backdrop-filter: blur(var(--hf-space-1000));
   box-shadow:
@@ -696,7 +696,7 @@ body {
   display: inline-flex; align-items: center; gap: var(--hf-space-100);
   flex-shrink: 0;
   padding: var(--hf-space-050) var(--hf-space-100);
-  border-radius: var(--hf-radius-100);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-fill-subtle);
   color: var(--hf-color-text-on-overlay-secondary);
   font-size: var(--hf-type-size-050);
@@ -745,7 +745,7 @@ body {
   transition-property: background-color, border-color, color;
   transition-duration: var(--hf-duration-150);
 }
-.spy-checkbox .spy-control-box { border-radius: var(--hf-radius-150); }
+.spy-checkbox .spy-control-box { border-radius: var(--hf-radius-200); }
 .spy-radio .spy-control-box { border-radius: var(--hf-radius-full); }
 
 .spy-checkbox:hover .spy-control-box,
@@ -890,7 +890,7 @@ body {
   gap: var(--hf-space-200);
   padding-inline: var(--hf-space-300);
   border: none;
-  border-radius: var(--hf-radius-300);
+  border-radius: var(--hf-radius-250);
   background-color: transparent;
   color: var(--hf-color-text-secondary);
   font-family: var(--hf-type-family-secondary);
@@ -1064,7 +1064,7 @@ body {
 .spy-tag {
   display: inline-flex; align-items: center; gap: var(--hf-space-100);
   padding: var(--hf-space-050) var(--hf-space-150);
-  border-radius: var(--hf-radius-100);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-fill-subtle);
   color: var(--hf-color-text-on-overlay-secondary);
   font-size: var(--hf-type-size-050);
@@ -1228,7 +1228,7 @@ body {
   isolation: isolate;
   display: flex; flex-direction: column;
   min-width: 0;
-  border-radius: var(--hf-radius-600);
+  border-radius: var(--hf-radius-400);
   background-color: var(--hf-color-background-glass);
   backdrop-filter: blur(var(--spy-glass-blur)) saturate(var(--spy-glass-saturate));
   color: var(--hf-color-text-primary);
@@ -1251,7 +1251,7 @@ body {
   width: 100%;
   aspect-ratio: var(--spy-tile-ratio, 16 / 9);
   border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
-  border-radius: var(--hf-radius-300);
+  border-radius: var(--hf-radius-250);
   background-color: var(--hf-color-background-secondary);
   box-shadow: var(--hf-shadow-inset-tile);
   overflow: hidden;
@@ -1287,7 +1287,7 @@ body {
   width: min(var(--q-modal-width), calc(100vw - var(--hf-space-800)));
   max-height: calc(100dvh - var(--hf-space-1600));
   padding: var(--hf-space-200);
-  border-radius: var(--hf-radius-600);
+  border-radius: var(--hf-radius-400);
   background-color: var(--hf-color-background-glass);
   backdrop-filter: blur(var(--hf-space-1000));
   box-shadow: var(--hf-shadow-modal);
@@ -1366,7 +1366,7 @@ body {
   min-height: var(--hf-space-1000);
   max-width: 100%;
   padding: var(--hf-space-250);
-  border-radius: var(--hf-radius-300);
+  border-radius: var(--hf-radius-400);
   /* The toast surface is theme-CONSTANT: the same near-black in both themes,
      the way a snackbar is. Ink that FLIPS with the theme therefore cannot be
      used inside it — in the light theme --hf-color-text-primary is near-black
@@ -1557,7 +1557,7 @@ body {
 .spy-nav-popup {
   box-sizing: border-box;
   border: var(--hf-border-width-thin) solid var(--hf-color-border-subtle);
-  border-radius: var(--hf-radius-600);
+  border-radius: var(--hf-radius-400);
   background-color: var(--hf-color-background-glass);
   backdrop-filter: blur(var(--hf-space-1000));
   color: var(--hf-color-text-primary);
@@ -1596,7 +1596,7 @@ body {
   flex: 1 1 0; min-width: 0;
   height: calc(var(--hf-space-600) + var(--hf-space-300));  /* 36px */
   padding: var(--hf-space-150);
-  border: none; border-radius: var(--hf-radius-300);
+  border: none; border-radius: var(--hf-radius-250);
   background-color: transparent;
   color: var(--hf-color-text-primary);
   font: inherit; text-align: start; cursor: pointer; overflow: hidden;
@@ -1633,7 +1633,7 @@ body {
   width: 100%;
   min-height: calc(var(--hf-space-600) + var(--hf-space-300));
   padding: var(--hf-space-150);
-  border-radius: var(--hf-radius-300);
+  border-radius: var(--hf-radius-250);
   background-color: var(--hf-color-overlay-hover);
   color: var(--hf-color-icon-secondary);
 }
@@ -1655,7 +1655,7 @@ body {
   inset-inline-end: var(--hf-space-150);
   display: inline-flex; align-items: center; justify-content: center;
   width: var(--hf-space-500); height: var(--hf-space-500);
-  padding: 0; border: none; border-radius: var(--hf-radius-150);
+  padding: 0; border: none; border-radius: var(--hf-radius-200);
   background-color: transparent;
   color: var(--hf-color-icon-tertiary);
   cursor: pointer; opacity: 0;
@@ -1758,7 +1758,7 @@ body {
 /* Shine loader — the placeholder used while a generation renders. */
 .spy-loader-shine {
   position: relative;
-  border-radius: var(--hf-radius-300);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-background-tertiary);
   overflow: hidden;
 }
@@ -1779,7 +1779,7 @@ body {
   animation: spy-shimmer-vertical 2s infinite;
 }
 @keyframes spy-shimmer-vertical { from { top: -100%; } to { top: 100%; } }
-.spy-skeleton[data-shape="text"] { height: var(--hf-space-400); border-radius: var(--hf-radius-100); }
+.spy-skeleton[data-shape="text"] { height: var(--hf-space-400); border-radius: var(--hf-radius-200); }
 .spy-skeleton[data-shape="circle"] { border-radius: var(--hf-radius-full); }
 
 /* ---------------------------------------------------------------------------
@@ -1888,7 +1888,7 @@ body {
 .spy-alert {
   display: flex; align-items: flex-start; gap: var(--hf-space-200);
   padding: var(--hf-space-300);
-  border-radius: var(--hf-radius-300);
+  border-radius: var(--hf-radius-400);
   background-color: var(--hf-color-fill-subtle);
   color: var(--hf-color-text-primary);
   font-size: var(--hf-type-size-200);
@@ -1919,7 +1919,7 @@ body {
   overflow: hidden;
 }
 .spy-media > img, .spy-media > video { width: 100%; height: 100%; object-fit: cover; display: block; }
-.spy-media[data-radius] { border-radius: var(--hf-radius-300); }
+.spy-media[data-radius] { border-radius: var(--hf-radius-400); }
 .spy-media-overlay {
   position: absolute;
   display: flex; align-items: center; justify-content: center;
@@ -2092,7 +2092,7 @@ body {
   box-shadow: var(--hf-shadow-sheen);
 }
 .spy-icon-tile > .spy-icon { --spy-icon-size: var(--hf-icon-sm); }
-.spy-icon-tile[data-size="lg"] { width: var(--hf-space-800); height: var(--hf-space-800); border-radius: var(--hf-radius-250); }
+.spy-icon-tile[data-size="lg"] { width: var(--hf-space-800); height: var(--hf-space-800); border-radius: var(--hf-radius-200); }
 .spy-icon-tile[data-tone="brand"]   { background-color: var(--hf-color-brand-primary); color: var(--hf-color-text-on-tint); }
 .spy-icon-tile[data-tone="pink"]    { background-color: var(--hf-color-brand-pink); color: var(--hf-color-text-primary); }
 .spy-icon-tile[data-tone="purple"]  { background-color: var(--hf-color-purple-600); color: var(--hf-color-text-primary); }
@@ -2110,7 +2110,7 @@ body {
   min-width: var(--hf-space-600);
   height: var(--hf-space-500);
   padding-inline: var(--hf-space-150);
-  border-radius: var(--hf-radius-150);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-background-secondary-strong);
   color: var(--hf-color-text-secondary);
   font-size: var(--hf-type-size-100);
@@ -2128,7 +2128,7 @@ body {
 .spy-notice {
   display: flex; align-items: center; gap: var(--hf-space-300);
   padding: var(--hf-space-300) var(--hf-space-400);
-  border-radius: var(--hf-radius-300);
+  border-radius: var(--hf-radius-400);
   background-color: var(--hf-color-fill-subtle);
 }
 .spy-notice-text { display: flex; flex-direction: column; gap: 2px; flex: 1 1 0; min-width: 0; }
@@ -2147,7 +2147,7 @@ body {
 .spy-panel {
   display: flex; flex-direction: column;
   width: 26rem; max-width: 100%;
-  border-radius: var(--hf-radius-500);
+  border-radius: var(--hf-radius-400);
   background-color: var(--hf-surface-panel, var(--hf-color-background-primary));
   box-shadow:
     inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle),
@@ -2170,7 +2170,7 @@ body {
 /* Collapsible section: an uppercase 11px label with a rotating chevron, in a
    nested container one step up from the panel surface. */
 .spy-panel-section {
-  border-radius: var(--hf-radius-300);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-fill-subtle);
   overflow: hidden;
 }
@@ -2240,7 +2240,7 @@ body {
 .spy-preset-thumb {
   position: relative;
   aspect-ratio: 4 / 3;
-  border-radius: var(--hf-radius-250);
+  border-radius: var(--hf-radius-200);
   background-color: var(--hf-color-background-secondary-strong);
   box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle);
   overflow: hidden;
@@ -2354,7 +2354,7 @@ body {
      has to be built in: 24px tall, negative-margined so the row does not grow. */
   min-height: var(--hf-space-600);
   padding-inline: var(--hf-space-150); margin-inline: calc(-1 * var(--hf-space-150));
-  border-radius: var(--hf-radius-100);
+  border-radius: var(--hf-radius-200);
   color: inherit; font: inherit; cursor: pointer;
 }
 .spy-table-filter:hover { background-color: var(--hf-color-overlay-hover); }

@@ -290,17 +290,34 @@
   --hf-space-2400: 6rem;     /* 96px */
 
   /* -- Radius ---------------------------------------------------------- [C] */
+  /* Nine steps were in use across sixty declarations, which is a ladder, not a
+     rule: a component's corner came from whoever wrote it. Four of them now
+     carry the whole system, and each answers one question — what is this box?
+
+       050   a sticker.   The badge, and nothing else.
+       200   a MARKER.    It labels, or it holds an icon: menu item, tag,
+                          tooltip, skeleton, list row, icon tile, compact button.
+       250   a CONTROL.   You click it or you type in it: button, field, select,
+                          textarea, toggle, nav action, tile. One value for every
+                          size — a large button is not a rounder button.
+       400   a PANEL.     It contains controls: card, modal, toast, alert, menu,
+                          sidebar, table, feature, plan, quote, the CTA band.
+       full  a track or a dot: radio, switch, slider, avatar, progress, chip.
+
+     A box nested inside a panel steps down one tier, so the inner corner never
+     matches the outer one. 100, 150, 300, 500 and 600 stay in the scale for
+     product work, but no component reads them.                            [D] */
   --hf-radius-0: 0;
-  --hf-radius-050: 0.125rem; /*  2px — badge */
+  --hf-radius-050: 0.125rem; /*  2px — sticker: badge */
   --hf-radius-100: 0.25rem;  /*  4px */
   --hf-radius-150: 0.375rem; /*  6px */
-  --hf-radius-200: 0.5rem;   /*  8px — menu item, tooltip, chip-less controls */
-  --hf-radius-250: 0.625rem; /* 10px — nav action, select sm */
-  --hf-radius-300: 0.75rem;  /* 12px — field, dropdown, button md  (dominant) */
-  --hf-radius-400: 1rem;     /* 16px — sidebar, toast, card */
+  --hf-radius-200: 0.5rem;   /*  8px — MARKER */
+  --hf-radius-250: 0.625rem; /* 10px — CONTROL */
+  --hf-radius-300: 0.75rem;  /* 12px */
+  --hf-radius-400: 1rem;     /* 16px — PANEL */
   --hf-radius-500: 1.25rem;  /* 20px */
-  --hf-radius-600: 1.5rem;   /* 24px — modal, glass, nav popup */
-  --hf-radius-full: 9999px;
+  --hf-radius-600: 1.5rem;   /* 24px */
+  --hf-radius-full: 9999px;  /*        track, dot, pill */
 
   /* -- Border width ---------------------------------------------------- [C] */
   --hf-border-width-none: 0px;

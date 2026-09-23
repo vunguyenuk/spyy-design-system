@@ -148,7 +148,7 @@
   justify-items: center;
   text-align: center;
   padding: var(--hf-space-1400) var(--hf-space-500);
-  border-radius: var(--hf-radius-600);
+  border-radius: var(--hf-radius-400);
   background-color: var(--hf-color-background-secondary);
 }
 .spy-cta[data-tone="brand"] {

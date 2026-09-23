@@ -99,11 +99,25 @@
   <header class="doc-section-head">
     <h2 class="spy-h5">Radius</h2>
     <p class="spy-body-s spy-text-secondary">
-      Radius does not scale with the element. It <em>plateaus</em>: controls climb 6 → 8 → 10 → 12 and
-      stop, while containers jump to 16 and 24. A 48px button and a 640px modal are only two steps apart.
-      Counted across the live page, 12px was the single most used radius in the product.
+      Radius answers one question — <em>what is this box?</em> — and the answer is never its size.
+      Nine steps were in use across sixty declarations, which is a ladder, not a rule. Four of them
+      now carry the whole system.
     </p>
   </header>
+  <table class="doc-purpose-table">
+    <thead><tr><th>Tier</th><th>Use it for</th><th>Not for</th></tr></thead>
+    <tbody>
+      <tr><td><code>050</code> · 2px</td><td>The badge sticker, and nothing else.</td><td>Anything you can click.</td></tr>
+      <tr><td><code>200</code> · 8px — <strong>marker</strong></td><td>It labels, or it holds an icon: menu item, tag, tooltip, list row, skeleton, icon tile, the two compact button sizes.</td><td>Anything that contains a control.</td></tr>
+      <tr><td><code>250</code> · 10px — <strong>control</strong></td><td>You click it or you type in it: button, field, select, textarea, toggle, nav action, tile. Every size, one value.</td><td>A panel. A large button is not a rounder button.</td></tr>
+      <tr><td><code>400</code> · 16px — <strong>panel</strong></td><td>It contains controls: card, modal, toast, alert, menu, sidebar, table, feature, plan, quote, the CTA band.</td><td>A control sitting inside one.</td></tr>
+      <tr><td><code>full</code></td><td>A track or a dot: radio, switch, slider, avatar, progress, chip.</td><td>Anything rectangular.</td></tr>
+    </tbody>
+  </table>
+  <p class="spy-caption-m spy-text-secondary doc-note">
+    A box nested inside a panel steps down one tier, so the inner corner never matches the outer one.
+    100, 150, 300, 500 and 600 stay in the scale for product work — no component reads them.
+  </p>
   <div id="render-radius"></div>
 </section>
 
