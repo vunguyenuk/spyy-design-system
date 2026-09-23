@@ -108,7 +108,7 @@ a.doc-rail-level:hover { color: var(--q-tint-text); }
 
 /* -- content --------------------------------------------------------------- */
 .doc-lede { padding-block: var(--hf-space-1600) var(--hf-space-1000); }
-.doc-lede h1 { max-width: 22ch; }
+.doc-lede h1 { max-width: 20ch; }
 .doc-lede-text { max-width: var(--doc-measure); margin: var(--hf-space-400) 0 var(--hf-space-600); }
 .doc-legend { display: flex; flex-wrap: wrap; align-items: center; gap: var(--hf-space-250) var(--hf-space-500); }
 /* each badge stays with the sentence that explains it — the legend wraps
@@ -499,4 +499,35 @@ code {
 #api .spy-table td:nth-child(3) code { display: inline-block; margin-block: 1px; }
 @media (max-width: 60rem) {
   #api .spy-table td:nth-child(2) { white-space: normal; overflow-wrap: anywhere; }
+}
+
+/* ---------------------------------------------------------------------------
+   PURPOSE TABLE
+   A variant list tells you what exists; it does not tell you which to pick.
+   This table is the missing half — one row per variant, what it is for and
+   what it is not. It sits above the specimen because the decision comes first.
+   ------------------------------------------------------------------------ */
+.doc-purpose { margin: var(--hf-space-400) 0 var(--hf-space-600); display: grid; gap: var(--hf-space-200); }
+.doc-purpose-table { width: 100%; border-collapse: collapse; text-align: left; }
+.doc-purpose-table th {
+  padding: var(--hf-space-150) var(--hf-space-200);
+  color: var(--hf-color-text-tertiary);
+  font-weight: var(--hf-type-weight-medium);
+  border-bottom: var(--hf-border-width-thin) solid var(--hf-color-border-default);
+  white-space: nowrap;
+}
+.doc-purpose-table td {
+  padding: var(--hf-space-200);
+  color: var(--hf-color-text-secondary);
+  border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-secondary);
+  vertical-align: top;
+}
+.doc-purpose-table td:first-child { white-space: nowrap; width: 1%; }
+.doc-purpose-table tr:last-child td { border-bottom: none; }
+.doc-purpose-table code {
+  font-family: var(--hf-type-family-mono);
+  color: var(--hf-color-text-primary);
+  background-color: var(--hf-color-fill-subtle);
+  padding: 0 var(--hf-space-100);
+  border-radius: var(--hf-radius-100);
 }

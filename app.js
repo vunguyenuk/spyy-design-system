@@ -1235,7 +1235,7 @@ function renderProduct() {
    below corresponds to a selector that exists. If the CSS changes, re-run the
    extraction rather than editing this list, or the docs start lying.        */
 const COMPONENT_API = [
-  ['Button', '.spy-btn', 'full-width · gloss · icon-only · scale app · size lg/md/sm/xl/xs/xxl/xxs · variant brand/brand-soft/danger/danger-soft/ghost/marketing-ghost/marketing-primary/marketing-secondary/marketing-tertiary/outline/secondary/success-soft/tertiary/warning-soft', 'default · hover · active · focus-visible · disabled · loading'],
+  ['Button', '.spy-btn', 'full-width · gloss · icon-only · scale app · size lg/md/sm/xs/xxs · variant brand/secondary/tertiary/outline/ghost/danger/danger-quiet · landing-primary/landing-secondary/landing-ghost', 'default · hover · active · focus-visible · disabled · loading'],
   ['Button', '.spy-btn-group', 'attached · spaced', 'default'],
   ['Button', '.spy-toggle', 'disabled · pressed · size lg/sm', 'default · hover · focus-visible · disabled'],
   ['Button', '.spy-tool', 'active', 'default · hover · active · focus-visible'],

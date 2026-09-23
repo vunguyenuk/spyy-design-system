@@ -32,8 +32,33 @@
   <header class="doc-section-head">
     <h2 class="spy-h5">Button</h2>
     <p class="spy-body-s spy-text-secondary">
-      One base component, five properties. Three structural decisions are carried over exactly and
-      are worth knowing before you touch it:
+      One base component, ten variants — each with one job. Pick by the job, not by the look.
+    </p>
+
+    <div class="doc-purpose">
+      <table class="doc-purpose-table spy-caption-l">
+        <thead><tr><th>Variant</th><th>Use it for</th><th>Not for</th></tr></thead>
+        <tbody>
+          <tr><td><code>brand</code></td><td>The one action the screen exists for.</td><td>More than one per view.</td></tr>
+          <tr><td><code>secondary</code></td><td>An action of equal weight beside the primary — Cancel next to Save.</td><td>Anything you want people to notice first.</td></tr>
+          <tr><td><code>tertiary</code></td><td>A filled but quiet action; rows of icon buttons.</td><td>Destructive actions.</td></tr>
+          <tr><td><code>outline</code></td><td>An alternative that needs an edge but no weight — over media, or on a busy surface.</td><td>Dense toolbars; the border adds noise.</td></tr>
+          <tr><td><code>ghost</code></td><td>The lowest emphasis. Toolbars, icon-only, anything repeated many times.</td><td>A primary action.</td></tr>
+          <tr><td><code>danger</code></td><td>Destructive, and it is the loud action on the screen — the confirm inside a delete dialog.</td><td>The trigger that opens that dialog.</td></tr>
+          <tr><td><code>danger-quiet</code></td><td>Destructive, sitting among neutral actions — a delete in a row of icon buttons.</td><td>A confirmation step.</td></tr>
+          <tr><td><code>landing-primary</code></td><td>The hero CTA on a marketing page.</td><td>Anywhere inside the product.</td></tr>
+          <tr><td><code>landing-secondary</code></td><td>The second CTA beside it.</td><td>Inside the product.</td></tr>
+          <tr><td><code>landing-ghost</code></td><td>A quiet marketing CTA, usually over an image.</td><td>Inside the product.</td></tr>
+        </tbody>
+      </table>
+      <p class="spy-caption-l spy-text-tertiary">
+        Sizes are <code>xxs xs sm md lg</code> on both ladders. <code>data-scale="app"</code> switches to the
+        denser product ladder at the same five names.
+      </p>
+    </div>
+
+    <p class="spy-body-s spy-text-secondary">
+      Three structural decisions are carried over exactly and are worth knowing before you touch it:
     </p>
     <ul class="doc-bullets spy-caption-l spy-text-secondary">
       <li><code>display: inline-grid</code> with <code>grid-auto-flow: column</code> — not flex. A lone label
@@ -56,15 +81,15 @@
     <h3 class="doc-demo-title">Variants <span class="doc-ev" data-ev="c">Confirmed</span></h3>
     <div class="doc-demo-row">
       <button class="spy-btn" data-variant="brand" data-size="sm">Generate</button>
-      <button class="spy-btn" data-variant="brand-soft" data-size="sm">Login</button>
+      <button class="spy-btn" data-variant="tertiary" data-size="sm">Login</button>
       <button class="spy-btn" data-variant="secondary" data-size="sm">Save draft</button>
       <button class="spy-btn" data-variant="tertiary" data-size="sm">Upload</button>
       <button class="spy-btn" data-variant="ghost" data-size="sm">Cancel</button>
       <button class="spy-btn" data-variant="outline" data-size="sm">Learn more</button>
       <button class="spy-btn" data-variant="danger" data-size="sm">Delete</button>
-      <button class="spy-btn" data-variant="danger-soft" data-size="sm">Remove</button>
-      <button class="spy-btn" data-variant="success-soft" data-size="sm">Approved</button>
-      <button class="spy-btn" data-variant="warning-soft" data-size="sm">Review</button>
+      <button class="spy-btn" data-variant="danger-quiet" data-size="sm">Remove</button>
+      <button class="spy-btn" data-variant="tertiary" data-size="sm">Approved</button>
+      <button class="spy-btn" data-variant="tertiary" data-size="sm">Review</button>
     </div>
   </div>
 
@@ -77,10 +102,10 @@
       button drops 2px.
     </p>
     <div class="doc-demo-row doc-demo-row-lg">
-      <button class="spy-btn" data-variant="marketing-primary" data-size="md">Get your discount</button>
-      <button class="spy-btn" data-variant="marketing-secondary" data-size="md">Book a demo</button>
-      <button class="spy-btn" data-variant="marketing-tertiary" data-size="md">Watch film</button>
-      <button class="spy-btn" data-variant="marketing-ghost" data-size="md">Explore</button>
+      <button class="spy-btn" data-variant="landing-primary" data-size="md">Get your discount</button>
+      <button class="spy-btn" data-variant="landing-secondary" data-size="md">Book a demo</button>
+      <button class="spy-btn" data-variant="outline" data-size="md">Watch film</button>
+      <button class="spy-btn" data-variant="landing-ghost" data-size="md">Explore</button>
     </div>
   </div>
 
@@ -109,8 +134,8 @@
       <button class="spy-btn" data-scale="app" data-variant="brand" data-size="sm">32</button>
       <button class="spy-btn" data-scale="app" data-variant="brand" data-size="md">40</button>
       <button class="spy-btn" data-scale="app" data-variant="brand" data-size="lg">48</button>
-      <button class="spy-btn" data-scale="app" data-variant="brand" data-size="xl">56</button>
-      <button class="spy-btn" data-scale="app" data-variant="brand" data-size="xxl">64</button>
+      <button class="spy-btn" data-scale="app" data-variant="brand" data-size="lg">56</button>
+      <button class="spy-btn" data-scale="app" data-variant="brand" data-size="lg">64</button>
       <button class="spy-btn" data-scale="app" data-variant="brand" data-size="md" disabled>disabled</button>
     </div>
   </div>
@@ -776,7 +801,7 @@
             <button class="spy-nav-action" data-icon-only aria-label="Settings"><svg class="spy-icon"><use href="#i-settings"/></svg></button>
           </div>
           <span class="spy-nav-actions-divider"></span>
-          <button class="spy-btn" data-variant="brand-soft" data-size="xs">Login</button>
+          <button class="spy-btn" data-variant="tertiary" data-size="xs">Login</button>
           <button class="spy-btn" data-variant="brand" data-size="xs">Sign up</button>
         </div>
       </nav>
