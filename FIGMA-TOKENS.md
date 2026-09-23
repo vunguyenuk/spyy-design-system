@@ -43,6 +43,37 @@ itself only for text fills, `border/*` and `divider/*` only for strokes,
 `state/*-glow` only for effects and strokes, spacing only for gaps, radius only
 for corner radius, weights only for font weight.
 
+### Text styles are named by role, not by step
+
+The variables carry the numeric ladder — `size/100`, `size/200`, `line-height/600`. The **styles do not
+repeat it.** A picker listing `UI/050/Regular`, `UI/100/Medium`, `UI/100/SemiBold` … makes a designer learn
+the token layer before they can set a piece of text, and it says nothing about whether a step belongs on a
+landing page or inside the product.
+
+So the 28 text styles are organised **surface first, then role**:
+
+| | |
+|---|---|
+| `Landing/Display`, `Landing/H1`–`H6` | marketing headings — Archivo Black on Display and H1–H3 |
+| `Landing/Body/*`, `Landing/Caption/*` | marketing copy |
+| `App/Page title` | the one title at the top of a screen |
+| `App/Title/Large` · `Medium` · `Small` | panel header · section title · card title |
+| `App/Body/Large` · `Default` · `Small` | composer copy · alerts and panels · helper text |
+| `App/Label/Large` · `Default` · `Small` · `Micro` | control labels, smallest to largest |
+| `App/Numeric/XL` · `Large` · `Medium` · `Tabular` | the score, gauge figures, stat figures, number columns |
+
+Those role names are not invented — each was read off where the step is actually used in the stylesheet.
+`size/200` carries alert and breadcrumb copy, so it is Body/Default; `size/200` at medium weight carries
+button and chip labels, so it is Label/Default; `size/300` at semi-bold carries card and empty-state titles,
+so it is Title/Small.
+
+The two groups differ in one way that matters: **`App/*` binds to the Type scale collection and resizes with
+the Desktop / Tablet / Mobile mode. `Landing/*` binds to the fixed marketing scale and does not.** That is
+the whole reason the third collection exists.
+
+If you need a step that has no role, bind the variable directly. A style exists to name a decision, and an
+unnamed step has not had one made about it yet.
+
 ---
 
 ## 2. What could not be a variable
