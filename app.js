@@ -1239,7 +1239,7 @@ const COMPONENT_API = [
   ['Button', '.spy-btn-group', 'attached · spaced', 'default'],
   ['Button', '.spy-toggle', 'disabled · pressed · size lg/sm', 'default · hover · focus-visible · disabled'],
   ['Button', '.spy-tool', 'active', 'default · hover · active · focus-visible'],
-  ['Field', '.spy-field-control', 'disabled · invalid · multiline · shape pill · size lg/sm', 'default · hover · focus-within · disabled · error'],
+  ['Field', '.spy-field-control', 'disabled · invalid · multiline · size lg/sm', 'default · hover · focus-within · disabled · error'],
   ['Field', '.spy-field-label', 'invalid', 'default · error'],
   ['Field', '.spy-field-clear', '—', 'default · hover · focus-visible'],
   ['Field', '.spy-composer', '—', 'default · focus-within'],

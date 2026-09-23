@@ -476,7 +476,10 @@ body {
   height: var(--hf-space-1000);            /* 40px */
   padding-inline: var(--hf-space-300);     /* 12px */
   border: none;
-  border-radius: var(--hf-radius-300);     /* 12px */
+  /* One radius for every text-entry surface — field, textarea, select trigger,
+     composer. It used to be 12px here, 10px at sm and a full pill under a shape
+     attribute, which meant three different roundings for one kind of object. [I] */
+  border-radius: var(--hf-radius-250);     /* 10px */
   background-color: var(--hf-color-overlay-dim-soft);
   color: var(--hf-color-icon-secondary);
   cursor: text;
@@ -493,9 +496,8 @@ body {
   box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus);
   overflow: hidden;
 }
-.spy-field-control[data-size="sm"] { height: var(--hf-space-800); padding-inline: var(--hf-space-200); border-radius: var(--hf-radius-250); }
+.spy-field-control[data-size="sm"] { height: var(--hf-space-800); padding-inline: var(--hf-space-200); }
 .spy-field-control[data-size="lg"] { height: var(--hf-space-1200); padding-inline: var(--hf-space-400); }
-.spy-field-control[data-shape="pill"] { border-radius: var(--hf-radius-full); }
 
 .spy-field-control[data-invalid],
 .spy-field-control[data-invalid]:focus-within {
@@ -1982,7 +1984,7 @@ body {
 /* ---------------------------------------------------------------------------
    PROMPT COMPOSER                                                        [I]
    The product's central object, assembled entirely from confirmed atoms:
-   a multiline field control (5%-white fill, 12px radius, inset focus ring)
+   a multiline field control (5%-white fill, the shared 10px radius, inset ring)
    with a toolbar row of toggles and chips, and a brand submit button pinned
    to the trailing edge. Composition is inferred; every value inside it is
    confirmed.
