@@ -43,37 +43,6 @@ itself only for text fills, `border/*` and `divider/*` only for strokes,
 `state/*-glow` only for effects and strokes, spacing only for gaps, radius only
 for corner radius, weights only for font weight.
 
-### Text styles are named by role, not by step
-
-The variables carry the numeric ladder — `size/100`, `size/200`, `line-height/600`. The **styles do not
-repeat it.** A picker listing `UI/050/Regular`, `UI/100/Medium`, `UI/100/SemiBold` … makes a designer learn
-the token layer before they can set a piece of text, and it says nothing about whether a step belongs on a
-landing page or inside the product.
-
-So the 28 text styles are organised **surface first, then role**:
-
-| | |
-|---|---|
-| `Landing/Display`, `Landing/H1`–`H6` | marketing headings — Archivo Black on Display and H1–H3 |
-| `Landing/Body/*`, `Landing/Caption/*` | marketing copy |
-| `App/Page title` | the one title at the top of a screen |
-| `App/Title/Large` · `Medium` · `Small` | panel header · section title · card title |
-| `App/Body/Large` · `Default` · `Small` | composer copy · alerts and panels · helper text |
-| `App/Label/Large` · `Default` · `Small` · `Micro` | control labels, smallest to largest |
-| `App/Numeric/XL` · `Large` · `Medium` · `Tabular` | the score, gauge figures, stat figures, number columns |
-
-Those role names are not invented — each was read off where the step is actually used in the stylesheet.
-`size/200` carries alert and breadcrumb copy, so it is Body/Default; `size/200` at medium weight carries
-button and chip labels, so it is Label/Default; `size/300` at semi-bold carries card and empty-state titles,
-so it is Title/Small.
-
-The two groups differ in one way that matters: **`App/*` binds to the Type scale collection and resizes with
-the Desktop / Tablet / Mobile mode. `Landing/*` binds to the fixed marketing scale and does not.** That is
-the whole reason the third collection exists.
-
-If you need a step that has no role, bind the variable directly. A style exists to name a decision, and an
-unnamed step has not had one made about it yet.
-
 ---
 
 ## 2. What could not be a variable
@@ -152,3 +121,54 @@ Plus one fallback in `components.css` — `var(--hf-color-separator-success, #00
 
 The rule this keeps proving: **a literal colour anywhere outside the palette
 block is a colour that will not move when the palette moves.**
+
+---
+
+## 5. The page split
+
+The file's pages mirror the CSS files, because a designer picking a component
+should be answering the same question a developer answers when picking a
+stylesheet — *which surface is this for?*
+
+| Pages | Mirrors | Holds |
+|---|---|---|
+| `FOUNDATIONS` | `tokens.css` | Typography, Colour, Space & radius, Elevation & motion |
+| `CORE` | `components.css` | Icons, Badge, Divider, Tag, Avatar, Chip, Icon tile, Button, Checkbox, Radio, Switch, Field, Feedback, Surface, Overlay, Navigation |
+| `APP` | `patterns.css` | Web app design |
+| `LANDING` | `landing.css` | Button · Landing, Landing blocks |
+
+`Landing blocks` holds the ten marketing components — Section, Marketing nav,
+Hero, Logo strip, Section head, Feature, Plan, Quote, CTA band, Footer.
+
+### They compose, they do not redraw
+
+Every button inside a landing block is an **instance** of `Button · Landing`,
+every icon an instance from the icon set, every brand mark an instance of
+`Badge`. Nothing in the landing layer draws its own control. That is the whole
+reason to have a core layer: change the button once and ten marketing blocks
+change with it.
+
+### Built from the rendered page, not from the CSS
+
+The landing components were extracted the same way the core ones were — clone
+the shipped markup, flip its attributes, read back the *computed* values in both
+themes, resolve each value to the variable that explains it. Three things that
+only a measurement catches came out of it:
+
+- **Grid has no Figma equivalent.** A one-track grid is a column of rows and a
+  many-track grid is a row of columns, so each becomes the matching auto-layout
+  direction. A block box with children is also a vertical stack, and treating it
+  as a plain frame would have pinned its children at absolute offsets.
+- **An `inset 0 0 0 Npx` shadow is a stroke.** The highlighted Feature and the
+  featured Plan draw their ring that way so the card does not grow by two
+  pixels; read as a shadow it would have been lost, so it is read back out and
+  drawn as an INSIDE stroke.
+- **A measured width is the browser's, rounded.** Re-typed in Figma the same
+  string can need a fraction more room, and a fixed-width text node answers that
+  by wrapping — which is how `$0` lost its zero on the first build. Single-line
+  text now hugs; only text the browser actually wrapped keeps a fixed width.
+
+Each set is pinned to the `Dark` mode of `2. Semantic` and filled with
+`background/primary`, so a translucent fill — the highlighted Feature is lime at
+10% — composites over the surface it really sits on rather than over Figma's
+canvas.
