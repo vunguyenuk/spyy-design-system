@@ -531,3 +531,21 @@ code {
   padding: 0 var(--hf-space-100);
   border-radius: var(--hf-radius-100);
 }
+
+/* A three-column table cannot shrink below the width of its widest unbreakable
+   cell, and the variant names are code, which does not wrap. Below the rail
+   breakpoint the table stops being a table and becomes stacked blocks — same
+   content, same order, no horizontal scroll. */
+@media (max-width: 48rem) {
+  .doc-purpose-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .doc-purpose-table, .doc-purpose-table tbody, .doc-purpose-table tr, .doc-purpose-table td { display: block; width: 100%; }
+  .doc-purpose-table tr {
+    padding: var(--hf-space-250) 0;
+    border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-secondary);
+  }
+  .doc-purpose-table td { padding: 0; border: none; }
+  .doc-purpose-table td:first-child { width: auto; white-space: normal; margin-bottom: var(--hf-space-100); }
+  .doc-purpose-table td:nth-child(2)::before { content: 'Use it for — '; color: var(--hf-color-text-tertiary); }
+  .doc-purpose-table td:nth-child(3)::before { content: 'Not for — '; color: var(--hf-color-text-tertiary); }
+  .doc-purpose-table td:nth-child(3) { margin-top: var(--hf-space-100); color: var(--hf-color-text-tertiary); }
+}

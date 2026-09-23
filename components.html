@@ -317,6 +317,19 @@
       <span class="doc-prop"><em>label</em> text prop + description slot</span>
     </div>
   </header>
+    <div class="doc-purpose">
+      <table class="doc-purpose-table spy-caption-l">
+        <thead><tr><th>Variant</th><th>Use it for</th><th>Not for</th></tr></thead>
+        <tbody>
+          <tr><td><code>Checkbox</code> / <code>Radio</code> · Default</td><td>Anywhere inside the product.</td><td>Carrying status — they select, they do not report.</td></tr>
+          <tr><td><code>Checkbox</code> / <code>Radio</code> · on-media</td><td>Over video or imagery, where the brand tint cannot be trusted against an unknown frame.</td><td>On a normal panel.</td></tr>
+          <tr><td><code>Switch</code> · Default</td><td>On/off. Checks to the success green, because green is this system’s word for on.</td><td>A choice between two options — that is a Segment tab.</td></tr>
+          <tr><td><code>Switch</code> · tint</td><td>Inside a panel that re-skins its controls through <code>--q-tint</code>.</td><td>Anywhere the tint is the default lime; it is the same thing.</td></tr>
+          <tr><td><code>Slider</code></td><td>A continuous value the user drags.</td><td>Discrete steps — use a Segment tab or a Select.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
   <div class="doc-demo">
     <h3 class="doc-demo-title">Checkbox &amp; radio <span class="doc-ev" data-ev="c">Confirmed</span></h3>
     <div id="render-controls-matrix"></div>
@@ -379,6 +392,17 @@
       skewed. <strong>Tag</strong> is passive metadata.
     </p>
   </header>
+    <div class="doc-purpose">
+      <table class="doc-purpose-table spy-caption-l">
+        <thead><tr><th>Variant</th><th>Use it for</th><th>Not for</th></tr></thead>
+        <tbody>
+          <tr><td><code>brand</code></td><td>The selected filter in a row of filters.</td><td>More than one selected at a time unless it is multi-select.</td></tr>
+          <tr><td><code>neutral</code></td><td>An unselected filter, or a plain metadata tag.</td><td>Anything that needs to be noticed.</td></tr>
+          <tr><td><code>info</code> · <code>success</code> · <code>warning</code> · <code>error</code></td><td>Reporting a state — a job that failed, a scan that passed. Chip REPORTS, so status colour belongs here.</td><td>A filter. A red filter reads as a broken filter.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
   <div class="doc-demo">
     <h3 class="doc-demo-title">Chip <span class="doc-ev" data-ev="c">Confirmed</span></h3>
     <p class="spy-caption-l spy-text-secondary doc-note">
@@ -499,6 +523,18 @@
       regions pad themselves, so the panel reads as a stack of tiles rather than a padded box.
     </p>
   </header>
+    <div class="doc-purpose">
+      <table class="doc-purpose-table spy-caption-l">
+        <thead><tr><th>Variant</th><th>Use it for</th><th>Not for</th></tr></thead>
+        <tbody>
+          <tr><td><code>Modal</code></td><td>A decision that must be made before anything else continues.</td><td>Information — that is an Alert or a Toast.</td></tr>
+          <tr><td><code>Menu</code></td><td>A list of actions on the thing you clicked.</td><td>Choosing a value in a form — that is Select.</td></tr>
+          <tr><td><code>Menu item</code> · danger</td><td>A destructive action inside a menu. Allowed here, because a menu item IS an action.</td><td>A menu item that merely leads somewhere.</td></tr>
+          <tr><td><code>Tooltip</code></td><td>A short label for a control with no visible name.</td><td>Anything longer than a line, or anything essential.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
   <div class="doc-demo">
     <h3 class="doc-demo-title">Modal <span class="doc-ev" data-ev="c">Confirmed</span></h3>
     <div class="doc-demo-row">
@@ -649,6 +685,19 @@
       <strong>vertically and darkens</strong> — it does not sweep a light band sideways.
     </p>
   </header>
+    <div class="doc-purpose">
+      <table class="doc-purpose-table spy-caption-l">
+        <thead><tr><th>Variant</th><th>Use it for</th><th>Not for</th></tr></thead>
+        <tbody>
+          <tr><td><code>Alert</code></td><td>A message that stays on the page and belongs to a region of it.</td><td>Something that should interrupt — that is a Modal.</td></tr>
+          <tr><td><code>Toast</code> · Dark</td><td>A transient confirmation over any surface. Theme-constant, so its ink is too.</td><td>Anything the user must acknowledge.</td></tr>
+          <tr><td><code>Toast</code> · Glass</td><td>A transient message that should feel attached to the page beneath it.</td><td>Over media, where the page colour is unknown.</td></tr>
+          <tr><td><code>Progress</code></td><td>Work with a known end.</td><td>Work with no measurable end — use the indeterminate state.</td></tr>
+          <tr><td><code>Skeleton</code></td><td>The shape of content that has not arrived.</td><td>A permanent empty state — that is Empty.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
   <div class="doc-demo">
     <div class="doc-grid-2">
       <div class="spy-stack" style="gap:16px">
@@ -781,6 +830,19 @@
       elevated surface, a 1px inset hairline instead of a border.
     </p>
   </header>
+    <div class="doc-purpose">
+      <table class="doc-purpose-table spy-caption-l">
+        <thead><tr><th>Variant</th><th>Use it for</th><th>Not for</th></tr></thead>
+        <tbody>
+          <tr><td><code>Tab</code> · line</td><td>Moving between views of the same thing. The rule ties it to the content below.</td><td>Switching a setting.</td></tr>
+          <tr><td><code>Tab</code> · segment</td><td>Switching a mode in place — grid vs list, day vs week.</td><td>Page-level navigation.</td></tr>
+          <tr><td><code>Nav item</code></td><td>Top-bar navigation.</td><td>Actions — a nav item goes somewhere.</td></tr>
+          <tr><td><code>Sidebar row</code></td><td>Navigating a list of things in a persistent rail.</td><td>A list of records — that is List item.</td></tr>
+          <tr><td><code>Pagination item</code></td><td>Moving through pages of one result set.</td><td>Navigating between different views.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
   <div class="doc-demo">
     <h3 class="doc-demo-title">Top bar <span class="doc-ev" data-ev="c">Confirmed</span></h3>
     <div class="doc-shell-frame">

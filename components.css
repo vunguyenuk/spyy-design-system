@@ -795,11 +795,16 @@ body {
 .spy-radio[data-disabled] .spy-control-box { border-color: var(--hf-color-icon-disabled); color: var(--hf-color-icon-disabled); }
 
 /* Status recolours — same geometry, different fill + ring */
-.spy-checkbox[data-variant="white"], .spy-radio[data-variant="white"] { --spy-control-fill: var(--hf-color-palette-white); --spy-control-hover-border: var(--hf-color-transparent-light-30); --spy-control-ring: var(--hf-color-transparent-light-20); }
-.spy-radio[data-variant="error"]   { --spy-control-fill: var(--hf-color-state-error-fg);   --spy-control-hover-border: var(--hf-color-state-error-fg);   --spy-control-ring: var(--hf-color-state-error-glow); }
-.spy-radio[data-variant="success"] { --spy-control-fill: var(--hf-color-state-success-fg); --spy-control-hover-border: var(--hf-color-state-success-fg); --spy-control-ring: var(--hf-color-state-success-glow); }
-.spy-radio[data-variant="warning"] { --spy-control-fill: var(--hf-color-state-warning-fg); --spy-control-hover-border: var(--hf-color-state-warning-fg); --spy-control-ring: var(--hf-color-state-warning-glow); }
-.spy-radio[data-variant="neutral"] { --spy-control-fill: var(--hf-color-background-secondary-strong); --spy-control-fg: var(--hf-color-text-primary); --spy-control-hover-border: var(--hf-color-border-strong); --spy-control-ring: var(--hf-color-transparent-dark-20); }
+/* Status colour belongs to components that REPORT — Chip, Alert, Toast, Badge.
+   A checkbox and a radio SELECT; they do not report. A radio tinted "success"
+   says nothing, which is why error / success / warning / neutral were defined
+   here and then never used once across five pages. Removed.
+
+   on-media is the one variant that survives, and it is not a status: it is a
+   surface. A control sitting over video or imagery cannot rely on the brand
+   tint reading against an unknown frame, so it checks to white. Same reasoning
+   as landing-* on the button — the prefix names where it lives.            [I] */
+.spy-checkbox[data-variant="on-media"], .spy-radio[data-variant="on-media"] { --spy-control-fill: var(--hf-color-palette-white); --spy-control-hover-border: var(--hf-color-transparent-light-30); --spy-control-ring: var(--hf-color-transparent-light-20); }
 
 /* Label rows: 12px gap, top-aligned so multi-line descriptions hang right. */
 .spy-control-label {
@@ -864,8 +869,12 @@ body {
               0 0 0 var(--hf-space-100) var(--spy-switch-ring);
 }
 .spy-switch[data-disabled] { opacity: 0.5; cursor: not-allowed; }
+/* A switch REPORTS on/off, so its on-track is the success green, not the brand.
+   tint is the exception that earns its place: a panel that re-skins its controls
+   through --q-tint needs the switch to follow. The old brand variant pinned the
+   track to lime, which is what tint already resolves to by default — one name
+   for two behaviours. Removed.                                            [I] */
 .spy-switch[data-variant="tint"] { --spy-switch-track-bg-on: var(--q-tint); }
-.spy-switch[data-variant="brand"] { --spy-switch-track-bg-on: var(--hf-color-brand-primary); }
 
 /* ---------------------------------------------------------------------------
    TOGGLE  (pressable icon/label button, used for tool modes)            [C]
