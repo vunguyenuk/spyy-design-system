@@ -604,8 +604,13 @@
      two clear it on every surface a control sits on — the page, a card and a
      raised panel — with the closest case at 3.25:1 and 3.18:1. Anything a user
      operates uses this; dividers and card hairlines keep the quiet ones.     */
-  --hf-color-border-control: var(--hf-color-grey-325);        /* #707070 */
-  --hf-color-border-control-hover: var(--hf-color-grey-250);  /* #878787 */
+  /* Softened to match the light theme (Vu, 24/09): #707070 outlined every
+     field, chip and select as a bright wire on the dark page. Now #414141,
+     hover #595959; the lime focus ring carries the "you are here" state.
+     Trade-off, as on light: under the 3:1 guideline above for the resting
+     edge.                                                                 [I] */
+  --hf-color-border-control: var(--hf-color-grey-400);        /* #414141 */
+  --hf-color-border-control-hover: var(--hf-color-grey-350);  /* #595959 */
   --hf-color-border-focus: var(--hf-color-lime-500);
   --hf-color-border-inverse: var(--hf-color-grey-050);
   --hf-color-border-error: var(--hf-color-red-600);

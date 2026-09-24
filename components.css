@@ -875,7 +875,9 @@ body {
      from the palette so it moves when the palette moves. The tint variant
      below is available where a panel re-tints its controls. */
   --spy-switch-track-bg-on: var(--hf-color-separator-success);
-  --spy-switch-thumb-bg: var(--hf-color-button-primary);
+  /* Thumb is white in both themes (Vu, 24/09). button-primary flipped to
+     near-black on light, which read as a dark blob on the lime track.     [I] */
+  --spy-switch-thumb-bg: var(--hf-color-grey-050);
   --spy-switch-ring: var(--hf-color-transparent-lime-20);
   position: relative;
   display: inline-flex; align-items: center; flex-shrink: 0;
