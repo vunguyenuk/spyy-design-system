@@ -486,6 +486,90 @@ window.SPYY = {
    }
   },
   {
+   "id": "dietfit-whatieat",
+   "brandId": "dietfit-ai",
+   "sample": false,
+   "origin": "dietfit.health",
+   "title": "What I eat in a day — 1,400 kcal",
+   "description": "Creator Nguyen Tra My walks through a day of meals: −16 kg, 160 cm, 51 kg.",
+   "source": "tiktok",
+   "channels": [
+    "tiktok",
+    "meta"
+   ],
+   "format": "Creator testimonial",
+   "region": "VN",
+   "active": true,
+   "daysRunning": 36,
+   "duration": 75,
+   "startedAt": "2026-08-19",
+   "industry": "Health & fitness",
+   "image": "https://dietfit.health/landing/social/nguyen-tra-my.jpg",
+   "video": "https://dietfit.health/landing/social/nguyen-tra-my.mp4",
+   "metrics": {
+    "views": "2.1M",
+    "likes": "164K",
+    "saves": "38.2K",
+    "shares": "5.9K",
+    "comments": "3.4K",
+    "engagement": "10.2%"
+   },
+   "tiktok": {
+    "objective": "App installs",
+    "ctrTop": 93,
+    "budget": "High",
+    "cta": "Download",
+    "language": "Vietnamese",
+    "audience": "18–34",
+    "aiGenerated": false,
+    "realPeople": true,
+    "firstTime": false
+   },
+   "meta": {
+    "platforms": [
+     "facebook",
+     "instagram"
+    ],
+    "versions": 2,
+    "cta": "Install now",
+    "linkDomain": "DIETFIT.HEALTH",
+    "linkTitle": "Dietfit – App đếm calo bằng AI",
+    "mediaType": "Video",
+    "language": "Vietnamese",
+    "libraryId": "1552903417786021"
+   },
+   "scores": {
+    "Hook strength": 90,
+    "Audience fit": 88,
+    "Product relevance": 86,
+    "Conversion intent": 64,
+    "Relatability": 93,
+    "Brand safety": 81
+   },
+   "takeaways": [
+    "A concrete result (−16 kg) and a calorie number sit in the first frame.",
+    "Day-in-the-life format makes the tracking habit feel easy to copy.",
+    "The app appears as the helper, not the hero — low ad resistance."
+   ],
+   "tags": [
+    "What I eat in a day",
+    "Creator proof",
+    "Transformation"
+   ],
+   "audience": [
+    "Women 18–34",
+    "Weight-loss starters"
+   ],
+   "classification": {
+    "goal": "App installs",
+    "secondary": "Saves",
+    "type": "Personal story",
+    "topic": "Fitness / weight loss",
+    "emotion": "Aspiration"
+   },
+   "adaptability": 86
+  },
+  {
    "id": "duolingo-chess",
    "brandId": "duolingo",
    "title": "More than a game",

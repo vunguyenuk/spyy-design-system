@@ -17,6 +17,7 @@
   const initials = (name) => name.split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
   const brandOf = (id) => D.brands.find((b) => b.id === id);
   const adOf = (id) => D.ads.find((a) => a.id === id);
+  const videoSrc = (a) => a.video || `assets/videos/${a.id}.mp4`;
   const fmtDur = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
   const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const fmtDate = (iso) => { const d = new Date(iso + 'T00:00:00Z'); return `${MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`; };
@@ -178,7 +179,14 @@
 
   /* ================================================================== SIGN IN */
   function viewLogin() {
-    const tiles = [1, 2, 3, 4, 5, 6].map((n) => `<img src="assets/figma/signin/tile-${n}.webp" alt="" loading="lazy">`).join('');
+    /* Three columns of creatives drifting in alternate directions — the
+       "every ad, in one sheet" idea as motion. Each track holds its set twice
+       so a -50% translate loops seamlessly. */
+    const cols = [[1, 4, 6], [2, 5, 3], [3, 6, 1]].map((set, i) => {
+      const imgs = set.map((n) => `<img src="assets/figma/signin/tile-${n}.webp" alt="">`).join('');
+      return `<div class="auth-col" data-dir="${i % 2 ? 'down' : 'up'}"><div class="auth-track">${imgs}${imgs}</div></div>`;
+    }).join('');
+    const tiles = cols;
     return `
     <div class="auth">
       <section class="auth-form" aria-labelledby="auth-title">
@@ -202,7 +210,7 @@
         <div class="auth-tiles">${tiles}</div>
         <div class="auth-art-copy">
           <span class="spy-caps spy-caption-m">Competitive creative intelligence</span>
-          <p class="spy-h6">Every active video ad a brand runs — on TikTok, Meta and the App Store — in one sheet.</p>
+          <p class="spy-h6"><span class="auth-line">Every active video ad a brand runs</span><span class="auth-line">on TikTok, Meta and the App Store in one sheet.</span></p>
         </div>
       </aside>
     </div>`;
@@ -378,7 +386,7 @@
     return out;
   }
 
-  function searchStrip() {
+  function searchStrip(resultsRow = '') {
     const isTk = S.source === 'tiktok';
     return `
     <div class="app-strip">
@@ -397,6 +405,7 @@
         <button class="spy-btn" data-variant="brand" data-size="sm" type="button" data-action="scan-brand" title="Resolve the exact brand and scan every source">${ic('sparkle', 'sm')}Scan a brand</button>
       </form>
       ${isTk ? tkPanel() : fbBar()}
+      ${resultsRow}
     </div>`;
   }
 
@@ -454,8 +463,8 @@
     return `
     <div class="fb-bar">
       <div class="fb-summary">
-        <strong class="spy-body-m">~${n.toLocaleString()} result${n === 1 ? '' : 's'}</strong>
-        <span class="spy-caption-l spy-text-secondary">${S.query ? `These results include ads that match your keyword search <strong>${esc(S.query)}</strong>.` : 'Ads running across Meta technologies in the selected region.'}</span>
+        <strong>~${n.toLocaleString()} result${n === 1 ? '' : 's'}</strong>
+        <span class="spy-text-secondary">${S.query ? `These results include ads that match your keyword search <strong>${esc(S.query)}</strong>.` : 'Ads running across Meta technologies in the selected region.'}</span>
       </div>
       <div class="fb-actions">
         <div class="fb-pills">${active.map(([k, t]) => `<span class="fb-pill">${esc(t)}<button data-action="fb-clear" data-key="${k}" aria-label="Remove ${esc(t)}">${ic('close', 'sm')}</button></span>`).join('')}</div>
@@ -491,8 +500,9 @@
     const b = brandOf(a.brandId); const t = a.tiktok; const saved = S.saved.includes(a.id);
     return `
     <article class="tk-card">
-      <a class="tk-media" href="#/ad/${a.id}" aria-label="Open analysis: ${esc(a.title)}">
-        <img src="${a.image}" alt="" loading="lazy">
+      <a class="tk-media" href="#/ad/${a.id}" aria-label="Open analysis: ${esc(a.title)}" data-preview data-muted data-dur="${a.duration}" data-src="${videoSrc(a)}" data-autoplay-id="${a.id}">
+        <img src="${a.image}" alt="" loading="lazy"><video muted playsinline loop preload="none" aria-hidden="true"></video>
+        <span class="m-progress" aria-hidden="true"><span class="m-fill"></span></span>
         <span class="tk-media-top"><span class="spy-result-duration">${fmtDur(a.duration)}</span>${t.firstTime ? '<span class="spy-chip" data-size="xxs" data-variant="info" data-selected>New advertiser</span>' : ''}</span>
         <span class="tk-play">${ic('play')}</span>
         <span class="tk-media-foot"><strong>${esc(t.objective)}</strong><span>${esc(a.industry)}</span></span>
@@ -516,8 +526,9 @@
     const b = brandOf(a.brandId); const m = a.meta; const saved = S.saved.includes(a.id);
     return `
     <article class="fb-card">
-      <a class="fb-card-media" href="#/ad/${a.id}" aria-label="Open analysis: ${esc(a.title)}">
-        <img src="${a.image}" alt="" loading="lazy">
+      <a class="fb-card-media" href="#/ad/${a.id}" aria-label="Open analysis: ${esc(a.title)}" data-preview data-muted data-dur="${a.duration}" data-src="${videoSrc(a)}" data-autoplay-id="${a.id}">
+        <img src="${a.image}" alt="" loading="lazy"><video muted playsinline loop preload="none" aria-hidden="true"></video>
+        <span class="m-progress" aria-hidden="true"><span class="m-fill"></span></span>
         <span class="fb-card-overlay">${a.active ? `<span class="spy-chip" data-size="xxs" data-variant="success" data-selected>${ic('success', 'xs')}Active</span>` : '<span class="spy-chip" data-size="xxs" data-variant="neutral" data-selected>Inactive</span>'}<span class="spy-result-duration">${fmtDur(a.duration)}</span></span>
       </a>
       <div class="fb-card-ad">
@@ -566,13 +577,15 @@
       body = `<section class="cat-section"><header class="cat-head"><h2 class="spy-h6">${esc(cat)}</h2><span class="spy-caption-l spy-text-tertiary">${plural(list.filter((a) => a.industry === cat).length, 'ad')}</span></header>${grid(list.filter((a) => a.industry === cat))}</section>`;
     }
 
-    const head = !isTk ? '' : `<div class="ov-head">
-      <div><h1 class="spy-h6">${isTk ? 'Top TikTok ads' : 'Meta Ad Library'}</h1>
-      <p class="spy-caption-l spy-text-secondary">${isTk ? 'Ranked by engagement in the selected region. Open any ad for the hook, audience and adaptability read.' : 'Every ad running across Facebook, Instagram, Messenger, Audience Network and Threads.'}</p></div>
-      ${isTk ? select('tk.sort', [['likes', 'Most likes'], ['ctr', 'Best CTR'], ['newest', 'Newest'], ['longest', 'Longest running']], S.tk.sort, 'Sort') : ''}
-    </div>`;
+    const head = '';
+    const regionName = (REGIONS.find((r) => r[0] === S.region) || [])[1] || 'all regions';
+    /* TikTok gets the same one-line summary Facebook has, in the same place. */
+    const tkSummary = isTk ? `<div class="fb-bar"><h1 class="fb-summary"><strong>${plural(list.length, 'top ad')}</strong><span class="spy-text-secondary">${S.query ? `Matching <strong>${esc(S.query)}</strong> · ` : ''}ranked by engagement in ${esc(regionName)}. Open any ad for the hook, audience and adaptability read.</span></h1></div>` : '';
+    /* Categories (and TikTok's sort) live in the sticky strip, so they stay in
+       reach while the video grid scrolls underneath. */
+    const resultsRow = tkSummary + `<div class="strip-results">${rail}${isTk ? select('tk.sort', [['likes', 'Most likes'], ['ctr', 'Best CTR'], ['newest', 'Newest'], ['longest', 'Longest running']], S.tk.sort, 'Sort') : ''}</div>`;
 
-    return shell('overview', `${head}${rail}${body}<p class="app-footnote spy-caption-m spy-text-tertiary">${ic('info', 'xs')}Dietfit AI, Duolingo and Cal AI creatives are captured from the live dashboard; other brands are prototype samples.</p>`, { strip: searchStrip(), wide: true }) + fbDrawer();
+    return shell('overview', `${head}${body}<p class="app-footnote spy-caption-m spy-text-tertiary">${ic('info', 'xs')}Dietfit AI, Duolingo and Cal AI creatives are captured from the live dashboard; the Dietfit “What I eat in a day” video plays from dietfit.health (its metrics are estimates); other brands are prototype samples.</p>`, { strip: searchStrip(resultsRow), wide: true }) + fbDrawer();
   }
 
   /* ================================================================== CONFIRM ACCOUNTS (live step, missing in Figma) */
@@ -736,11 +749,14 @@
         <aside class="d-left">
           <div class="d-nav"><a class="app-textlink" href="javascript:history.back()">${ic('chevron-left', 'sm')}Back to results</a>
             <span><a class="spy-btn" data-variant="ghost" data-size="xs" data-icon-only href="#/ad/${prev.id}" aria-label="Previous ad">${ic('chevron-left')}</a><a class="spy-btn" data-variant="ghost" data-size="xs" data-icon-only href="#/ad/${next.id}" aria-label="Next ad">${ic('chevron-right')}</a></span></div>
-          <div class="spy-player d-player">
-            <img src="${a.image}" alt="${esc(a.title)} — frame">
+          <div class="spy-player d-player" data-player data-dur="${a.duration}" data-src="${videoSrc(a)}" data-id="${a.id}">
+            <img src="${a.image}" alt="${esc(a.title)} — frame"><video playsinline preload="none" aria-hidden="true"></video>
+            <button class="d-hit" type="button" data-action="player-toggle" aria-label="Play or pause"></button>
+            <span class="d-big-play" aria-hidden="true">${ic('play')}</span>
             <div class="d-player-overlay"><span class="d-player-author">${avatar(b, 'sm')}<strong>${esc(b.accounts.find((x) => x.source === a.source)?.handle || b.name)}</strong></span>
-              <button class="spy-btn" data-variant="tertiary" data-size="sm" data-icon-only aria-label="Play video" data-action="toast" data-title="Playback" data-body="The video loads only when you press play, so the page stays light.">${ic('play')}</button>
-              <span class="spy-result-duration">0:00 / ${fmtDur(a.duration)}</span></div>
+              <button class="spy-btn m-toggle" data-variant="tertiary" data-size="sm" data-icon-only aria-label="Play video" data-action="player-toggle">${ic('play')}</button>
+              <span class="spy-result-duration m-time">0:00 / ${fmtDur(a.duration)}</span></div>
+            <span class="m-progress" aria-hidden="true"><span class="m-fill"></span></span>
           </div>
           <section class="spy-section-card d-card"><div class="spy-section-head"><h2 class="spy-section-title">Performance</h2><span class="spy-caption-m spy-text-tertiary">Last 30 days</span></div>
             <div class="spy-stats d-stats">${[['views', 'Views'], ['likes', 'Likes'], ['saves', 'Saves'], ['shares', 'Shares'], ['comments', 'Comments'], ['engagement', 'Engagement']].map(([k, t]) => `<div class="spy-stat"><span class="spy-stat-value">${esc(a.metrics[k])}</span><span class="spy-stat-label">${t}</span></div>`).join('')}</div>
@@ -805,6 +821,7 @@
   function render() {
     const r = route();
     if (ui.scanTimer) { clearTimeout(ui.scanTimer); ui.scanTimer = null; }
+    app.querySelectorAll('[data-playing]').forEach((el) => mediaStop(el));
     if (!S.signedIn && r.name !== 'login') { location.replace('#/login'); return; }
     if (S.signedIn && !S.onboarded && !['onboarding', 'login'].includes(r.name)) { location.replace('#/onboarding'); return; }
     const views = { login: viewLogin, onboarding: viewOnboarding, overview: viewOverview, confirm: viewConfirm, scan: viewScan, brand: viewBrand, ad: viewAd, scans: viewScans, watchlist: viewWatchlist, collections: viewCollections };
@@ -818,6 +835,9 @@
     const chat = app.querySelector('.chat-log'); if (chat) chat.scrollTop = chat.scrollHeight;
     ui.fbAnim = false;
     placeDropdown();
+    const pl = app.querySelector('[data-player]');
+    if (pl && ui.autoplay === pl.dataset.id) mediaStart(pl);
+    ui.autoplay = null;
   }
   function placeDropdown() {
     const menu = app.parentNode.querySelector('[data-dd-menu]');
@@ -837,6 +857,46 @@
     }
     ui.ddFocus = null;
   }
+  /* ------------------------------------------------------------ media playback
+     Plays the real file when one exists at assets/videos/<ad id>.mp4. Without
+     it (the prototype ships thumbnails only) the poster runs as a timed
+     preview — slow zoom, moving progress, live clock — so hover and play
+     still behave like a player instead of doing nothing. */
+  function mediaUpdate(root) {
+    const dur = Number(root.dataset.dur) || 1; const t = root._t || 0;
+    const fill = root.querySelector('.m-fill'); if (fill) fill.style.width = `${Math.min(100, (t / dur) * 100)}%`;
+    const time = root.querySelector('.m-time'); if (time) time.textContent = `${fmtDur(Math.floor(t))} / ${fmtDur(dur)}`;
+    const btn = root.querySelector('.m-toggle'); if (btn) { const on = root.hasAttribute('data-playing'); btn.innerHTML = ic(on ? 'pause' : 'play'); btn.setAttribute('aria-label', on ? 'Pause video' : 'Play video'); }
+  }
+  function mediaStart(root) {
+    if (root._timer) return;
+    const v = root.querySelector('video'); const dur = Number(root.dataset.dur) || 1;
+    root.setAttribute('data-playing', '');
+    if (v && !root._tried && root.dataset.src) {
+      root._tried = true; v.muted = root.hasAttribute('data-muted'); v.src = root.dataset.src;
+      v.addEventListener('error', () => { root._real = false; root.removeAttribute('data-real'); }, { once: true });
+      v.play().then(() => { root._real = true; root.setAttribute('data-real', ''); if (root._t) v.currentTime = root._t; }).catch(() => { root._real = false; });
+    } else if (v && root._real) { v.play().catch(() => {}); }
+    root._timer = setInterval(() => {
+      if (root._real && v) root._t = v.currentTime;
+      else { root._t = (root._t || 0) + 0.25; if (root._t >= dur) { if (root.hasAttribute('data-preview')) root._t = 0; else { mediaStop(root); root._t = 0; } } }
+      mediaUpdate(root);
+    }, 250);
+    mediaUpdate(root);
+  }
+  function mediaStop(root, reset) {
+    clearInterval(root._timer); root._timer = null; root.removeAttribute('data-playing');
+    const v = root.querySelector('video'); if (v && root._real) v.pause();
+    if (reset) { root._t = 0; if (v && root._real) v.currentTime = 0; }
+    mediaUpdate(root);
+  }
+  document.addEventListener('mouseover', (e) => { const m = e.target.closest && e.target.closest('[data-preview]'); if (m && !m.contains(e.relatedTarget)) mediaStart(m); });
+  document.addEventListener('mouseout', (e) => { const m = e.target.closest && e.target.closest('[data-preview]'); if (m && !m.contains(e.relatedTarget)) mediaStop(m, true); });
+  document.addEventListener('focusin', (e) => { const m = e.target.closest && e.target.closest('[data-preview]'); if (m) mediaStart(m); });
+  document.addEventListener('focusout', (e) => { const m = e.target.closest && e.target.closest('[data-preview]'); if (m) mediaStop(m, true); });
+  /* Opening an ad from a card carries the play intent into the detail player. */
+  document.addEventListener('click', (e) => { const m = e.target.closest && e.target.closest('[data-autoplay-id]'); if (m) ui.autoplay = m.dataset.autoplayId; }, true);
+
   function paintGauge(g) {
     const v = Number(g.dataset.value); const R = 42; const C = 2 * Math.PI * R;
     g.innerHTML = `<svg viewBox="0 0 100 100" aria-hidden="true"><circle class="spy-gauge-track" cx="50" cy="50" r="${R}"></circle><circle class="spy-gauge-arc" cx="50" cy="50" r="${R}" stroke-dasharray="${C.toFixed(2)}" stroke-dashoffset="${(C * (1 - v / 100)).toFixed(2)}"></circle></svg><span class="spy-gauge-center"><span class="spy-gauge-number">${v}<small>/100</small></span></span>`;
@@ -937,6 +997,7 @@
       unwatch: () => { S.watch = S.watch.filter((w) => w.brandId !== t.dataset.id); toast('Stopped watching.'); },
       rescan: () => { toast('Re-scanning now', 'The new-since-last-scan count appears when it finishes.'); return 'stay'; },
       toast: () => { toast(t.dataset.title, t.dataset.body); return 'stay'; },
+      'player-toggle': () => { const pl = t.closest('[data-player]'); if (pl._timer) mediaStop(pl); else mediaStart(pl); return 'stay'; },
     }[a];
     if (!act) return;
     e.preventDefault();

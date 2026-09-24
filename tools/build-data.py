@@ -30,6 +30,22 @@ for a in d['ads']:
         a['meta'] = meta[a['id']]
         a['meta'].setdefault('libraryId', a.get('libraryId') or str(1000000000000000 + sum(ord(c)*97**k for k,c in enumerate(a['id'])) % 899999999999999))
 
+# Real creative published by the brand on dietfit.health (landing "social" section).
+# Played straight from the brand's CDN — the file is not copied into the repo.
+d['ads'].insert(3, dict(id='dietfit-whatieat', brandId='dietfit-ai', sample=False, origin='dietfit.health',
+    title='What I eat in a day — 1,400 kcal', description='Creator Nguyen Tra My walks through a day of meals: −16 kg, 160 cm, 51 kg.',
+    source='tiktok', channels=['tiktok','meta'], format='Creator testimonial', region='VN', active=True, daysRunning=36, duration=75,
+    startedAt='2026-08-19', industry='Health & fitness',
+    image='https://dietfit.health/landing/social/nguyen-tra-my.jpg', video='https://dietfit.health/landing/social/nguyen-tra-my.mp4',
+    metrics=dict(views='2.1M', likes='164K', saves='38.2K', shares='5.9K', comments='3.4K', engagement='10.2%'),
+    tiktok=dict(objective='App installs', ctrTop=93, budget='High', cta='Download', language='Vietnamese', audience='18–34', aiGenerated=False, realPeople=True, firstTime=False),
+    meta=dict(platforms=['facebook','instagram'], versions=2, cta='Install now', linkDomain='DIETFIT.HEALTH', linkTitle='Dietfit – App đếm calo bằng AI', mediaType='Video', language='Vietnamese', libraryId='1552903417786021'),
+    scores={'Hook strength': 90, 'Audience fit': 88, 'Product relevance': 86, 'Conversion intent': 64, 'Relatability': 93, 'Brand safety': 81},
+    takeaways=['A concrete result (−16 kg) and a calorie number sit in the first frame.', 'Day-in-the-life format makes the tracking habit feel easy to copy.', 'The app appears as the helper, not the hero — low ad resistance.'],
+    tags=['What I eat in a day', 'Creator proof', 'Transformation'], audience=['Women 18–34', 'Weight-loss starters'],
+    classification=dict(goal='App installs', secondary='Saves', type='Personal story', topic='Fitness / weight loss', emotion='Aspiration'),
+    adaptability=86))
+
 samples = [
  ('meadow-trips','Meadow Trips','Travel','assets/figma/signin/tile-1.webp','Wildflower weekends, two hours from the city','Short scenic cuts that sell the feeling before the price.','Scenic montage','Traffic','Book now','meadowtrips.co',31,22,'Low',72,'1.9M','64.3K'),
  ('lumen-stones','Lumen Stones','Beauty & wellness','assets/figma/signin/tile-2.webp','Pick the stone that matches your week','Close texture shots with a quiz-style hook drive saves.','Product close-up','Product sales','Shop now','lumenstones.shop',18,15,'Low',81,'412K','29.8K'),
