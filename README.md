@@ -102,6 +102,18 @@ it. On a phone the rail becomes a drawer.
 Prose has a fixed measure and specimens get the full column, so a line of body text does not get
 longer because the window did.
 
+## Product-flow prototype
+
+Open `dashboard.html` for the complete Figma-led flow: sign in, conversational onboarding,
+brand identity confirmation, asynchronous scan, source-aware results, watchlist, and video
+analysis. It composes the existing token, component, and app-pattern layers; `dashboard.css`
+adds product layout and responsive adaptations, while `dashboard.js` provides hash routing,
+persistent state, filtering, sorting, saved ads, simulated media controls, and a local data
+service backed by `data/spyy-data.js` (generated from `data/spyy-data.json` by `tools/build-data.py`,
+so the page also opens from `file://`). The TikTok and Facebook home searches use different filter
+models on purpose; see the v2 section of `DASHBOARD-AUDIT.md`. The previous build is kept in
+`_archive/dashboard-v1/`.
+
 ## Two things about the light theme
 
 It is derived, not transcribed, and deriving it surfaced a real bug in the dark build: ink tokens
@@ -130,3 +142,10 @@ the screens do not. `GAPS.md` §4 and `EVIDENCE.md` §8–9 have the full list.
 
 This reproduces a visual *system* — tokens, geometry, state behaviour — for design work. It
 deliberately does not reproduce the reference system's logomark, wordmark, icon set, imagery or copy.
+
+## Brand colour change (24/09/2026)
+
+The brand lime is now **`#CBF130`** (was the audited `#d1fe17`). The whole lime ramp and its alpha
+steps were re-based on it in `tokens.css` and `tokens.w3c.json`: every step keeps its old lightness and
+takes the new hue and chroma. Success states use the same lime (one green on screen), light-theme text
+in the tint uses the darker steps for legibility. `EVIDENCE.md` still records the audited value as history.

@@ -62,6 +62,9 @@ top.innerHTML = `
       </div>
     </div>
     <div class="doc-topbar-actions">
+      <a class="spy-btn doc-proto" data-variant="brand" data-size="sm" href="dashboard.html" title="Open the product prototype built from this system">
+        <svg class="spy-icon" data-size="sm"><use href="#i-play"/></svg><span>Prototype</span>
+      </a>
       <div class="spy-tabs" data-variant="segment" style="width:auto">
         <div class="spy-tabs-list" role="tablist" id="theme-switch">
           <button class="spy-tabs-tab" data-theme-set="dark" data-active role="tab" aria-label="Dark theme">
@@ -95,6 +98,7 @@ rail.innerHTML = `
     <div class="doc-rail-group doc-rail-meta">
       <span class="doc-rail-level" aria-hidden="true">Reference</span>
       <ul class="doc-rail-list">
+        <li><a class="doc-rail-item" href="dashboard.html">Product prototype</a></li>
         <li><a class="doc-rail-item" href="README.md">README</a></li>
         <li><a class="doc-rail-item" href="EVIDENCE.md">Evidence</a></li>
         <li><a class="doc-rail-item" href="GAPS.md">Gaps</a></li>
@@ -119,6 +123,30 @@ shell.appendChild(rail);
 shell.appendChild(col);
 if (lede) col.appendChild(lede);
 if (main) col.appendChild(main);
+
+/* ------------------------------------------------ rail keeps its scroll
+   Every page rebuilds the rail, so a full navigation used to land it back at
+   the top — click "Button" while scrolled down and the menu jumped away from
+   under the cursor. The offset is carried across pages in sessionStorage and
+   restored before first paint. Only the rail's own scrollTop is ever touched;
+   nothing here calls scrollIntoView, which would move the page as well. */
+const RAIL_KEY = 'spyy-doc-rail-scroll';
+let savedRail = null;
+try { savedRail = sessionStorage.getItem(RAIL_KEY); } catch (e) { /* storage blocked */ }
+const saveRail = () => { try { sessionStorage.setItem(RAIL_KEY, String(Math.round(rail.scrollTop))); } catch (e) { /* */ } };
+if (savedRail !== null) {
+  rail.scrollTop = Number(savedRail) || 0;
+} else {
+  /* first visit in this tab: bring the current page's group into view */
+  const g = rail.querySelector('.doc-rail-group[data-current]');
+  if (g && g.offsetTop + g.offsetHeight > rail.clientHeight) rail.scrollTop = Math.max(0, g.offsetTop - 16);
+}
+let railTick = 0;
+rail.addEventListener('scroll', () => { if (!railTick) railTick = requestAnimationFrame(() => { railTick = 0; saveRail(); }); }, { passive: true });
+rail.addEventListener('click', e => { if (e.target.closest('a')) saveRail(); });
+window.addEventListener('pagehide', saveRail);
+/* bfcache restores keep the DOM, but re-apply in case the layout shifted */
+window.addEventListener('pageshow', e => { if (e.persisted && savedRail !== null) rail.scrollTop = Number(savedRail) || 0; });
 
 /* ------------------------------------------------------------------ footer */
 const foot = document.createElement('footer');
@@ -206,7 +234,17 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeRail();
 const items = [...rail.querySelectorAll(`.doc-rail-item[data-page="${here}"]`)];
 const secEls = items.map(a => document.getElementById(a.dataset.sec)).filter(Boolean);
 if (secEls.length) {
-  const mark = id => items.forEach(a => a.toggleAttribute('data-active', a.dataset.sec === id));
+  /* Mark the active item; nudge the rail only if that item is fully out of
+     its view, by the smallest amount, and never scroll the page. */
+  let settled = false;   // the first mark after load must not undo the restored offset
+  const mark = id => items.forEach(a => {
+    const on = a.dataset.sec === id;
+    a.toggleAttribute('data-active', on);
+    if (!on || !settled) return;
+    const r = a.getBoundingClientRect(), v = rail.getBoundingClientRect();
+    if (r.bottom < v.top) rail.scrollTop -= v.top - r.top + 24;
+    else if (r.top > v.bottom) rail.scrollTop += r.bottom - v.bottom + 24;
+  });
   const io = new IntersectionObserver(entries => {
     const visible = entries.filter(e => e.isIntersecting)
       .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
@@ -214,5 +252,6 @@ if (secEls.length) {
   }, { rootMargin: '-72px 0px -70% 0px', threshold: 0 });
   secEls.forEach(s => io.observe(s));
   mark(secEls[0].id);
+  setTimeout(() => { settled = true; }, 600);
 }
 })();

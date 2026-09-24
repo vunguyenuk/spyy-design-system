@@ -358,7 +358,7 @@ body {
   color: var(--hf-color-text-on-tint);
   --spy-btn-hover-overlay: transparent;
   box-shadow:
-    inset 0 -3px 0 0 #829b19,
+    inset 0 -3px 0 0 #849a2b,
     0 var(--hf-space-150) var(--hf-space-100) 0 var(--hf-color-transparent-dark-25),
     0 var(--hf-space-800) var(--hf-space-600) 0 var(--hf-color-transparent-dark-15);
 }
@@ -366,7 +366,7 @@ body {
 .spy-btn[data-variant="landing-primary"]:active {
   transform: translateY(2px);
   box-shadow:
-    inset 0 -1px 0 0 #829b19,
+    inset 0 -1px 0 0 #849a2b,
     0 var(--hf-space-050) var(--hf-space-100) 0 var(--hf-color-transparent-dark-25);
 }
 
@@ -751,7 +751,7 @@ body {
    ------------------------------------------------------------------------ */
 .spy-checkbox,
 .spy-radio {
-  --spy-control-fill: var(--hf-color-icon-accent);
+  --spy-control-fill: var(--q-tint-fill);
   /* The checked fill is the brand lime, which is the same colour in both
      themes — so the tick on it has to be too. `icon/inverse` flips, which put a
      white tick on lime in the light theme. Same rule as the toast ink, the
@@ -976,7 +976,7 @@ body {
   position: absolute; top: 50%; left: 0; height: 4px; translate: 0 -50%;
   width: var(--spy-slider-value);
   border-radius: var(--hf-radius-full);
-  background-color: var(--q-tint);
+  background-color: var(--q-tint-fill);
 }
 .spy-slider-thumb {
   position: absolute; top: 50%; left: var(--spy-slider-value); translate: -50% -50%;
@@ -1004,8 +1004,9 @@ body {
   --spy-chip-hover-bg: var(--hf-color-overlay-hover);
   --spy-chip-hover-fg: var(--hf-color-text-primary);
   --spy-chip-hover-border: var(--hf-color-lime-900);
-  --spy-chip-selected-bg: var(--hf-color-icon-accent);
-  --spy-chip-selected-fg: var(--hf-color-text-on-tint);
+  --spy-chip-selected-bg: var(--q-tint-soft);
+  --spy-chip-selected-fg: var(--q-tint-soft-ink);
+  --spy-chip-selected-border: var(--q-tint-fill);
   --spy-chip-ring: var(--hf-color-transparent-lime-20);
   --spy-chip-h: var(--hf-space-700);        /* 28px */
   --spy-chip-gap: var(--hf-space-100);
@@ -1031,7 +1032,7 @@ body {
 }
 .spy-chip > .spy-icon { --spy-icon-size: var(--spy-chip-icon); }
 .spy-chip:hover { background-color: var(--spy-chip-hover-bg); color: var(--spy-chip-hover-fg); border-color: var(--spy-chip-hover-border); }
-.spy-chip[data-selected] { background-color: var(--spy-chip-selected-bg); color: var(--spy-chip-selected-fg); border-color: var(--spy-chip-selected-bg); }
+.spy-chip[data-selected] { background-color: var(--spy-chip-selected-bg); color: var(--spy-chip-selected-fg); border-color: var(--spy-chip-selected-border, var(--spy-chip-selected-bg)); }
 .spy-chip:focus-visible { box-shadow: 0 0 0 var(--hf-border-width-thick) var(--spy-chip-ring); }
 .spy-chip[data-disabled] { opacity: 0.5; pointer-events: none; }
 
@@ -1040,11 +1041,11 @@ body {
 .spy-chip[data-size="sm"]  { --spy-chip-h: var(--hf-space-700); }
 .spy-chip[data-size="md"]  { --spy-chip-h: var(--hf-space-800); --spy-chip-gap: var(--hf-space-150); --spy-chip-px: var(--hf-space-400); --spy-chip-icon: var(--hf-space-500); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-500); }
 
-.spy-chip[data-variant="error"]   { --spy-chip-hover-border: var(--hf-color-state-error-fg);   --spy-chip-selected-bg: var(--hf-color-state-error-fg);   --spy-chip-selected-fg: var(--hf-color-text-inverse); --spy-chip-ring: var(--hf-color-state-error-glow); }
-.spy-chip[data-variant="success"] { --spy-chip-hover-border: var(--hf-color-state-success-fg); --spy-chip-selected-bg: var(--hf-color-state-success-fg); --spy-chip-selected-fg: var(--hf-color-text-inverse); --spy-chip-ring: var(--hf-color-state-success-glow); }
-.spy-chip[data-variant="warning"] { --spy-chip-hover-border: var(--hf-color-state-warning-fg); --spy-chip-selected-bg: var(--hf-color-state-warning-fg); --spy-chip-selected-fg: var(--hf-color-text-inverse); --spy-chip-ring: var(--hf-color-state-warning-glow); }
-.spy-chip[data-variant="info"]    { --spy-chip-hover-border: var(--hf-color-state-info-fg);    --spy-chip-selected-bg: var(--hf-color-state-info-fg);    --spy-chip-selected-fg: var(--hf-color-text-inverse); --spy-chip-ring: var(--hf-color-state-info-bg); }
-.spy-chip[data-variant="neutral"] { --spy-chip-hover-border: var(--hf-color-border-strong);    --spy-chip-selected-bg: var(--hf-color-background-secondary-strong); --spy-chip-selected-fg: var(--hf-color-text-primary); --spy-chip-ring: var(--hf-color-transparent-dark-20); }
+.spy-chip[data-variant="error"]   { --spy-chip-selected-border: var(--spy-chip-selected-bg); --spy-chip-hover-border: var(--hf-color-state-error-fg);   --spy-chip-selected-bg: var(--hf-color-state-error-solid); --spy-chip-selected-fg: var(--hf-color-state-error-on-solid); --spy-chip-ring: var(--hf-color-state-error-glow); }
+.spy-chip[data-variant="success"] { --spy-chip-selected-border: var(--spy-chip-selected-bg); --spy-chip-hover-border: var(--hf-color-state-success-fg); --spy-chip-selected-bg: var(--hf-color-state-success-solid); --spy-chip-selected-fg: var(--hf-color-state-success-on-solid); --spy-chip-ring: var(--hf-color-state-success-glow); }
+.spy-chip[data-variant="warning"] { --spy-chip-selected-border: var(--spy-chip-selected-bg); --spy-chip-hover-border: var(--hf-color-state-warning-fg); --spy-chip-selected-bg: var(--hf-color-state-warning-solid); --spy-chip-selected-fg: var(--hf-color-state-warning-on-solid); --spy-chip-ring: var(--hf-color-state-warning-glow); }
+.spy-chip[data-variant="info"]    { --spy-chip-selected-border: var(--spy-chip-selected-bg); --spy-chip-hover-border: var(--hf-color-state-info-fg);    --spy-chip-selected-bg: var(--hf-color-state-info-fg);    --spy-chip-selected-fg: var(--hf-color-text-inverse); --spy-chip-ring: var(--hf-color-state-info-bg); }
+.spy-chip[data-variant="neutral"] { --spy-chip-selected-border: var(--spy-chip-selected-bg); --spy-chip-hover-border: var(--hf-color-border-strong);    --spy-chip-selected-bg: var(--hf-color-background-secondary-strong); --spy-chip-selected-fg: var(--hf-color-text-primary); --spy-chip-ring: var(--hf-color-transparent-dark-20); }
 
 /* ---------------------------------------------------------------------------
    BADGE                                                                 [C]
@@ -1135,7 +1136,7 @@ body {
    BRAND, not to white.
    ------------------------------------------------------------------------ */
 .spy-tabs {
-  --spy-tabs-accent: var(--q-tint);
+  --spy-tabs-accent: var(--q-tint-fill);
   --spy-tabs-tab-fg: var(--hf-color-text-tertiary);
   /* Hover goes to primary ink, like every other hover in the system. It used
      to go to the brand lime — transcribed from a dark-only source, where lime
@@ -1478,7 +1479,7 @@ body {
    -fg flips with the theme and its light step is tuned for white, which is
    far too dark to read on this panel. The stacked variant, whose surface
    does flip, gets the -fg steps back below. */
-.spy-toast:not([data-variant="stacked"]) .spy-toast-icon[data-status="success"] { color: var(--hf-color-state-success-glow); }
+.spy-toast:not([data-variant="stacked"]) .spy-toast-icon[data-status="success"] { color: var(--hf-color-state-success-solid); }
 .spy-toast:not([data-variant="stacked"]) .spy-toast-icon[data-status="error"]   { color: var(--hf-color-state-error-glow); }
 .spy-toast:not([data-variant="stacked"]) .spy-toast-icon[data-status="warning"] { color: var(--hf-color-state-warning-glow); }
 .spy-toast[data-variant="stacked"] .spy-toast-icon[data-status="success"] { color: var(--hf-color-state-success-fg); }
@@ -1778,7 +1779,7 @@ body {
 .spy-progress-fill {
   position: absolute; inset-block: 0; left: 0;
   border-radius: var(--hf-radius-full);
-  background-color: var(--q-tint);
+  background-color: var(--q-tint-fill);
   transition: width var(--hf-duration-350) var(--hf-ease-in-out-circ);
   will-change: width;
 }
@@ -1801,7 +1802,7 @@ body {
 .spy-progress-ring svg { transform: rotate(-90deg); }
 .spy-progress-ring circle { fill: none; stroke-width: 3; }
 .spy-progress-ring .spy-ring-track { stroke: var(--hf-color-background-tertiary); }
-.spy-progress-ring .spy-ring-fill { stroke: var(--q-tint); transition: stroke-dashoffset var(--hf-duration-350) var(--hf-ease-in-out-circ); }
+.spy-progress-ring .spy-ring-fill { stroke: var(--q-tint-fill); transition: stroke-dashoffset var(--hf-duration-350) var(--hf-ease-in-out-circ); }
 
 .spy-loader {
   --spy-loader-size: var(--hf-space-800);
@@ -1813,7 +1814,7 @@ body {
 }
 .spy-loader-spinner { width: var(--spy-loader-size); height: var(--spy-loader-size); animation: spy-spin var(--hf-duration-800) var(--hf-ease-linear) infinite; }
 .spy-loader-dots { display: inline-flex; align-items: center; gap: var(--hf-space-100); }
-.spy-loader-dot { width: var(--spy-loader-dot); height: var(--spy-loader-dot); border-radius: var(--hf-radius-full); background-color: var(--q-tint); animation: spy-blink var(--hf-duration-1200) var(--hf-ease-linear) infinite; }
+.spy-loader-dot { width: var(--spy-loader-dot); height: var(--spy-loader-dot); border-radius: var(--hf-radius-full); background-color: var(--q-tint-fill); animation: spy-blink var(--hf-duration-1200) var(--hf-ease-linear) infinite; }
 .spy-loader-dot:nth-child(2) { animation-delay: 0.15s; }
 .spy-loader-dot:nth-child(3) { animation-delay: 0.3s; }
 @keyframes spy-blink { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
@@ -2162,12 +2163,12 @@ body {
    light. The categorical palette already ships the pairs; the tile now uses
    them as pairs instead of reaching for the ramp step on one side and a text
    role on the other.                                                     [D] */
-.spy-icon-tile[data-tone="brand"]   { background-color: var(--hf-color-brand-primary);      color: var(--hf-color-text-on-tint); }
+.spy-icon-tile[data-tone="brand"]   { background-color: var(--q-tint-soft);      color: var(--q-tint-soft-ink); }
 .spy-icon-tile[data-tone="pink"]    { background-color: var(--hf-color-palette-pink-bg);    color: var(--hf-color-palette-pink-text); }
 .spy-icon-tile[data-tone="purple"]  { background-color: var(--hf-color-palette-purple-bg);  color: var(--hf-color-palette-purple-text); }
 .spy-icon-tile[data-tone="orange"]  { background-color: var(--hf-color-palette-orange-bg);  color: var(--hf-color-palette-orange-text); }
 .spy-icon-tile[data-tone="blue"]    { background-color: var(--hf-color-palette-blue-bg);    color: var(--hf-color-palette-blue-text); }
-.spy-icon-tile[data-tone="success"] { background-color: var(--hf-color-palette-mint-bg);    color: var(--hf-color-palette-mint-text); }
+.spy-icon-tile[data-tone="success"] { background-color: var(--hf-color-state-success-solid); color: var(--hf-color-state-success-on-solid); }
 
 /* ---------------------------------------------------------------------------
    COUNT                                                                  [C]
@@ -2402,7 +2403,7 @@ body {
   font-weight: var(--hf-type-weight-medium);
   font-variant-numeric: tabular-nums;
 }
-.spy-step[data-state="done"] .spy-step-dot { background-color: var(--q-tint); color: var(--hf-color-text-on-tint); }
+.spy-step[data-state="done"] .spy-step-dot { background-color: var(--q-tint-soft); color: var(--q-tint-soft-ink); }
 .spy-step[data-state="active"] .spy-step-dot { background-color: transparent; color: var(--q-tint-text); box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--q-tint); }
 .spy-step-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; padding-top: 2px; }
 .spy-step-title { color: var(--hf-color-text-primary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); font-weight: var(--hf-type-weight-medium); }
@@ -2553,7 +2554,7 @@ code, kbd, samp, pre,
 }
 .spy-navmenu[data-orientation="horizontal"] .spy-navmenu-item[data-active] {
   background-color: transparent;
-  border-bottom-color: var(--q-tint);
+  border-bottom-color: var(--q-tint-fill);
 }
 /* A nested list steps in by exactly one icon plus its gap, so children line up
    under their parent's label rather than under its icon. */
@@ -2624,11 +2625,11 @@ code, kbd, samp, pre,
   color: var(--hf-color-text-secondary);
 }
 .spy-timeline-marker > .spy-icon { --spy-icon-size: var(--hf-icon-xs); }
-.spy-timeline-item[data-state="done"] .spy-timeline-marker { background-color: var(--q-tint); color: var(--hf-color-text-on-tint); }
+.spy-timeline-item[data-state="done"] .spy-timeline-marker { background-color: var(--q-tint-soft); color: var(--q-tint-soft-ink); }
 .spy-timeline-item[data-state="active"] .spy-timeline-marker {
   background-color: var(--hf-color-background-primary);
   color: var(--q-tint-text);
-  box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--q-tint);
+  box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--q-tint-fill);
 }
 .spy-timeline-item[data-status="error"] .spy-timeline-marker { background-color: var(--hf-color-state-error-bg); color: var(--hf-color-state-error-fg); }
 .spy-timeline-body { display: grid; gap: var(--hf-space-050); padding-block: var(--hf-space-050); min-width: 0; }
@@ -2985,7 +2986,7 @@ code, kbd, samp, pre,
   border-radius: var(--hf-radius-full);
   background-color: var(--hf-color-border-control);
 }
-.spy-carousel-dot[data-active] { background-color: var(--q-tint); width: var(--hf-space-500); }
+.spy-carousel-dot[data-active] { background-color: var(--q-tint-fill); width: var(--hf-space-500); }
 
 /* -- Tree ------------------------------------------------------------------
    The category taxonomy. A menu nests one level; a taxonomy does not. The
@@ -3069,7 +3070,7 @@ code, kbd, samp, pre,
   transition: background-color var(--hf-duration-150) var(--hf-ease-out);
 }
 .spy-split-handle:hover::before,
-.spy-split-handle:focus-visible::before { background-color: var(--q-tint); width: var(--hf-border-width-medium); }
+.spy-split-handle:focus-visible::before { background-color: var(--q-tint-fill); width: var(--hf-border-width-medium); }
 .spy-split[data-orientation="vertical"] { flex-direction: column; }
 .spy-split[data-orientation="vertical"] > .spy-split-handle { width: auto; height: var(--hf-space-300); cursor: row-resize; }
 .spy-split[data-orientation="vertical"] > .spy-split-handle::before { inset-inline: 0; inset-block-start: 50%; width: auto; height: var(--hf-border-width-thin); translate: 0 -50%; }
@@ -3108,5 +3109,5 @@ code, kbd, samp, pre,
 .spy-calendar-day[data-in-range] { background-color: var(--hf-color-transparent-lime-10); border-radius: 0; color: var(--hf-color-text-primary); }
 .spy-calendar-day[data-range-start] { border-start-start-radius: var(--hf-radius-200); border-end-start-radius: var(--hf-radius-200); }
 .spy-calendar-day[data-range-end]   { border-start-end-radius: var(--hf-radius-200); border-end-end-radius: var(--hf-radius-200); }
-.spy-calendar-day[data-selected] { background-color: var(--q-tint); color: var(--hf-color-text-on-tint); font-weight: var(--hf-type-weight-semi-bold); }
+.spy-calendar-day[data-selected] { background-color: var(--q-tint-fill); color: var(--hf-color-text-on-tint); font-weight: var(--hf-type-weight-semi-bold); }
 .spy-calendar-day[data-disabled] { opacity: 0.35; pointer-events: none; }

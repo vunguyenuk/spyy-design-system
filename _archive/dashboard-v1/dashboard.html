@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spyy · Creative intelligence</title>
+  <meta name="description" content="Resolve a brand, scan active video ads, and understand why the creative works.">
+  <script>
+    try {
+      const savedTheme = localStorage.getItem('spyy-theme');
+      if (savedTheme === 'light' || savedTheme === 'dark') document.documentElement.dataset.theme = savedTheme;
+    } catch (error) {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Asta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="patterns.css">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <a class="flow-skip" href="#main-content">Skip to content</a>
+  <div id="app" aria-live="polite">
+    <div class="flow-boot" role="status">
+      <span class="flow-logo">Spyyy</span>
+      <span class="flow-boot-line" aria-hidden="true"></span>
+      <span>Loading creative intelligence…</span>
+    </div>
+  </div>
+  <div class="flow-toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <script src="icons.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

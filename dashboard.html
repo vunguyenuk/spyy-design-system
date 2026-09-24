@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overview · Spyy</title>
+  <meta name="description" content="Resolve a brand, scan its active video ads on TikTok and Meta, and understand why the creative works.">
+  <script>
+    try {
+      const t = localStorage.getItem('spyy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Asta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="patterns.css">
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <a class="app-skip" href="#main">Skip to content</a>
+  <div id="app"></div>
+  <div class="app-toasts" id="toasts" aria-live="polite" aria-atomic="true"></div>
+  <script src="icons.js"></script>
+  <script src="data/spyy-data.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

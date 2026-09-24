@@ -37,7 +37,7 @@
 .doc-where { display: flex; align-items: center; gap: var(--hf-space-250); min-width: 0; color: var(--hf-color-text-tertiary); font-size: var(--hf-type-size-200); }
 .doc-where-sep { color: var(--hf-color-text-tertiary); }
 .doc-where strong { color: var(--hf-color-text-primary); font-weight: var(--hf-type-weight-medium); }
-.doc-topbar-actions { flex-shrink: 0; }
+.doc-topbar-actions { flex-shrink: 0; display: flex; align-items: center; gap: var(--hf-space-200); }
 .doc-search { flex: 0 1 22rem; margin-inline-start: auto; min-width: 0; }
 .doc-search .spy-field-control { width: 100%; }
 .doc-railtoggle { display: none; }
@@ -703,7 +703,7 @@ code {
   --doc-syn-tag:   var(--hf-color-purple-300);
   --doc-syn-attr:  var(--hf-color-blue-300);
   --doc-syn-val:   var(--hf-color-yellow-300);
-  --doc-syn-text:  var(--hf-color-green-300);
+  --doc-syn-text:  var(--hf-color-lime-400);
   --doc-syn-punc:  var(--hf-color-text-tertiary);
 }
 [data-theme="light"] {
@@ -732,3 +732,13 @@ code {
    generic .spy-row utility keeps its centring. */
 .doc-scale-row .spy-row { align-items: flex-start; }
 .doc-scale-row .spy-row > .spy-icon { margin-block-start: calc((var(--hf-type-line-height-300) - var(--spy-icon-size)) / 2); }
+
+/* Prototype link in the top bar: icon only on a phone, where the bar is full. */
+@media (max-width: 40rem) { .doc-proto > span { display: none; } }
+
+/* Prose followed by a specimen block had no gap: the note's last line sat on
+   the block's top edge (Processing frame, and the same shape elsewhere). A
+   paragraph that introduces a block always gets the demo gap after it. */
+.doc-demo > p + :not(p),
+.doc-section > p + :not(p):not(h2):not(h3),
+.doc-note + :not(p):not(h2):not(h3) { margin-top: var(--hf-space-500); }

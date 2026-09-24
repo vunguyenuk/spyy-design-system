@@ -78,7 +78,7 @@
 .spy-metric-fill {
   position: absolute; inset-block: 0; left: 0;
   border-radius: var(--hf-radius-full);
-  background-color: var(--q-tint);
+  background-color: var(--q-tint-fill);
   transition: width var(--hf-duration-350) var(--hf-ease-in-out-circ);
 }
 /* Confidence is a separate axis from value and is never a colour.        [I] */
@@ -131,7 +131,7 @@
 .spy-gauge {
   --spy-gauge-size: 10rem;
   --spy-gauge-stroke: 14;
-  --spy-gauge-color: var(--q-tint);
+  --spy-gauge-color: var(--q-tint-fill);
   position: relative;
   width: var(--spy-gauge-size); height: var(--spy-gauge-size);
   display: inline-grid; place-items: center;
@@ -144,10 +144,15 @@
   stroke: var(--spy-gauge-color);
   transition: stroke-dashoffset var(--hf-duration-700) var(--hf-ease-in-out-circ), stroke var(--hf-duration-normal) var(--hf-ease-out);
 }
-.spy-gauge[data-verdict="good"]     { --spy-gauge-color: var(--hf-color-brand-primary); }
-.spy-gauge[data-verdict="fair"]     { --spy-gauge-color: var(--hf-color-state-warning-fg-soft); }
-.spy-gauge[data-verdict="bad"]      { --spy-gauge-color: var(--hf-color-state-error-fg); }
+.spy-gauge[data-verdict="good"]     { --spy-gauge-color: var(--q-tint-fill); }
+/* The ring is always the brand tint (Vu, 24/09); the verdict is carried by
+   the words beside it, so a fair score no longer draws a brown ring.     [I] */
+.spy-gauge[data-verdict="fair"]     { --spy-gauge-color: var(--q-tint-fill); }
+.spy-gauge[data-verdict="bad"]      { --spy-gauge-color: var(--q-tint-fill); }
 .spy-gauge[data-verdict="good"] .spy-gauge-arc { filter: drop-shadow(0 0 10px color-mix(in oklch, var(--spy-gauge-color) 55%, transparent)); }
+/* A glow reads on a dark surface; on white it is a grey haze clipped to the
+   gauge's square box. Light keeps the arc flat.                            [I] */
+.spy-gauge[data-verdict="good"] .spy-gauge-arc { filter: none; }   /* the glow was clipped to a visible square in both themes */
 .spy-gauge-center { position: relative; display: flex; flex-direction: column; align-items: center; gap: var(--hf-space-150); }
 .spy-gauge-number { display: flex; align-items: baseline; gap: 2px; font-family: var(--hf-type-family-primary); font-size: var(--hf-type-size-900); line-height: 1; font-weight: var(--hf-type-weight-bold); letter-spacing: var(--hf-tracking-display); color: var(--hf-color-text-primary); }
 .spy-gauge-number small { font-size: var(--hf-type-size-300); color: var(--hf-color-text-tertiary); font-weight: var(--hf-type-weight-medium); }
@@ -158,7 +163,7 @@
   font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300);
   font-weight: var(--hf-type-weight-medium);
 }
-.spy-gauge[data-verdict="good"] .spy-gauge-verdict { background-color: var(--hf-color-brand-primary); color: var(--hf-color-text-on-tint); }
+.spy-gauge[data-verdict="good"] .spy-gauge-verdict { background-color: var(--q-tint-soft); color: var(--q-tint-soft-ink); }
 .spy-gauge[data-verdict="fair"] .spy-gauge-verdict { background-color: var(--hf-color-state-warning-bg); color: var(--hf-color-state-warning-fg-soft); }
 .spy-gauge[data-verdict="bad"]  .spy-gauge-verdict { background-color: var(--hf-color-state-error-bg); color: var(--hf-color-state-error-fg-soft); }
 .spy-gauge[data-size="sm"] { --spy-gauge-size: 6rem; --spy-gauge-stroke: 10; }
@@ -193,22 +198,25 @@
   width: 100%;
   padding: var(--hf-space-300) 0;
   border: none; border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-primary);
-  background: none; text-align: start; cursor: pointer;
+  background: none; text-align: start; cursor: default;
   color: var(--hf-color-text-primary);
   font-family: var(--hf-type-family-secondary);
   transition: background-color var(--hf-duration-150) var(--hf-ease-out);
 }
 .spy-verdict:last-child { border-bottom: none; }
-.spy-verdict:hover { background-color: var(--hf-color-overlay-hover); }
+/* Only an interactive verdict (a button or link that opens its reasons)
+   reacts to hover; a static row does not pretend to be clickable.        [I] */
+button.spy-verdict, a.spy-verdict { cursor: pointer; }
+button.spy-verdict:hover, a.spy-verdict:hover { background-color: var(--hf-color-overlay-hover); }
 .spy-verdict:focus-visible { outline: none; box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus); }
 .spy-verdict-icon {
   display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
   width: var(--hf-space-600); height: var(--hf-space-600);
   border-radius: var(--hf-radius-full);
 }
-.spy-verdict[data-verdict="keep"]   .spy-verdict-icon { background-color: var(--hf-color-state-success-fg); color: var(--hf-color-text-inverse); }
-.spy-verdict[data-verdict="modify"] .spy-verdict-icon { background-color: var(--hf-color-state-warning-fg-soft); color: var(--hf-color-text-inverse); }
-.spy-verdict[data-verdict="remove"] .spy-verdict-icon { background-color: var(--hf-color-state-error-fg); color: var(--hf-color-text-primary); }
+.spy-verdict[data-verdict="keep"]   .spy-verdict-icon { background-color: var(--hf-color-state-success-solid); color: var(--hf-color-state-success-on-solid); }
+.spy-verdict[data-verdict="modify"] .spy-verdict-icon { background-color: var(--hf-color-state-warning-solid); color: var(--hf-color-state-warning-on-solid); }
+.spy-verdict[data-verdict="remove"] .spy-verdict-icon { background-color: var(--hf-color-state-error-solid); color: var(--hf-color-state-error-on-solid); }
 .spy-verdict-icon > .spy-icon { --spy-icon-size: var(--hf-icon-sm); stroke-width: 2.5; }
 .spy-verdict-label { flex: 0 0 5.5rem; font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-medium); }
 .spy-verdict-reasons { flex: 1 1 0; min-width: 0; margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: var(--hf-space-100); }
@@ -234,8 +242,8 @@
   border-radius: var(--hf-radius-full);
   margin-top: 2px;
 }
-.spy-evidence-side[data-tone="for"]     .spy-evidence-mark { background-color: var(--hf-color-state-success-fg); color: var(--hf-color-text-inverse); }
-.spy-evidence-side[data-tone="against"] .spy-evidence-mark { background-color: var(--hf-color-state-error-fg); color: var(--hf-color-text-primary); }
+.spy-evidence-side[data-tone="for"]     .spy-evidence-mark { background-color: var(--hf-color-state-success-solid); color: var(--hf-color-state-success-on-solid); }
+.spy-evidence-side[data-tone="against"] .spy-evidence-mark { background-color: var(--hf-color-state-error-solid); color: var(--hf-color-state-error-on-solid); }
 .spy-evidence-mark > .spy-icon { --spy-icon-size: var(--hf-space-300); stroke-width: 3; }
 .spy-evidence-title { color: var(--hf-color-text-primary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-semi-bold); }
 .spy-evidence-claim { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); }
@@ -425,7 +433,9 @@
   font-size: var(--hf-type-size-100); line-height: 1; font-weight: var(--hf-type-weight-medium);
 }
 .spy-coverage-status > .spy-icon { --spy-icon-size: var(--hf-icon-xs); }
-.spy-coverage-status[data-state="done"]    { background-color: var(--hf-color-state-success-bg); color: var(--hf-color-state-success-fg-soft); }
+/* Done reads as a solid lime chip with dark ink, like "Active" — the pale
+   wash with olive text looked faded next to it. */
+.spy-coverage-status[data-state="done"]    { background-color: var(--hf-color-state-success-solid); color: var(--hf-color-state-success-on-solid); font-weight: var(--hf-type-weight-medium); }
 .spy-coverage-status[data-state="running"] { background-color: var(--hf-color-fill-default); color: var(--hf-color-text-secondary); }
 .spy-coverage-status[data-state="partial"] { background-color: var(--hf-color-state-warning-bg); color: var(--hf-color-state-warning-fg-soft); }
 .spy-coverage-status[data-state="failed"]  { background-color: var(--hf-color-state-error-bg); color: var(--hf-color-state-error-fg-soft); }
@@ -441,7 +451,7 @@
 .spy-tier { display: inline-flex; align-items: center; gap: var(--hf-space-250); }
 .spy-tier-pips { display: inline-flex; gap: var(--hf-space-050); }   /* was 3px, off the scale */
 .spy-tier-pip { width: var(--hf-space-300); height: var(--hf-space-150); border-radius: var(--hf-radius-full); background-color: var(--hf-color-fill-default); }
-.spy-tier-pip[data-on] { background-color: var(--q-tint); }
+.spy-tier-pip[data-on] { background-color: var(--q-tint-fill); }
 .spy-tier-label { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); white-space: nowrap; }
 
 /* ---------------------------------------------------------------------------
@@ -453,7 +463,7 @@
    ------------------------------------------------------------------------ */
 .spy-processing {
   position: relative;
-  border: var(--hf-border-width-thick) solid var(--q-tint);
+  border: var(--hf-border-width-thick) solid var(--q-tint-fill);
   border-radius: var(--hf-radius-300);
   /* top padding must clear the 32px badge that notches into the corner */
   padding: var(--hf-space-1000) var(--hf-space-400) var(--hf-space-400);
@@ -465,14 +475,14 @@
   height: var(--hf-space-800);
   padding-inline: var(--hf-space-300);
   border-radius: var(--hf-radius-300) 0 var(--hf-radius-300) 0;
-  background-color: var(--q-tint);
-  color: var(--hf-color-text-on-tint);
+  background-color: var(--q-tint-soft);
+  color: var(--q-tint-soft-ink);
   font-size: var(--hf-type-size-200); line-height: 1;
   font-weight: var(--hf-type-weight-medium);
 }
 .spy-processing-badge > .spy-icon { --spy-icon-size: var(--hf-icon-sm); animation: spy-spin var(--hf-duration-1000) var(--hf-ease-linear) infinite; }
-.spy-processing[data-state="done"]   { border-color: var(--hf-color-state-success-fg); }
-.spy-processing[data-state="done"]   .spy-processing-badge { background-color: var(--hf-color-state-success-fg); color: var(--hf-color-text-inverse); }
+.spy-processing[data-state="done"]   { border-color: var(--hf-color-state-success-solid); }
+.spy-processing[data-state="done"]   .spy-processing-badge { background-color: var(--hf-color-state-success-solid); color: var(--hf-color-state-success-on-solid); }
 .spy-processing[data-state="done"]   .spy-processing-badge > .spy-icon { animation: none; }
 .spy-processing[data-state="failed"] { border-color: var(--hf-color-state-error-fg); }
 .spy-processing[data-state="failed"] .spy-processing-badge { background-color: var(--hf-color-state-error-fg); color: var(--hf-color-text-inverse); }
@@ -500,7 +510,7 @@
   transition-duration: var(--hf-duration-150);
 }
 .spy-candidate:hover { border-color: var(--hf-color-border-strong); }
-.spy-candidate[data-selected] { border-color: var(--q-tint); background-color: color-mix(in oklch, var(--q-tint) 8%, transparent); }
+.spy-candidate[data-selected] { border-color: var(--q-tint-fill); background-color: color-mix(in oklch, var(--q-tint-fill) 8%, transparent); }
 .spy-candidate:focus-visible {
   outline: var(--hf-border-width-thick) solid transparent;
   box-shadow:
@@ -539,7 +549,7 @@
 .spy-placement-where { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: var(--hf-space-250); color: var(--hf-color-text-primary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
 .spy-placement-span { flex-shrink: 0; display: flex; align-items: center; gap: var(--hf-space-200); color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); font-variant-numeric: tabular-nums; }
 .spy-placement-span > .spy-icon { --spy-icon-size: var(--hf-icon-xs); color: var(--hf-color-icon-tertiary); }
-.spy-live-dot { position: relative; display: inline-flex; width: var(--hf-space-200); height: var(--hf-space-200); border-radius: var(--hf-radius-full); background-color: var(--hf-color-state-success-fg); flex-shrink: 0; }
+.spy-live-dot { position: relative; display: inline-flex; width: var(--hf-space-200); height: var(--hf-space-200); border-radius: var(--hf-radius-full); background-color: var(--hf-color-state-success-solid); flex-shrink: 0; }
 .spy-live-dot::after { content: ""; position: absolute; inset: -3px; border-radius: inherit; border: 1px solid var(--hf-color-state-success-fg); opacity: .4; animation: spy-ping 2s var(--hf-ease-out) infinite; }
 @keyframes spy-ping { 0% { transform: scale(.8); opacity: .5; } 100% { transform: scale(1.6); opacity: 0; } }
 

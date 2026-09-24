@@ -760,7 +760,7 @@ function renderUsageRows() {
 // The ink is a theme-constant token, not text-inverse: a tint is the same
 // colour in both themes, so the label on top of it must not flip.
 const TINTS = [
-  ['Core product', 'var(--hf-color-lime-500)', 'lime-500 · #d1fe17', 'var(--hf-color-text-on-tint)'],
+  ['Core product', 'var(--hf-color-lime-500)', 'lime-500 · #cbf130', 'var(--hf-color-text-on-tint)'],
   ['a second surface', 'var(--hf-color-pink-500)', 'pink-500 · #ff005b', 'var(--hf-color-text-on-tint-inverse)'],
   ['a third surface', '#35c6a8', 'teal · approximate', 'var(--hf-color-text-on-tint)'],
 ];
