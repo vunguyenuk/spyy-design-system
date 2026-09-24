@@ -649,8 +649,20 @@ function wireInteractions() {
       psec.closest('[data-js="panel-section"]').toggleAttribute('data-open');
     }
 
-    const sel = t.closest('[data-js="select"]');
-    if (sel) sel.toggleAttribute('data-open');
+    /* Structural, not opt-in. These used to require a data-js attribute on the
+       markup, so a select or a sidebar row that nobody remembered to tag looked
+       live and was not — which is what the interactive audit found on the
+       templates page. A select trigger is a select trigger.              [D] */
+    const sel = t.closest('.spy-select-trigger, [data-js="select"]');
+    if (sel && !sel.hasAttribute('data-disabled')) sel.toggleAttribute('data-open');
+
+    const srow = t.closest('.spy-sidebar-row');
+    if (srow && !srow.hasAttribute('data-disabled')) {
+      const scope = srow.closest('.spy-sidebar, .doc-shell-frame, body');
+      $$('.spy-sidebar-row', scope).forEach(x => x.removeAttribute('data-active'));
+      srow.setAttribute('data-active', '');
+      if (srow.tagName === 'A') ev.preventDefault();
+    }
 
     const accTrigger = t.closest('.spy-accordion-trigger');
     if (accTrigger && accTrigger.closest('[data-js="accordion"]')) {

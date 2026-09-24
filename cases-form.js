@@ -9,9 +9,11 @@ C.push({
   id: 'field',
   name: 'Field',
   base: '.spy-field · .spy-field-control · .spy-field-input',
-  lede: 'The text-entry control and the label, description and error that travel with it. It has <strong>no border</strong>: depth comes from a 5%-white fill, and focus is an <em>inset</em> ring so the control never grows.',
+  lede: 'The text-entry control, and the label, description and error that travel with it. It is <strong>outlined</strong>, not filled — the edge says you can put something in this; a fill says this is a surface things sit on. Focus is an <em>inset</em> ring, so the control never grows.',
   notes: [
-    'One radius for every size — <code>10px</code>, the control step. A tall field is not a rounder field.',
+    'It used to be the other way round — no border, and a 5%-white fill for depth. That is exactly how this system draws a <em>disabled</em> control, so an empty field read as one you could not type in. The fill also had nothing left to say once the field sat on a card, which is itself a fill one step up.',
+    'One radius for every size — <code>8px</code>, the control step. A tall field is not a rounder field.',
+    'Hover moves the edge rather than adding a fill. In a form of nine fields, nine fills lighting up in turn is a lot of movement for “the pointer is here”.',
     'Focus and invalid are both inset rings, so neither changes the layout. Invalid survives focus: a field you are typing in still tells you it is wrong.',
     'The placeholder is white at 50% <em>alpha</em>, not dimmed grey text, so it stays legible on every fill the field sits on.',
   ],
@@ -70,6 +72,42 @@ C.push({
         `<span class="spy-field-description">Fixed on the free tier.</span>` +
         `</div>` },
 
+    { id: 'labelrow', name: 'Label row',
+      when: 'A hint on the right of the label — usually the word <em>Optional</em>. Mark the optional ones when most are required, and the required ones when most are optional. Marking every field says nothing.',
+      stack: true,
+      demo:
+        `<div class="spy-field">` +
+        `<div class="spy-field-labelrow">` +
+        `<label class="spy-field-label">Competitor <span class="spy-field-required">*</span></label>` +
+        `</div>` +
+        `<div class="spy-field-control"><input class="spy-field-input" placeholder="northwind.com"></div>` +
+        `</div>` +
+        `<div class="spy-field">` +
+        `<div class="spy-field-labelrow">` +
+        `<label class="spy-field-label">Label this scan</label>` +
+        `<span class="spy-field-hint">Optional</span>` +
+        `</div>` +
+        `<div class="spy-field-control"><input class="spy-field-input" placeholder="Q3 — running shoes"></div>` +
+        `</div>` },
+
+    { id: 'horizontal', name: 'Label beside the control',
+      when: 'For a settings screen, where the labels are short and one row per setting is the point. The label column is <code>--hf-field-label-width</code>, so a column of them lines up without each field being told how wide to be.',
+      stack: true,
+      demo:
+        `<div class="spy-field" data-orientation="horizontal">` +
+        `<label class="spy-field-label">Scan window</label>` +
+        `<div class="spy-field-control"><input class="spy-field-input" value="Last 30 days"></div>` +
+        `</div>` +
+        `<div class="spy-field" data-orientation="horizontal">` +
+        `<label class="spy-field-label">Minimum score</label>` +
+        `<div class="spy-field-control"><input class="spy-field-input" value="60"></div>` +
+        `</div>` },
+
+    { id: 'soft', name: 'Soft, over media',
+      when: 'The filled field, for the one case an outline cannot serve: a control over an image, where there is nothing stable for an edge to sit against.',
+      surface: 'landing',
+      demo: `<div class="spy-field-control" data-variant="soft"><input class="spy-field-input" placeholder="Search this creative"></div>` },
+
     { id: 'states', name: 'States',
       when: 'Rest, hover, focus and invalid, side by side. Every one of them is drawn inside the box — the field is the same size in all four.',
       noCode: true,
@@ -87,6 +125,8 @@ C.push({
   api: {
     props: [
       ['data-size', 'sm · md · lg', 'md'],
+      ['data-variant', 'soft — filled, for over media', '— (outlined)'],
+      ['data-orientation', 'horizontal — on <code>.spy-field</code>', '— (stacked)'],
       ['data-invalid', 'present — on the control and the label', '—'],
       ['data-disabled', 'present', '—'],
       ['data-multiline', 'present', '—'],
@@ -101,9 +141,11 @@ C.push({
       ['.spy-field-description', 'Help text. Replaced by the error, never shown beside it.'],
       ['.spy-field-error', 'What is wrong and what to do about it.'],
       ['.spy-field-required', 'The asterisk. Marks required, never optional.'],
+      ['.spy-field-labelrow', 'Label on the left, hint on the right.'],
+      ['.spy-field-hint', 'The hint. Tertiary ink, and it is never the error.'],
     ],
     states: [
-      ['hover', 'the fill lifts one step'],
+      ['hover', 'the edge steps from <code>border/default</code> to <code>border/strong</code>'],
       ['focus-within', 'inset 1.5px ring in <code>border/focus</code> — no growth'],
       ['invalid', 'inset 1.5px ring in the error colour, and it outranks focus'],
       ['disabled', 'opacity 0.5, <code>cursor: not-allowed</code>, hover suppressed'],

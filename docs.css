@@ -663,7 +663,7 @@ code {
 /* The field's focus ring lives on :focus-within, which a static example cannot
    enter. Same device as the button rows: painted by the doc, unavailable to
    anything that ships. */
-.doc-state-row[data-force="hover"] .spy-field-control::after { background-color: var(--hf-color-overlay-hover); }
+.doc-state-row[data-force="hover"] .spy-field-control { box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-strong); }
 .doc-state-row[data-force="field-focus"] .spy-field-control {
   box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus);
 }

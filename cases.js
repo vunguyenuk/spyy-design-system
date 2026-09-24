@@ -202,3 +202,165 @@ window.SPY_RENDER_CASES = function (hostSelector) {
 };
 window.SPY_ICON = ic;
 })();
+
+/* ---------------------------------------------------------------------------
+   Behaviour
+
+   The examples have to work. A tab you cannot click is not an example of a tab,
+   and the page had 101 of them doing nothing — the interaction layer lives in
+   app.js, which this page has no other reason to load. The same split that
+   killed the theme switch.
+
+   It is driven by STRUCTURE, not by a data-js attribute the markup has to
+   remember: a tab is a [role="tab"] inside a [role="tablist"], and that is
+   already enough to know it selects. Which matters twice over here, because the
+   code block is serialised from this markup — an attribute added to make the
+   demo work would be an attribute in everything anyone copies.
+--------------------------------------------------------------------------- */
+(function () {
+'use strict';
+const inPreview = el => el && el.closest('.doc-case-preview');
+const within = (el, sel, scope) => [...(scope || document).querySelectorAll(sel)].filter(x => x !== el);
+
+function exclusive(el, itemSel, containerSel, attr) {
+  const box = el.closest(containerSel);
+  if (!box) return false;
+  box.querySelectorAll(itemSel).forEach(x => x.removeAttribute(attr));
+  el.setAttribute(attr, '');
+  return true;
+}
+
+document.addEventListener('click', ev => {
+  const t = ev.target;
+  if (!(t instanceof Element) || !inPreview(t)) return;
+
+  // tabs, and everything else that is one-of-a-set
+  const tab = t.closest('[role="tab"], .spy-tabs-tab');
+  if (tab && !tab.hasAttribute('data-disabled')) {
+    if (exclusive(tab, '.spy-tabs-tab', '.spy-tabs-list', 'data-active')) {
+      tab.closest('.spy-tabs-list').querySelectorAll('[role="tab"]')
+        .forEach(x => x.setAttribute('aria-selected', String(x === tab)));
+      return;
+    }
+  }
+  for (const [sel, box] of [
+    ['.spy-navmenu-item', '.spy-navmenu'],
+    ['.spy-nav-item', '.spy-nav-list'],
+    ['.spy-sidebar-row', '.doc-case-preview'],
+    ['.spy-pagination-item', '.spy-pagination'],
+    ['.spy-menu-item', '.spy-menu, .spy-cmdk-results'],
+  ]) {
+    const el = t.closest(sel);
+    if (el && !el.hasAttribute('data-disabled')) {
+      const attr = sel === '.spy-menu-item' ? 'data-selected' : 'data-active';
+      // prev and next are not pages — they move to the one beside the current
+      if (el.matches('[data-icon-only]') && sel === '.spy-pagination-item') {
+        const nav = el.closest('.spy-pagination');
+        const pages = [...nav.querySelectorAll('.spy-pagination-item:not([data-icon-only])')];
+        const at = pages.findIndex(x => x.hasAttribute('data-active'));
+        const next = pages[at + (nav.querySelector('[data-icon-only]') === el ? -1 : 1)];
+        if (next) { pages.forEach(x => { x.removeAttribute('data-active'); x.removeAttribute('aria-current'); });
+                    next.setAttribute('data-active', ''); next.setAttribute('aria-current', 'page'); }
+        ev.preventDefault(); return;
+      }
+      if (exclusive(el, sel, box, attr)) { ev.preventDefault(); return; }
+    }
+  }
+
+  // things that toggle
+  const toggles = [
+    ['button.spy-chip', 'data-selected', el => el],
+    ['.spy-toggle', 'data-pressed', el => el],
+    ['.spy-switch', 'data-checked', el => el],
+    ['.spy-accordion-trigger', 'data-open', el => el.closest('.spy-accordion-item')],
+    ['.spy-select-trigger', 'data-open', el => el],
+    ['.spy-toolcall-trigger', 'data-open', el => el.closest('.spy-toolcall')],
+    ['.spy-panel-section-header', 'data-open', el => el.closest('.spy-panel-section')],
+  ];
+  for (const [sel, attr, owner] of toggles) {
+    const el = t.closest(sel);
+    if (el && !el.hasAttribute('data-disabled')) {
+      const node = owner(el);
+      if (!node) continue;
+      const on = node.toggleAttribute(attr);
+      if (attr === 'data-pressed') el.setAttribute('aria-pressed', String(on));
+      ev.preventDefault();
+      return;
+    }
+  }
+
+  // a checkbox in a table selects its row; everywhere else it selects itself
+  const box = t.closest('.spy-checkbox, .spy-radio');
+  if (box && !box.hasAttribute('data-disabled')) {
+    ev.preventDefault();
+    if (box.matches('.spy-radio')) {
+      exclusive(box, '.spy-radio', '.doc-case-preview', 'data-checked');
+      return;
+    }
+    const row = box.closest('tr');
+    const head = box.closest('thead');
+    if (head) {
+      // the header box drives every row, and lands on indeterminate only when
+      // the rows disagree — which they cannot, right after it has set them all
+      const table = box.closest('table');
+      const on = !box.hasAttribute('data-checked');
+      box.removeAttribute('data-indeterminate');
+      box.toggleAttribute('data-checked', on);
+      table.querySelectorAll('tbody tr').forEach(r => {
+        r.toggleAttribute('data-selected', on);
+        const b = r.querySelector('.spy-checkbox');
+        if (b) b.toggleAttribute('data-checked', on);
+      });
+      return;
+    }
+    const on = box.toggleAttribute('data-checked');
+    if (row) row.toggleAttribute('data-selected', on);
+    if (row) {
+      const table = row.closest('table');
+      const all = [...table.querySelectorAll('tbody .spy-checkbox')];
+      const n = all.filter(b => b.hasAttribute('data-checked')).length;
+      const head2 = table.querySelector('thead .spy-checkbox');
+      if (head2) {
+        head2.toggleAttribute('data-checked', n === all.length);
+        head2.toggleAttribute('data-indeterminate', n > 0 && n < all.length);
+      }
+    }
+    return;
+  }
+
+  // the clear button clears
+  const clear = t.closest('.spy-field-clear');
+  if (clear) {
+    const input = clear.closest('.spy-field-control').querySelector('.spy-field-input');
+    if (input) { input.value = ''; input.focus(); }
+    ev.preventDefault();
+    return;
+  }
+
+  const close = t.closest('.spy-toast-close');
+  if (close) { close.closest('.spy-toast').remove(); return; }
+
+  // a link inside an example goes nowhere — it is an example of a link
+  const link = t.closest('a[href^="#"]');
+  if (link) ev.preventDefault();
+});
+
+// the slider is a drag, not a click
+document.addEventListener('pointerdown', ev => {
+  const track = ev.target instanceof Element && ev.target.closest('.doc-case-preview .spy-slider-track');
+  if (!track) return;
+  const slider = track.closest('.spy-slider');
+  if (slider.hasAttribute('data-disabled')) return;
+  const set = x => {
+    const r = track.getBoundingClientRect();
+    slider.style.setProperty('--spy-slider-value',
+      Math.min(100, Math.max(0, ((x - r.left) / r.width) * 100)) + '%');
+  };
+  set(ev.clientX);
+  track.setPointerCapture(ev.pointerId);
+  const move = e => set(e.clientX);
+  const up = () => { track.removeEventListener('pointermove', move); track.removeEventListener('pointerup', up); };
+  track.addEventListener('pointermove', move);
+  track.addEventListener('pointerup', up);
+});
+})();

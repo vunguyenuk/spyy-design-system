@@ -88,10 +88,10 @@ C.push({
         `<button class="spy-sidebar-pin" aria-label="Pin">${ic('pin', 'sm')}</button>` +
         `</a>` },
     { id: 'pagination', name: 'Pagination',
-      when: 'Pages of one result set. The ellipsis is its own element, not a disabled item.',
+      when: 'Pages of one result set. The ellipsis is its own element, not a disabled item — and Previous is disabled on the first page, because an arrow that points at nothing is an arrow you learn to ignore.',
       demo:
         `<nav class="spy-pagination" aria-label="Pages">` +
-        `<button class="spy-pagination-item" data-icon-only aria-label="Previous">${ic('chevron-left', 'sm')}</button>` +
+        `<button class="spy-pagination-item" data-icon-only data-disabled aria-label="Previous">${ic('chevron-left', 'sm')}</button>` +
         `<button class="spy-pagination-item" data-active aria-current="page">1</button>` +
         `<button class="spy-pagination-item">2</button>` +
         `<button class="spy-pagination-item">3</button>` +

@@ -469,6 +469,20 @@ body {
 }
 .spy-field-required { color: var(--hf-color-state-error-fg); }
 
+/* A text-entry control is OUTLINED. A container that holds one is FILLED.
+   ---------------------------------------------------------------------------
+   The field used to be the other way round: no border, and a 5%-white fill for
+   depth. Transcribed faithfully from the source, and wrong here — a filled box
+   with no edge is exactly how this system draws a disabled control, so an empty
+   field read as one you could not type in. The fill also had nothing left to
+   say once the field sat on a card, which is itself a fill one step up.
+
+   So the rule, and it is the same one either way round: the edge says you can
+   put something in this; the fill says this is a surface things sit on. Field,
+   textarea and select trigger are outlined. Prompt, composer, menu, card and
+   panel are filled. `data-variant="soft"` brings the old fill back for the one
+   case that wants it — a field over media, where an outline has nothing stable
+   to sit against.                                                         [D] */
 .spy-field-control {
   position: relative;
   isolation: isolate;
@@ -483,7 +497,8 @@ body {
      composer. It used to be 12px here, 10px at sm and a full pill under a shape
      attribute, which meant three different roundings for one kind of object. [I] */
   border-radius: var(--hf-radius-200);     /* 10px */
-  background-color: var(--hf-color-overlay-dim-soft);
+  background-color: transparent;
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-default);
   color: var(--hf-color-icon-secondary);
   cursor: text;
   transition: box-shadow var(--hf-duration-150) var(--hf-ease-out);
@@ -493,11 +508,23 @@ body {
   border-radius: inherit; background-color: transparent;
   transition: background-color var(--hf-duration-150) var(--hf-ease-out);
 }
-.spy-field-control:hover::after { background-color: var(--hf-color-overlay-hover); }
+/* Hover moves the edge, it does not add a fill — the same move the chip makes,
+   for the same reason: in a form of nine fields, nine fills lighting up in turn
+   is a lot of movement for "the pointer is here". */
+.spy-field-control:hover { box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-strong); }
 .spy-field-control:focus-within {
   outline: var(--hf-border-width-thick) solid transparent;
   box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus);
   overflow: hidden;
+}
+/* The filled field, for a control over media. */
+.spy-field-control[data-variant="soft"] {
+  background-color: var(--hf-color-overlay-dim-soft);
+  box-shadow: none;
+}
+.spy-field-control[data-variant="soft"]:hover::after { background-color: var(--hf-color-overlay-hover); }
+.spy-field-control[data-variant="soft"]:focus-within {
+  box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus);
 }
 .spy-field-control[data-size="sm"] { height: var(--hf-space-800); padding-inline: var(--hf-space-200); }
 .spy-field-control[data-size="lg"] { height: var(--hf-space-1200); padding-inline: var(--hf-space-400); }
@@ -1103,7 +1130,12 @@ body {
 .spy-tabs {
   --spy-tabs-accent: var(--q-tint);
   --spy-tabs-tab-fg: var(--hf-color-text-tertiary);
-  --spy-tabs-tab-hover-fg: var(--hf-color-brand-primary);
+  /* Hover goes to primary ink, like every other hover in the system. It used
+     to go to the brand lime — transcribed from a dark-only source, where lime
+     on near-black is legible. On the light theme that is lime on near-white:
+     2.1:1, and it reads as a highlighter rather than a hover. The accent stays
+     where it means something, on the ACTIVE tab.                        [D] */
+  --spy-tabs-tab-hover-fg: var(--hf-color-text-primary);
   --spy-tabs-indicator-bg: var(--hf-color-border-inverse);
   --spy-tabs-indicator-fg: var(--hf-color-text-primary);
   --spy-tabs-segment-radius: var(--hf-radius-250);
@@ -2536,10 +2568,21 @@ code, kbd, samp, pre,
    one of them was asked for. */
 .spy-table[data-density="compact"] td,
 .spy-table[data-density="compact"] th { padding-block: var(--hf-space-150); }
+/* A CONTROL STRIP — a band holding one row of controls under or over a region:
+   the card footer, this bar, the palette's field and its key legend. Two rules,
+   because measured across the system these strips had picked five different
+   paddings between them (12/20, 12/16, 12/16, 10/16):
+
+     · 12 on the block axis, always. The strip is the control plus one step
+       either side, so a 32px row makes a 56px strip wherever it appears.
+     · the INLINE padding is the parent's, never the strip's own choice, so the
+       first thing in the strip lines up with the first thing in the region it
+       belongs to. A footer indented differently from its body is two objects
+       stacked, not one card.                                             [D] */
 .spy-table-bar {
   display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
   gap: var(--hf-space-300);
-  padding: var(--hf-space-300) var(--hf-space-400);
+  padding: var(--hf-space-300);           /* 12 block · 12 inline, the cell inset */
   border-top: var(--hf-border-width-thin) solid var(--hf-color-divider-secondary);
   font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300);
   color: var(--hf-color-text-tertiary);
@@ -2588,10 +2631,10 @@ code, kbd, samp, pre,
 .spy-cmdk { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; max-height: min(28rem, 70dvh); }
 .spy-cmdk-field {
   display: flex; align-items: center; gap: var(--hf-space-250);
-  padding: var(--hf-space-300) var(--hf-space-400);
+  padding: var(--hf-space-300) var(--hf-space-200);   /* inline matches the result list */
   border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-secondary);
 }
-.spy-cmdk-field > .spy-icon { --spy-icon-size: var(--hf-icon-md); color: var(--hf-color-text-tertiary); flex: none; }
+.spy-cmdk-field > .spy-icon { --spy-icon-size: var(--hf-icon-md); color: var(--hf-color-text-tertiary); flex: none; margin-inline-start: var(--hf-space-200); }
 .spy-cmdk-input {
   flex: 1 1 auto; min-width: 0;
   border: 0; background: none; outline: none; padding: 0;
@@ -2603,7 +2646,7 @@ code, kbd, samp, pre,
 .spy-cmdk-results { overflow-y: auto; padding: var(--hf-space-200); display: flex; flex-direction: column; gap: var(--hf-space-050); }
 .spy-cmdk-foot {
   display: flex; align-items: center; gap: var(--hf-space-400);
-  padding: var(--hf-space-250) var(--hf-space-400);
+  padding: var(--hf-space-300) var(--hf-space-200);
   border-top: var(--hf-border-width-thin) solid var(--hf-color-divider-secondary);
   font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300);
   color: var(--hf-color-text-tertiary);
@@ -2690,3 +2733,60 @@ code, kbd, samp, pre,
 .spy-toolcall[data-state="denied"] .spy-toolcall-label { text-decoration: line-through; color: var(--hf-color-text-tertiary); }
 .spy-toolcall[data-state="denied"] .spy-toolcall-trigger > .spy-icon { color: var(--hf-color-state-error-fg); }
 .spy-toolcall[data-state="approval"] .spy-toolcall-trigger > .spy-icon { color: var(--hf-color-state-warning-fg); }
+
+/* -- Field group ----------------------------------------------------------
+   Two or more controls that act on one value, joined into a single object: a
+   token field with a copy button, an amount with a currency select, a search
+   with a scope. It is not a row of controls that happen to be adjacent — if
+   each one stands on its own, they take a gap, not a seam.
+
+   Joining is three rules. The seam collapses the facing corners; the shared
+   edge is drawn once rather than twice; and whichever segment has focus rises
+   above its neighbours so its ring is not clipped by them.               [D] */
+.spy-fieldgroup { display: flex; align-items: stretch; min-width: 0; }
+.spy-fieldgroup > * { border-radius: 0; }
+.spy-fieldgroup > :first-child { border-start-start-radius: var(--hf-radius-200); border-end-start-radius: var(--hf-radius-200); }
+.spy-fieldgroup > :last-child  { border-start-end-radius: var(--hf-radius-200); border-end-end-radius: var(--hf-radius-200); }
+.spy-fieldgroup > :only-child  { border-radius: var(--hf-radius-200); }
+/* The seam: every segment after the first pulls back by one border width, so
+   the two edges land on each other instead of stacking into a 2px rule. */
+.spy-fieldgroup > * + * { margin-inline-start: calc(-1 * var(--hf-border-width-thin)); }
+.spy-fieldgroup > :focus-within,
+.spy-fieldgroup > :focus-visible,
+.spy-fieldgroup > :hover { z-index: 1; }
+.spy-fieldgroup .spy-field-control { flex: 1 1 auto; }
+/* A button in the group wears the field's edge rather than its own fill, so
+   the two halves read as one control and not as a control with a button
+   stuck to it. */
+.spy-fieldgroup > .spy-btn {
+  flex: none;
+  background-color: var(--hf-color-fill-subtle);
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-default);
+  border-color: transparent;
+}
+.spy-fieldgroup > .spy-btn:hover { background-color: var(--hf-color-overlay-hover); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-strong); }
+.spy-fieldgroup[data-size="sm"] > * { height: var(--hf-space-800); }
+.spy-fieldgroup[data-size="lg"] > * { height: var(--hf-space-1200); }
+
+/* -- Field, continued: the wrapper ----------------------------------------
+   `.spy-field` had no rules beyond a stack and a gap, which is why every form
+   re-decided where the label goes, whether optional is marked, and what sits
+   on the right of the label row. Those are the decisions a form field exists
+   to make once.                                                          [D] */
+.spy-field-labelrow { display: flex; align-items: baseline; gap: var(--hf-space-200); }
+.spy-field-labelrow .spy-field-label { flex: 1 1 auto; }
+/* "Optional" goes on the right of the label row, in tertiary ink. Mark the
+   optional ones when most are required and the required ones when most are
+   optional — marking every field says nothing. */
+.spy-field-hint { flex: none; color: var(--hf-color-text-tertiary); font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300); }
+/* Label beside the control, for a settings screen where the labels are short
+   and the rhythm of one row per setting is the point. */
+.spy-field[data-orientation="horizontal"] {
+  flex-direction: row; align-items: start; gap: var(--hf-space-400);
+}
+.spy-field[data-orientation="horizontal"] > .spy-field-label,
+.spy-field[data-orientation="horizontal"] > .spy-field-labelrow {
+  flex: none; width: var(--hf-field-label-width, 12rem);
+  padding-top: var(--hf-space-250);       /* optical centre against a 40px control */
+}
+.spy-field[data-orientation="horizontal"] > :not(.spy-field-label):not(.spy-field-labelrow) { flex: 1 1 auto; min-width: 0; }

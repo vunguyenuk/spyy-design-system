@@ -11,8 +11,8 @@ Counted against the class names actually declared in `components.css`,
 
 | | first count | now |
 |---|---|---|
-| ● have | 50 | **54** |
-| ◐ partial | 9 | **8** |
+| ● have | 50 | **55** |
+| ◐ partial | 9 | **7** |
 | ○ missing | 22 | **21** |
 | – n/a | 7 | **7** |
 
@@ -43,7 +43,7 @@ select and a date range far more than it needs a colour picker.
 | **Timeline** ● built | When an ad started, when it stopped, when the scan ran. The verdict rows say *what*; nothing says *when*. |
 | **Tree** ○ | The category taxonomy. `.spy-menu` nests one level; a taxonomy does not. |
 | **InputNumber** ○ | Score thresholds, spend floors, result caps. |
-| **Form** + **FormField** grouping ○ | `.spy-field` is one field. Nothing owns the group: no shared error summary, no required/optional rhythm, no submit row. |
+| **Form** + **FormField** grouping ● built | `.spy-field` is one field. Nothing owns the group: no shared error summary, no required/optional rhythm, no submit row. |
 | **CheckboxGroup** ○ | Every filter list is one. Currently repeated `.spy-checkbox` with the spacing re-decided each time. |
 | **ScrollArea** ○ | Long lists inside a panel. Right now they inherit the browser's scrollbar, which is the one piece of chrome the system does not control. |
 | **Banner** ○ | "You have used 180 of 200 scans." A quota warning is not a toast — it does not dismiss and it is not an event. |
@@ -64,7 +64,7 @@ These are the more interesting rows, because "close" is how a system drifts.
 | Nuxt | spyy has | What is actually different |
 |---|---|---|
 | Collapsible | `.spy-accordion-item` | Only exists inside an accordion. A standalone disclosure has to borrow accordion markup and then fight its borders. |
-| FieldGroup | `.spy-btn-group` | Buttons can be joined; inputs cannot. An input with an attached select or suffix button has no answer. |
+| FieldGroup | `.spy-fieldgroup` | *Built.* Was buttons-only; an input with an attached select or suffix button had no answer. |
 | Listbox | `.spy-menu` | A menu is a list of *commands*; a listbox is a list of *values* with a selection model. Same look, different semantics, and the selected state is drawn differently. |
 | CommandPalette | `.spy-modal-search` | The input, not the palette. |
 | Popover | `.spy-nav-popup` | One popover, welded to the nav. |
@@ -98,7 +98,7 @@ Legend: ● have · ◐ partial · ○ missing · – framework plumbing
 | ● | Card | `.spy-card` | components |
 | ● | Chip | `.spy-chip` | components |
 | ◐ | Collapsible | `.spy-accordion-item` | components |
-| ◐ | FieldGroup | `.spy-btn-group` | components |
+| ● | FieldGroup | `.spy-fieldgroup` | components |
 | ● | Icon | `.spy-icon` | components |
 | ● | Kbd | `.spy-kbd` | patterns |
 | ● | Progress | `.spy-progress` | components |
@@ -201,3 +201,24 @@ So the component page is being rebuilt case by case, and each case's code block
 is **read back out of the rendered example**, not typed beside it. Code that is
 typed drifts; code that is serialised from the DOM is by construction the thing
 on screen.
+
+## The audits
+
+Five scripts run against the rendered pages rather than against the source.
+Every one of them exists because a bug got past a careful reading, and reading
+more carefully is not a fix.
+
+| Script | What it asserts | What it caught |
+|---|---|---|
+| `check.mjs` | no page overflows at any theme or viewport | centred grids sizing to max-content; a fixed 72px hero on a 390px phone |
+| `contrast.mjs` | text clears 4.5:1 at rest | the toast in light mode, the avatar count, the badge |
+| `constant.mjs` | a fill that does not flip with the theme carries ink that does not either | the checked control's white tick on lime; every icon tile on a fixed hue |
+| `statecontrast.mjs` | hover, focus and selected clear the same bar, and hover never *lowers* contrast | the tab's lime hover at 1.74:1 in light, and its focus at 1.26:1 |
+| `interactive.mjs` | a control whose state is supposed to change, changes | a select and a sidebar row that were only live where someone remembered a `data-js` attribute |
+| `scrolljump.mjs` | clicking a control does not move the page | three buttons inside a `<form>` with no `type`, which submitted it |
+| `themecheck.mjs` · `flashcheck.mjs` | the theme switch works on every page, and no page flashes on navigation | a switch built in one file and wired in another |
+
+The pattern in all of them is the same: assert the thing a reader would check by
+eye, against the DOM the browser actually produced. `constant.mjs` is the clearest
+case — the rule behind it had been written down three times, in three commit
+messages, and was broken a fourth time anyway.

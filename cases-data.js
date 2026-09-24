@@ -349,6 +349,7 @@ C.push({
   base: '.spy-prompt',
   lede: 'Where someone types at the product. Three regions — attachments, the input, the controls — so a prompt with no attachments has no empty band above its text.',
   notes: [
+    'Every button in the row carries an explicit <code>type</code>. A <code>&lt;button&gt;</code> inside a <code>&lt;form&gt;</code> defaults to <code>submit</code>, so an attach button with no type sends the message — which is what the scroll audit caught: clicking it reloaded the page.',
     'The whole box takes the focus ring, not the textarea inside it, so the thing that lights up is the thing you are typing in.',
     'Submit is the only filled button in the row. Everything else beside it is ghost, because a prompt with three loud buttons has no primary action.',
   ],
@@ -359,10 +360,10 @@ C.push({
         `<form class="spy-prompt">` +
         `<textarea class="spy-prompt-input" rows="2" placeholder="Ask about a competitor, a creative, or a scan"></textarea>` +
         `<div class="spy-prompt-foot">` +
-        `<button class="spy-btn" data-variant="ghost" data-size="sm" data-icon-only aria-label="Attach">${ic('plus')}</button>` +
-        `<button class="spy-btn" data-variant="ghost" data-size="sm">${ic('layers')}All networks</button>` +
+        `<button type="button" class="spy-btn" data-variant="ghost" data-size="sm" data-icon-only aria-label="Attach">${ic('plus')}</button>` +
+        `<button type="button" class="spy-btn" data-variant="ghost" data-size="sm">${ic('layers')}All networks</button>` +
         `<span class="spy-prompt-foot-end">` +
-        `<button class="spy-btn" data-variant="brand" data-size="sm" data-icon-only aria-label="Send" disabled>${ic('arrow-up')}</button>` +
+        `<button type="submit" class="spy-btn" data-variant="brand" data-size="sm" data-icon-only aria-label="Send" disabled>${ic('arrow-up')}</button>` +
         `</span></div></form>` },
     { id: 'attachments', name: 'With attachments',
       when: 'The header region appears only when there is something in it.',
@@ -370,15 +371,15 @@ C.push({
         `<form class="spy-prompt">` +
         `<div class="spy-prompt-head">` +
         `<span class="spy-composer-attachment">${ic('image')}` +
-        `<button class="spy-composer-attachment-remove" aria-label="Remove">${ic('close', 'xs')}</button></span>` +
+        `<button type="button" class="spy-composer-attachment-remove" aria-label="Remove">${ic('close', 'xs')}</button></span>` +
         `<span class="spy-composer-attachment">${ic('video')}` +
-        `<button class="spy-composer-attachment-remove" aria-label="Remove">${ic('close', 'xs')}</button></span>` +
+        `<button type="button" class="spy-composer-attachment-remove" aria-label="Remove">${ic('close', 'xs')}</button></span>` +
         `</div>` +
         `<textarea class="spy-prompt-input" rows="2">What are these two doing differently?</textarea>` +
         `<div class="spy-prompt-foot">` +
-        `<button class="spy-btn" data-variant="ghost" data-size="sm" data-icon-only aria-label="Attach">${ic('plus')}</button>` +
+        `<button type="button" class="spy-btn" data-variant="ghost" data-size="sm" data-icon-only aria-label="Attach">${ic('plus')}</button>` +
         `<span class="spy-prompt-foot-end">` +
-        `<button class="spy-btn" data-variant="brand" data-size="sm" data-icon-only aria-label="Send">${ic('arrow-up')}</button>` +
+        `<button type="submit" class="spy-btn" data-variant="brand" data-size="sm" data-icon-only aria-label="Send">${ic('arrow-up')}</button>` +
         `</span></div></form>` },
     { id: 'sending', name: 'Sending',
       when: 'The send button becomes a stop button. It does not become a spinner: while something is generating, the one thing a person wants is the ability to stop it.',
@@ -386,9 +387,9 @@ C.push({
         `<form class="spy-prompt">` +
         `<textarea class="spy-prompt-input" rows="2">Which angle is Northwind testing hardest?</textarea>` +
         `<div class="spy-prompt-foot">` +
-        `<button class="spy-btn" data-variant="ghost" data-size="sm" data-icon-only aria-label="Attach">${ic('plus')}</button>` +
+        `<button type="button" class="spy-btn" data-variant="ghost" data-size="sm" data-icon-only aria-label="Attach">${ic('plus')}</button>` +
         `<span class="spy-prompt-foot-end">` +
-        `<button class="spy-btn" data-variant="secondary" data-size="sm" data-icon-only aria-label="Stop">${ic('pause')}</button>` +
+        `<button type="button" class="spy-btn" data-variant="secondary" data-size="sm" data-icon-only aria-label="Stop">${ic('pause')}</button>` +
         `</span></div></form>` },
   ],
   api: {
