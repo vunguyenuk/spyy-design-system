@@ -302,8 +302,8 @@
   /* 36px is the system's row height — menu item, sidebar row, table row, nav
      action, navigation-menu item. It was being written as
      `calc(var(--hf-space-800) + var(--hf-space-100))` in five places, each with
-     a `/* 36px */` comment beside it explaining the arithmetic. A number
-     the system quotes by name is a number the scale should carry.        [D] */
+     a comment beside it explaining the arithmetic. A number the system quotes
+     by name is a number the scale should carry.                          [D] */
   --hf-space-900: 2.25rem;   /* 36px — the row height */
   --hf-space-1000: 2.5rem;   /* 40px */
   --hf-space-1200: 3rem;     /* 48px */
@@ -583,6 +583,22 @@
   --hf-color-border-subtle: var(--hf-color-transparent-light-05);   /*  5% */
   --hf-color-border-default: var(--hf-color-transparent-light-10);  /* 10% */
   --hf-color-border-strong: var(--hf-color-transparent-light-20);   /* 20% */
+
+  /* -- The control boundary ------------------------------------------- [D]
+     `border/subtle` and `border/default` are hairlines: they separate regions,
+     and a hairline is allowed to be quiet because nothing depends on seeing it.
+     A control's edge is not that. Once the field lost its fill, the edge became
+     the only thing saying a field is there — and measured, it was 1.21:1 in
+     dark and 1.00:1 in light. A box with no fill and an invisible edge is a box
+     that is not there, which is why the outlined field looked odd rather than
+     clean.
+
+     WCAG 1.4.11 asks 3:1 for the part of a control that identifies it. These
+     two clear it on every surface a control sits on — the page, a card and a
+     raised panel — with the closest case at 3.25:1 and 3.18:1. Anything a user
+     operates uses this; dividers and card hairlines keep the quiet ones.     */
+  --hf-color-border-control: var(--hf-color-grey-325);        /* #707070 */
+  --hf-color-border-control-hover: var(--hf-color-grey-250);  /* #878787 */
   --hf-color-border-focus: var(--hf-color-lime-500);
   --hf-color-border-inverse: var(--hf-color-grey-050);
   --hf-color-border-error: var(--hf-color-red-600);
@@ -736,6 +752,8 @@
   --hf-color-border-subtle: var(--hf-color-transparent-dark-05);  /* black/5  [C] */
   --hf-color-border-default: var(--hf-color-transparent-dark-10); /* black/10 [C] */
   --hf-color-border-strong: var(--hf-color-transparent-dark-20);
+  --hf-color-border-control: var(--hf-color-grey-250);        /* #878787 */
+  --hf-color-border-control-hover: var(--hf-color-grey-325);  /* #707070 */
   --hf-color-border-focus: var(--hf-color-lime-700);  /* lime-500 fails on white */
   --hf-color-border-inverse: var(--hf-color-grey-550);
 

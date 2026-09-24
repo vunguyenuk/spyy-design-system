@@ -310,7 +310,7 @@ body {
   background-color: transparent;
   color: var(--hf-color-text-primary);
   border-width: var(--hf-border-width-thin);
-  border-color: var(--hf-color-border-default);
+  border-color: var(--hf-color-border-control);
   --spy-btn-hover-overlay: transparent;
 }
 .spy-btn[data-variant="outline"]:hover,
@@ -498,7 +498,7 @@ body {
      attribute, which meant three different roundings for one kind of object. [I] */
   border-radius: var(--hf-radius-200);     /* 10px */
   background-color: transparent;
-  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-default);
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-control);
   color: var(--hf-color-icon-secondary);
   cursor: text;
   transition: box-shadow var(--hf-duration-150) var(--hf-ease-out);
@@ -511,7 +511,7 @@ body {
 /* Hover moves the edge, it does not add a fill — the same move the chip makes,
    for the same reason: in a form of nine fields, nine fills lighting up in turn
    is a lot of movement for "the pointer is here". */
-.spy-field-control:hover { box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-strong); }
+.spy-field-control:hover { box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-control-hover); }
 .spy-field-control:focus-within {
   outline: var(--hf-border-width-thick) solid transparent;
   box-shadow: inset 0 0 0 var(--hf-border-width-medium) var(--hf-color-border-focus);
@@ -774,7 +774,7 @@ body {
 .spy-control-box {
   display: flex; align-items: center; justify-content: center;
   width: var(--spy-control-box); height: var(--spy-control-box);
-  border: var(--hf-border-width-medium) solid var(--hf-color-border-default);
+  border: var(--hf-border-width-medium) solid var(--hf-color-border-control);
   background-color: transparent;
   color: transparent;
   transition-property: background-color, border-color, color;
@@ -993,7 +993,7 @@ body {
 .spy-chip {
   --spy-chip-bg: transparent;
   --spy-chip-fg: var(--hf-color-text-secondary);
-  --spy-chip-border: var(--hf-color-border-default);
+  --spy-chip-border: var(--hf-color-border-control);
   --spy-chip-hover-bg: var(--hf-color-overlay-hover);
   --spy-chip-hover-fg: var(--hf-color-text-primary);
   --spy-chip-hover-border: var(--hf-color-lime-900);
@@ -2701,7 +2701,7 @@ code, kbd, samp, pre,
 .spy-toolcall-trigger > .spy-icon { --spy-icon-size: var(--hf-icon-sm); flex: none; }
 .spy-toolcall-label { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .spy-toolcall-suffix { color: var(--hf-color-text-tertiary); font-variant-numeric: tabular-nums; flex: none; }
-.spy-toolcall-chevron { flex: none; color: var(--hf-color-text-tertiary); transition: rotate var(--hf-duration-200) var(--hf-ease-out); }
+.spy-toolcall-chevron { flex: none; color: var(--hf-color-text-tertiary); transition: rotate var(--hf-duration-180) var(--hf-ease-out); }
 .spy-toolcall[data-open] .spy-toolcall-chevron { rotate: 90deg; }
 .spy-toolcall-output {
   padding: var(--hf-space-300);
@@ -2761,10 +2761,10 @@ code, kbd, samp, pre,
 .spy-fieldgroup > .spy-btn {
   flex: none;
   background-color: var(--hf-color-fill-subtle);
-  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-default);
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-control);
   border-color: transparent;
 }
-.spy-fieldgroup > .spy-btn:hover { background-color: var(--hf-color-overlay-hover); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-strong); }
+.spy-fieldgroup > .spy-btn:hover { background-color: var(--hf-color-overlay-hover); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-control-hover); }
 .spy-fieldgroup[data-size="sm"] > * { height: var(--hf-space-800); }
 .spy-fieldgroup[data-size="lg"] > * { height: var(--hf-space-1200); }
 
@@ -2790,3 +2790,241 @@ code, kbd, samp, pre,
   padding-top: var(--hf-space-250);       /* optical centre against a 40px control */
 }
 .spy-field[data-orientation="horizontal"] > :not(.spy-field-label):not(.spy-field-labelrow) { flex: 1 1 auto; min-width: 0; }
+
+/* ===========================================================================
+   FORM INPUTS, OVERLAYS AND CONTAINERS                                   [D]
+
+   The twelve the coverage audit ranked as what an ad-intelligence product
+   cannot be designed without. Each is a composition of what is already here —
+   the field's edge, the menu's row, the panel's radius — not a new vocabulary.
+   ======================================================================== */
+
+/* -- Select menu · a select you can search ---------------------------------
+   Past about twenty options a plain select is unusable, and every filter on a
+   scan screen is past twenty. It is the select's trigger with the palette's
+   search row dropped into the top of its menu.                              */
+.spy-selectmenu { display: grid; grid-template-rows: auto minmax(0, 1fr); max-height: 20rem; }
+.spy-selectmenu-search {
+  display: flex; align-items: center; gap: var(--hf-space-200);
+  padding: var(--hf-space-200);
+  border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-secondary);
+}
+.spy-selectmenu-search > .spy-icon { --spy-icon-size: var(--hf-icon-sm); color: var(--hf-color-text-tertiary); flex: none; }
+.spy-selectmenu-input {
+  flex: 1 1 auto; min-width: 0;
+  border: 0; background: none; outline: none; padding: 0;
+  color: var(--hf-color-text-primary); font-family: inherit;
+  font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500);
+}
+.spy-selectmenu-input::placeholder { color: var(--hf-color-text-tertiary); opacity: 1; }
+.spy-selectmenu-list { overflow-y: auto; padding: var(--hf-space-200); display: flex; flex-direction: column; gap: var(--hf-space-050); }
+/* The chosen ones, shown in the trigger rather than as a count. A count tells
+   you how many you picked; the tokens tell you which. */
+.spy-selectmenu-tokens { display: flex; flex-wrap: wrap; gap: var(--hf-space-150); align-items: center; min-width: 0; }
+
+/* -- Input number ----------------------------------------------------------
+   Score thresholds, spend floors, result caps. The steppers sit inside the
+   field's edge, so the control is one box and not a box beside two buttons. */
+.spy-number { display: flex; align-items: center; }
+.spy-number .spy-field-input { text-align: end; font-variant-numeric: tabular-nums; }
+.spy-number-steppers { display: flex; flex-direction: column; flex: none; margin-inline-end: calc(-1 * var(--hf-space-150)); }
+.spy-number-step {
+  display: flex; align-items: center; justify-content: center;
+  width: var(--hf-space-500); height: var(--hf-space-300);
+  border: 0; padding: 0; background: none; cursor: pointer;
+  color: var(--hf-color-text-tertiary);
+  border-radius: var(--hf-radius-100);
+}
+.spy-number-step:hover { color: var(--hf-color-text-primary); background-color: var(--hf-color-overlay-hover); }
+.spy-number-step > .spy-icon { --spy-icon-size: var(--hf-icon-xs); }
+
+/* -- Input tags ------------------------------------------------------------
+   Keyword sets, competitor lists, negative terms. The tags live inside the
+   field, so the field grows down as they wrap rather than scrolling sideways
+   past what you already typed.                                              */
+.spy-tagsfield { height: auto; min-height: var(--hf-space-1000); flex-wrap: wrap; padding-block: var(--hf-space-150); align-items: center; }
+.spy-tagsfield .spy-field-input { flex: 1 1 6rem; width: auto; }
+.spy-tagsfield .spy-chip { flex: none; }
+
+/* -- Checkbox group --------------------------------------------------------
+   Every filter list is one, and each had been re-deciding its own spacing. */
+.spy-checkgroup { display: flex; flex-direction: column; gap: var(--hf-space-200); }
+.spy-checkgroup[data-orientation="horizontal"] { flex-direction: row; flex-wrap: wrap; gap: var(--hf-space-400); }
+.spy-checkgroup-label {
+  font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300);
+  font-weight: var(--hf-type-weight-medium); color: var(--hf-color-text-primary);
+}
+
+/* -- Popover ---------------------------------------------------------------
+   A panel anchored to what opened it: a filter, a quick edit, an explainer.
+   It is the menu's surface without the menu's row model, so anything can go
+   in it — which is the whole difference from a dropdown.                    */
+.spy-popover {
+  display: grid; gap: var(--hf-space-300);
+  width: max-content; max-width: min(22rem, calc(100vw - var(--hf-space-800)));
+  padding: var(--hf-space-400);
+  border-radius: var(--hf-radius-300);
+  background-color: var(--hf-color-background-secondary);
+  box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle), var(--hf-shadow-overlay);
+}
+.spy-popover-title { font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); font-weight: var(--hf-type-weight-semi-bold); color: var(--hf-color-text-primary); margin: 0; }
+.spy-popover-foot { display: flex; align-items: center; justify-content: flex-end; gap: var(--hf-space-200); }
+
+/* -- Drawer ----------------------------------------------------------------
+   The detail beside the list, not over it. It is a panel pinned to an edge
+   with its own scroll, so the list behind it keeps its scroll position —
+   which is the reason to use one instead of a modal.                        */
+.spy-drawer {
+  position: fixed; z-index: var(--hf-z-index-modal);
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto;
+  background-color: var(--hf-color-background-secondary);
+  box-shadow: var(--hf-shadow-modal);
+}
+.spy-drawer[data-side="end"]   { inset-block: 0; inset-inline-end: 0; width: min(28rem, 100vw); border-start-start-radius: var(--hf-radius-300); border-end-start-radius: var(--hf-radius-300); }
+.spy-drawer[data-side="start"] { inset-block: 0; inset-inline-start: 0; width: min(28rem, 100vw); border-start-end-radius: var(--hf-radius-300); border-end-end-radius: var(--hf-radius-300); }
+/* The bottom sheet is the same component on a phone, which is why it is a
+   side and not a separate thing. */
+.spy-drawer[data-side="bottom"] { inset-inline: 0; inset-block-end: 0; max-height: 80dvh; border-start-start-radius: var(--hf-radius-300); border-start-end-radius: var(--hf-radius-300); }
+.spy-drawer-head { display: flex; align-items: center; gap: var(--hf-space-300); padding: var(--hf-space-300) var(--hf-space-400); border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-secondary); }
+.spy-drawer-title { flex: 1 1 auto; min-width: 0; font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-semi-bold); color: var(--hf-color-text-primary); margin: 0; }
+.spy-drawer-body { overflow-y: auto; padding: var(--hf-space-400); }
+.spy-drawer-foot { display: flex; align-items: center; justify-content: flex-end; gap: var(--hf-space-200); padding: var(--hf-space-300) var(--hf-space-400); border-top: var(--hf-border-width-thin) solid var(--hf-color-divider-secondary); }
+/* The grab handle a bottom sheet needs and a side panel does not. */
+.spy-drawer-grip { justify-self: center; width: var(--hf-space-800); height: var(--hf-space-100); margin-block: var(--hf-space-200); border-radius: var(--hf-radius-full); background-color: var(--hf-color-border-strong); }
+
+/* -- Carousel --------------------------------------------------------------
+   The creative is the product's core object and it comes in sets. A grid is
+   the index; this is how you actually look at them. Scroll snap does the work,
+   so it keeps working with a trackpad, a touch screen and the keyboard.      */
+.spy-carousel { position: relative; display: grid; gap: var(--hf-space-300); }
+.spy-carousel-track {
+  display: flex; gap: var(--hf-space-300);
+  overflow-x: auto; scroll-snap-type: x mandatory;
+  scrollbar-width: none; padding-block: var(--hf-space-050);
+}
+.spy-carousel-track::-webkit-scrollbar { display: none; }
+.spy-carousel-item { flex: 0 0 auto; scroll-snap-align: start; width: var(--spy-carousel-item, 14rem); }
+.spy-carousel-controls { display: flex; align-items: center; justify-content: space-between; gap: var(--hf-space-300); }
+.spy-carousel-dots { display: flex; align-items: center; gap: var(--hf-space-150); }
+.spy-carousel-dot {
+  width: var(--hf-space-200); height: var(--hf-space-200);
+  border: 0; padding: 0; cursor: pointer;
+  border-radius: var(--hf-radius-full);
+  background-color: var(--hf-color-border-control);
+}
+.spy-carousel-dot[data-active] { background-color: var(--q-tint); width: var(--hf-space-500); }
+
+/* -- Tree ------------------------------------------------------------------
+   The category taxonomy. A menu nests one level; a taxonomy does not. The
+   guide line is drawn by the branch, so a collapsed branch has none.        */
+.spy-tree { display: flex; flex-direction: column; gap: var(--hf-space-050); }
+.spy-tree-item { display: flex; flex-direction: column; gap: var(--hf-space-050); }
+.spy-tree-row {
+  display: flex; align-items: center; gap: var(--hf-space-200);
+  min-height: var(--hf-space-900);
+  padding: var(--hf-space-100) var(--hf-space-250);
+  border: 0; width: 100%; text-align: start; cursor: pointer;
+  border-radius: var(--hf-radius-200);
+  background: none; color: var(--hf-color-text-secondary);
+  font-family: inherit; font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500);
+}
+.spy-tree-row:hover { background-color: var(--hf-color-overlay-hover); color: var(--hf-color-text-primary); }
+.spy-tree-row[data-active] { background-color: var(--hf-color-fill-subtle); color: var(--hf-color-text-primary); }
+.spy-tree-caret { flex: none; color: var(--hf-color-text-tertiary); transition: rotate var(--hf-duration-180) var(--hf-ease-out); }
+.spy-tree-item[data-open] > .spy-tree-row .spy-tree-caret { rotate: 90deg; }
+.spy-tree-row > .spy-icon { --spy-icon-size: var(--hf-icon-sm); flex: none; }
+.spy-tree-label { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spy-tree-count { flex: none; color: var(--hf-color-text-tertiary); font-variant-numeric: tabular-nums; }
+.spy-tree-children {
+  display: flex; flex-direction: column; gap: var(--hf-space-050);
+  margin-inline-start: var(--hf-space-400);
+  padding-inline-start: var(--hf-space-300);
+  border-inline-start: var(--hf-border-width-thin) solid var(--hf-color-divider-primary);
+}
+.spy-tree-item:not([data-open]) > .spy-tree-children { display: none; }
+
+/* -- Banner ----------------------------------------------------------------
+   "You have used 180 of 200 scans." A quota warning is not a toast: it does
+   not dismiss itself and it is not an event. It spans the app, above
+   everything, and it is the one component allowed to.                       */
+.spy-banner {
+  display: flex; align-items: center; gap: var(--hf-space-300);
+  padding: var(--hf-space-250) var(--hf-space-400);
+  background-color: var(--hf-color-background-secondary-strong);
+  color: var(--hf-color-text-primary);
+  font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500);
+}
+.spy-banner > .spy-icon { --spy-icon-size: var(--hf-icon-sm); flex: none; }
+.spy-banner-text { flex: 1 1 auto; min-width: 0; }
+.spy-banner[data-status="warning"] { background-color: var(--hf-color-state-warning-bg); color: var(--hf-color-state-warning-fg); }
+.spy-banner[data-status="error"]   { background-color: var(--hf-color-state-error-bg);   color: var(--hf-color-state-error-fg); }
+.spy-banner[data-status="brand"]   { background-color: var(--hf-color-brand-primary);    color: var(--hf-color-text-on-tint); }
+
+/* -- Scroll area -----------------------------------------------------------
+   A long list inside a panel. The browser's own scrollbar is the one piece of
+   chrome the system does not control, so this one it does.                  */
+.spy-scroll { overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--hf-color-border-strong) transparent; }
+.spy-scroll::-webkit-scrollbar { width: var(--hf-space-200); height: var(--hf-space-200); }
+.spy-scroll::-webkit-scrollbar-track { background: transparent; }
+.spy-scroll::-webkit-scrollbar-thumb { border-radius: var(--hf-radius-full); background-color: var(--hf-color-border-strong); }
+.spy-scroll::-webkit-scrollbar-thumb:hover { background-color: var(--hf-color-border-control); }
+
+/* -- Splitter --------------------------------------------------------------
+   List beside detail, resizable. The handle is 1px of line in an 11px hit
+   target, because a divider you can grab and a divider you can see are two
+   different sizes.                                                          */
+.spy-split { display: flex; align-items: stretch; min-width: 0; }
+.spy-split > * { min-width: 0; }
+.spy-split-handle {
+  flex: none; position: relative;
+  width: var(--hf-space-300); cursor: col-resize;
+  border: 0; padding: 0; background: none;
+}
+.spy-split-handle::before {
+  content: ""; position: absolute; inset-block: 0; inset-inline-start: 50%;
+  width: var(--hf-border-width-thin); translate: -50% 0;
+  background-color: var(--hf-color-divider-primary);
+  transition: background-color var(--hf-duration-150) var(--hf-ease-out);
+}
+.spy-split-handle:hover::before,
+.spy-split-handle:focus-visible::before { background-color: var(--q-tint); width: var(--hf-border-width-medium); }
+.spy-split[data-orientation="vertical"] { flex-direction: column; }
+.spy-split[data-orientation="vertical"] > .spy-split-handle { width: auto; height: var(--hf-space-300); cursor: row-resize; }
+.spy-split[data-orientation="vertical"] > .spy-split-handle::before { inset-inline: 0; inset-block-start: 50%; width: auto; height: var(--hf-border-width-thin); translate: 0 -50%; }
+
+/* -- Calendar --------------------------------------------------------------
+   Every scan is over a window, and there was no way to express one. The range
+   is painted on the cells between the ends rather than on a bar behind them,
+   so a range that wraps a week boundary still reads as one range.           */
+.spy-calendar { display: grid; gap: var(--hf-space-200); width: max-content; }
+.spy-calendar-head { display: flex; align-items: center; justify-content: space-between; gap: var(--hf-space-200); }
+.spy-calendar-month { font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); font-weight: var(--hf-type-weight-semi-bold); color: var(--hf-color-text-primary); }
+.spy-calendar-grid { display: grid; grid-template-columns: repeat(7, var(--hf-space-900)); }
+.spy-calendar-dow {
+  display: flex; align-items: center; justify-content: center;
+  height: var(--hf-space-700);
+  font-size: var(--hf-type-size-050); line-height: var(--hf-type-line-height-200);
+  letter-spacing: var(--hf-type-letter-spacing-wide); text-transform: uppercase;
+  color: var(--hf-color-text-tertiary);
+}
+.spy-calendar-day {
+  display: flex; align-items: center; justify-content: center;
+  height: var(--hf-space-900);
+  border: 0; padding: 0; cursor: pointer;
+  background: none; color: var(--hf-color-text-secondary);
+  font-family: inherit; font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500);
+  font-variant-numeric: tabular-nums;
+  border-radius: var(--hf-radius-200);
+}
+.spy-calendar-day:hover { background-color: var(--hf-color-overlay-hover); color: var(--hf-color-text-primary); }
+/* A day from the neighbouring month is still a day someone reads and can
+   click. `text/tertiary` is already the dim step and already clears 4.5:1;
+   the extra 0.6 opacity on top took it to 2.34 — dimmed twice, once too
+   many.                                                                  [D] */
+.spy-calendar-day[data-outside] { color: var(--hf-color-text-tertiary); }
+.spy-calendar-day[data-today] { box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-control); }
+.spy-calendar-day[data-in-range] { background-color: var(--hf-color-transparent-lime-10); border-radius: 0; color: var(--hf-color-text-primary); }
+.spy-calendar-day[data-range-start] { border-start-start-radius: var(--hf-radius-200); border-end-start-radius: var(--hf-radius-200); }
+.spy-calendar-day[data-range-end]   { border-start-end-radius: var(--hf-radius-200); border-end-end-radius: var(--hf-radius-200); }
+.spy-calendar-day[data-selected] { background-color: var(--q-tint); color: var(--hf-color-text-on-tint); font-weight: var(--hf-type-weight-semi-bold); }
+.spy-calendar-day[data-disabled] { opacity: 0.35; pointer-events: none; }

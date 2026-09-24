@@ -163,7 +163,7 @@ a.doc-rail-level:hover { color: var(--q-tint-text); }
     background-color: var(--hf-color-background-primary);
     border-inline-end: var(--hf-border-width-thin) solid var(--hf-color-border-default);
     translate: -100% 0; visibility: hidden;
-    transition: translate var(--hf-duration-250) var(--hf-ease-out), visibility var(--hf-duration-250);
+    transition: translate var(--hf-duration-260) var(--hf-ease-out), visibility var(--hf-duration-260);
   }
   [data-rail-open] .doc-rail { translate: 0 0; visibility: visible; }
   [data-rail-open] { overflow: hidden; }
@@ -171,7 +171,7 @@ a.doc-rail-level:hover { color: var(--q-tint-text); }
   [data-rail-open]::after {
     content: ""; position: fixed; inset: var(--doc-topbar-h) 0 0 0;
     z-index: calc(var(--hf-z-index-sticky) - 1);
-    background-color: var(--hf-color-overlay-dim);
+    background-color: var(--hf-color-overlay-dim-soft);
     backdrop-filter: blur(var(--hf-space-050));
   }
   .doc-where { display: none; }
@@ -280,7 +280,7 @@ code {
 .doc-motion-cell { padding: var(--hf-space-400); border-radius: var(--hf-radius-300); background-color: var(--hf-color-background-secondary); cursor: pointer; }
 .doc-motion-rail { position: relative; height: 8px; border-radius: var(--hf-radius-full); background-color: var(--hf-color-background-tertiary); margin: var(--hf-space-300) 0 var(--hf-space-200); }
 .doc-motion-dot { position: absolute; top: -2px; left: 0; width: 12px; height: 12px; border-radius: var(--hf-radius-full); background-color: var(--hf-color-brand-primary); }
-.doc-motion-cell[data-run] .doc-motion-dot { animation: doc-run 1.6s infinite alternate; animation-timing-function: var(--doc-ease); animation-duration: var(--doc-dur); }
+.doc-motion-cell[data-run] .doc-motion-dot { animation: doc-run 1.6s infinite alternate; animation-timing-function: var(--doc-ease, var(--hf-ease-out)); animation-duration: var(--doc-dur, var(--hf-duration-400)); }
 @keyframes doc-run { from { left: 0; } to { left: calc(100% - 12px); } }
 
 .doc-state-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr)); gap: var(--hf-space-400); }

@@ -11,9 +11,9 @@ Counted against the class names actually declared in `components.css`,
 
 | | first count | now |
 |---|---|---|
-| ● have | 50 | **55** |
-| ◐ partial | 9 | **7** |
-| ○ missing | 22 | **21** |
+| ● have | 50 | **71** |
+| ◐ partial | 9 | **4** |
+| ○ missing | 22 | **8** |
 | – n/a | 7 | **7** |
 
 Nine were built in one pass — Breadcrumb, Navigation menu, Data table, Timeline,
@@ -33,23 +33,28 @@ select and a date range far more than it needs a colour picker.
 
 | | Why spyy needs it |
 |---|---|
-| **SelectMenu** — searchable select ○ | Picking one competitor out of hundreds. A plain select is unusable past ~20 options, and every filter on the scan screen is past 20. |
-| **InputDate** + **Calendar** — date range ○ | Every scan is *over a window*. There is currently no way to express one. |
+| **SelectMenu** — searchable select ** ● built | Picking one competitor out of hundreds. A plain select is unusable past ~20 options, and every filter on the scan screen is past 20. |
+| **InputDate** + **Calendar** — date range ** ● built | Every scan is *over a window*. There is currently no way to express one. |
 | **Carousel** ○ | The creative is the product's core object and it comes in sets. A grid is the index; a carousel is how you actually look at them. |
 | **Drawer / Slideover** ○ | The creative detail opens beside the list, not over it. `.spy-panel` is close but it is a static right rail, not an overlay with a backdrop and a close. |
 | **Popover** ○ | Filters, quick actions, the score explainer. `.spy-nav-popup` is one popover hard-wired to the nav. |
-| **CommandPalette** ● built | The product is a search product. `.spy-modal-search` is the input, not the palette — no result list, no groups, no keyboard model. |
+| **CommandPalette** ** ● built | The product is a search product. `.spy-modal-search` is the input, not the palette — no result list, no groups, no keyboard model. |
 | **InputTags** ○ | Keyword sets, competitor lists, negative terms. Currently a plain text field and a convention. |
-| **Timeline** ● built | When an ad started, when it stopped, when the scan ran. The verdict rows say *what*; nothing says *when*. |
+| **Timeline** ** ● built | When an ad started, when it stopped, when the scan ran. The verdict rows say *what*; nothing says *when*. |
 | **Tree** ○ | The category taxonomy. `.spy-menu` nests one level; a taxonomy does not. |
 | **InputNumber** ○ | Score thresholds, spend floors, result caps. |
-| **Form** + **FormField** grouping ● built | `.spy-field` is one field. Nothing owns the group: no shared error summary, no required/optional rhythm, no submit row. |
+| **Form** + **FormField** grouping ** ● built | `.spy-field` is one field. Nothing owns the group: no shared error summary, no required/optional rhythm, no submit row. |
 | **CheckboxGroup** ○ | Every filter list is one. Currently repeated `.spy-checkbox` with the spacing re-decided each time. |
 | **ScrollArea** ○ | Long lists inside a panel. Right now they inherit the browser's scrollbar, which is the one piece of chrome the system does not control. |
 | **Banner** ○ | "You have used 180 of 200 scans." A quota warning is not a toast — it does not dismiss and it is not an event. |
 | **Splitter** ○ | List beside detail, resizable. The app shell assumes fixed widths. |
 | **PricingTable** ○ | The landing page has `.spy-plan` cards but no comparison table, which is the page every pricing page eventually needs. |
 | **AuthForm** ○ | There are two Sign-in frames in Figma and no CSS behind them. |
+
+Eight are left. Two are still worth building — **PricingTable** for the landing
+page, and **AuthForm**, which has two frames in Figma and no CSS behind them.
+**Form** is a behaviour, not a style: the field, the group and the error message
+all exist, and what is missing is validation, which belongs in the app.
 
 Deliberately not building: **ColorPicker**, **InputRating**, **InputTime**,
 **PinInput** — spyy has no use for any of them, and a design system that ships
@@ -85,16 +90,16 @@ Legend: ● have · ◐ partial · ○ missing · – framework plumbing
 | ● | Footer | `.spy-footer` | landing |
 | ● | Header | `.spy-mnav` | landing |
 | ● | Sidebar | `.spy-sidebar` | components |
-| ○ | Splitter | — |  |
+| ● | Splitter | `.spy-split` | components |
 | – | App / Main / Theme | — |  |
 | **Element** | | | |
 | ● | Alert | `.spy-alert` | components |
 | ● | Avatar | `.spy-avatar` | components |
 | ● | AvatarGroup | `.spy-avatar-group` | components |
 | ● | Badge | `.spy-badge` | components |
-| ○ | Banner | — |  |
+| ● | Banner | `.spy-banner` | components |
 | ● | Button | `.spy-btn` | components |
-| ○ | Calendar | — |  |
+| ● | Calendar | `.spy-calendar` | components |
 | ● | Card | `.spy-card` | components |
 | ● | Chip | `.spy-chip` | components |
 | ◐ | Collapsible | `.spy-accordion-item` | components |
@@ -107,35 +112,35 @@ Legend: ● have · ◐ partial · ○ missing · – framework plumbing
 | ● | Skeleton | `.spy-skeleton` | components |
 | **Form** | | | |
 | ● | Checkbox | `.spy-checkbox` | components |
-| ○ | CheckboxGroup | — |  |
+| ● | CheckboxGroup | `.spy-checkgroup` | components |
 | ○ | ColorPicker | — |  |
 | ● | FileUpload | `.spy-dropzone` | patterns |
 | ○ | Form | — |  |
 | ● | FormField | `.spy-field` | components |
 | ● | Input | `.spy-field-control` | components |
-| ○ | InputDate | — |  |
-| ○ | InputMenu | — |  |
-| ○ | InputNumber | — |  |
+| ● | InputDate | `.spy-calendar` | components |
+| ● | InputMenu | `.spy-selectmenu` | components |
+| ● | InputNumber | `.spy-number` | components |
 | ○ | InputRating | — |  |
-| ○ | InputTags | — |  |
+| ● | InputTags | `.spy-tagsfield` | components |
 | ○ | InputTime | — |  |
-| ◐ | Listbox | `.spy-menu` | components |
+| ● | Listbox | `.spy-selectmenu` | components |
 | ○ | PinInput | — |  |
 | ● | RadioGroup | `.spy-radio-group` | components |
 | ● | Select | `.spy-select-trigger` | components |
-| ○ | SelectMenu | — |  |
+| ● | SelectMenu | `.spy-selectmenu` | components |
 | ● | Slider | `.spy-slider` | components |
 | ● | Switch | `.spy-switch` | components |
 | ● | Textarea | `.spy-field-control` | components |
 | **Data** | | | |
 | ● | Accordion | `.spy-accordion` | components |
-| ○ | Carousel | — |  |
+| ● | Carousel | `.spy-carousel` | components |
 | ● | Empty | `.spy-empty` | components |
 | – | Marquee | — |  |
-| ○ | ScrollArea | — |  |
+| ● | ScrollArea | `.spy-scroll` | components |
 | ● | Table | `.spy-table` | components |
 | ● | Timeline | `.spy-timeline` | components |
-| ○ | Tree | — |  |
+| ● | Tree | `.spy-tree` | components |
 | ● | User | `.spy-candidate` | patterns |
 | **Navigation** | | | |
 | ● | Breadcrumb | `.spy-breadcrumb` | components |
@@ -147,11 +152,11 @@ Legend: ● have · ◐ partial · ○ missing · – framework plumbing
 | ● | Tabs | `.spy-tabs` | components |
 | **Overlay** | | | |
 | ● | ContextMenu | `.spy-menu` | components |
-| ○ | Drawer | — |  |
+| ● | Drawer | `.spy-drawer` | components |
 | ● | DropdownMenu | `.spy-menu` | components |
 | ● | Modal | `.spy-modal` | components |
-| ◐ | Popover | `.spy-nav-popup` | components |
-| ◐ | Slideover | `.spy-panel` | components |
+| ● | Popover | `.spy-popover` | components |
+| ● | Slideover | `.spy-drawer` | components |
 | ● | Toast | `.spy-toast` | components |
 | ● | Tooltip | `.spy-tooltip` | components |
 | **Page** | | | |
@@ -222,3 +227,12 @@ The pattern in all of them is the same: assert the thing a reader would check by
 eye, against the DOM the browser actually produced. `constant.mjs` is the clearest
 case — the rule behind it had been written down three times, in three commit
 messages, and was broken a fourth time anyway.
+
+`csslint.mjs` joined the audits after the calendar rendered as a single column
+seven rows tall and nothing said why. The cause was a comment in `tokens.css`
+that quoted `/* 36px */` inside itself: the inner terminator ended the comment
+early, the remaining prose parsed as a declaration, and it ate the
+`--hf-space-900` that followed. The linter now refuses a nested comment
+terminator, and a `var()` with no fallback naming a property nothing declares —
+which also turned up two transitions asking for a duration step that has never
+existed, and therefore not animating at all.
