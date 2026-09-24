@@ -453,7 +453,7 @@ body {
      · hover is an ::after 5%-white overlay, not a fill swap
      · placeholder is white/50 at opacity 1 (not a dimmed text colour)
    ------------------------------------------------------------------------ */
-.spy-field { display: flex; flex-direction: column; gap: var(--hf-space-150); min-width: 0; }
+.spy-field { display: flex; flex-direction: column; gap: var(--hf-space-150); width: 100%; min-width: 0; }
 
 .spy-field-label {
   display: flex; flex-wrap: wrap; align-items: center;
@@ -557,12 +557,19 @@ body {
 .spy-field-control[data-size="lg"] .spy-field-input { font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); }
 
 /* Affixes are square boxes at the sm icon step, so the label never shifts. */
+/* The affix holds either a glyph or a unit — "$", "%", "score". It was a fixed
+   20px square, which is the glyph's box, so a word in it overflowed silently
+   and collided with the value: 60 printed on top of "score". The square is the
+   FLOOR, not the size; a word sizes to itself and keeps the field's own type
+   so it reads as a unit rather than as a second value.                  [D] */
 .spy-field-affix {
   display: inline-flex; align-items: center; justify-content: center;
-  width: var(--hf-space-500); height: var(--hf-space-500);
-  flex-shrink: 0;
+  min-width: var(--hf-space-500); height: var(--hf-space-500);
+  flex-shrink: 0; white-space: nowrap;
+  color: var(--hf-color-text-tertiary);
+  font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-300);
 }
-.spy-field-affix > .spy-icon { --spy-icon-size: 100%; }
+.spy-field-affix > .spy-icon { --spy-icon-size: var(--hf-icon-md); }
 
 /* Multiline grows downward from an 80px floor and top-aligns its content. */
 .spy-field-control[data-multiline] {
@@ -1844,7 +1851,7 @@ body {
    medium headers in the on-overlay-secondary colour, 5%-white hover — the
    same recipe as sidebar rows and menu items, so it sits in the system.
    ------------------------------------------------------------------------ */
-.spy-table-wrap { border-radius: var(--hf-radius-300); background-color: var(--hf-color-background-secondary); overflow: hidden; }
+.spy-table-wrap { width: 100%; border-radius: var(--hf-radius-300); background-color: var(--hf-color-background-secondary); overflow: hidden; }
 .spy-table { width: 100%; border-collapse: collapse; font-family: var(--hf-type-family-secondary); }
 .spy-table th {
   padding: var(--hf-space-200) var(--hf-space-300);
@@ -1876,7 +1883,7 @@ body {
 /* ---------------------------------------------------------------------------
    LIST                                                                   [I]
    ------------------------------------------------------------------------ */
-.spy-list { display: flex; flex-direction: column; gap: var(--hf-space-050); margin: 0; padding: 0; list-style: none; }
+.spy-list { display: flex; flex-direction: column; gap: var(--hf-space-050); width: 100%; margin: 0; padding: 0; list-style: none; }
 .spy-list-item {
   display: flex; align-items: center; gap: var(--hf-space-300);
   min-height: var(--hf-space-900);
@@ -1927,6 +1934,7 @@ body {
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   gap: var(--hf-space-200);
+  width: 100%;
   padding: var(--hf-space-1000) var(--hf-space-400);
   border-radius: var(--hf-radius-300);
   background-color: var(--hf-color-background-elevated-start);
@@ -2195,7 +2203,10 @@ body {
 .spy-notice-text { display: flex; flex-direction: column; gap: 2px; flex: 1 1 0; min-width: 0; }
 .spy-notice-title { color: var(--hf-color-text-primary); font-size: var(--hf-type-size-300); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-semi-bold); }
 .spy-notice-description { color: var(--hf-color-text-secondary); font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500); }
-.spy-notice > .spy-btn { flex-shrink: 0; }
+/* The action acts on the whole notice, not on its first line, so it keeps the
+   centring the row gave up — the same exception TOAST already makes for its
+   action button. */
+.spy-notice > .spy-btn { flex-shrink: 0; align-self: center; }
 
 /* ---------------------------------------------------------------------------
    PARAMETER PANEL                                                        [C]
@@ -2371,7 +2382,7 @@ body {
    The wizard rail used by the multi-step studios. Numbered dots that fill
    with the tint once complete, connected by a hairline.
    ------------------------------------------------------------------------ */
-.spy-stepper { display: flex; flex-direction: column; gap: 0; }
+.spy-stepper { display: flex; flex-direction: column; gap: 0; width: 100%; }
 .spy-step { position: relative; display: flex; align-items: flex-start; gap: var(--hf-space-300); padding-bottom: var(--hf-space-500); }
 .spy-step:last-child { padding-bottom: 0; }
 .spy-step::before {
@@ -2501,9 +2512,10 @@ code, kbd, samp, pre,
    The vertical variant is the product's left rail; the horizontal one is a
    section bar. One component, because an item is an item either way — only the
    axis and what the active mark looks like change.                          */
-.spy-navmenu { display: flex; flex-direction: column; gap: var(--hf-space-050); }
+.spy-navmenu { display: flex; flex-direction: column; gap: var(--hf-space-050); width: 100%; }
 .spy-navmenu[data-orientation="horizontal"] {
   flex-direction: row; align-items: center; gap: var(--hf-space-100);
+  width: auto;
   border-bottom: var(--hf-border-width-thin) solid var(--hf-color-divider-primary);
 }
 .spy-navmenu-label {
@@ -2593,7 +2605,7 @@ code, kbd, samp, pre,
    What happened, in order, with the rail drawn by the items themselves rather
    than by a background on the container — so a timeline can end anywhere
    without a line running past its last entry.                              */
-.spy-timeline { display: flex; flex-direction: column; }
+.spy-timeline { display: flex; flex-direction: column; width: 100%; }
 .spy-timeline-item { position: relative; display: flex; gap: var(--hf-space-300); padding-bottom: var(--hf-space-500); }
 .spy-timeline-item:last-child { padding-bottom: 0; }
 .spy-timeline-item::before {
@@ -2653,12 +2665,54 @@ code, kbd, samp, pre,
 }
 .spy-cmdk-hint { display: inline-flex; align-items: center; gap: var(--hf-space-150); }
 
+/* ── The leading icon belongs to the title ─────────────────────────────────
+   A row of icon + title + description is centred, and reads correctly right
+   up until the description wraps. Then the icon leaves the title it labels
+   and drifts down beside a second line it has nothing to do with — a tile
+   parked in the gutter between two lines of grey, which is what NOTICE was
+   doing and what the report was about.
+
+   The condition is structural, not visual: the text beside the icon is a
+   STACK, so the row is wrong the first time a longer string or a narrower
+   column arrives, not only where something already wrapped. `:has()` states
+   exactly that, which is why the switch lands on rows with a description and
+   nowhere else — a one-line row keeps the centring that is right for it.
+
+   The leading slot then becomes a box one title-line tall with its glyph
+   centred inside, and that one rule settles both sizes: an icon smaller than
+   the line sits centred on it, a tile taller than the line grows the box and
+   tops out level with the heading. No negative offsets, nothing overhanging
+   the padding, and no second rule per icon size.
+
+   ALERT already aligned to start. This is that decision made general.  [D] */
+.spy-menu-item:has(.spy-menu-item-description),
+.spy-list-item:has(.spy-list-item-meta),
+.spy-notice:has(.spy-notice-description),
+.spy-toast:has(.spy-toast-description) { align-items: flex-start; }
+
+.spy-menu-item:has(.spy-menu-item-description) > :first-child:not(.spy-menu-item-label),
+.spy-list-item:has(.spy-list-item-meta)        > :first-child:not(.spy-list-item-text),
+.spy-notice:has(.spy-notice-description)       > :first-child:not(.spy-notice-text),
+.spy-toast:has(.spy-toast-description)         > :first-child:not(.spy-toast-text) {
+  min-height: var(--hf-type-line-height-500);
+}
+
 /* -- Chat prompt ----------------------------------------------------------
    Three regions — attachments, the input, the controls — so a prompt that has
-   no attachments has no empty band above its text.                         */
+   no attachments has no empty band above its text.
+
+   The composer is the width of the thread it sits in, never the width of what
+   has been typed into it so far. It carried no width at all, so every context
+   that lays its children out by content — a flex row, a grid track sized to
+   auto — collapsed it to the placeholder, and the control row underneath went
+   with it: a 176px box holding three buttons and a wrapped line of grey. The
+   input's height is a line count, not a `rows` attribute, because the markup
+   is what people copy and a number there would be overridden by this.   [D] */
 .spy-prompt {
+  --spy-prompt-lines: 3;
   display: grid; gap: var(--hf-space-300);
-  padding: var(--hf-space-300);
+  width: 100%;
+  padding: var(--hf-space-400);
   border-radius: var(--hf-radius-300);
   background-color: var(--hf-color-background-secondary);
   box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle);
@@ -2668,6 +2722,7 @@ code, kbd, samp, pre,
 .spy-prompt-head { display: flex; flex-wrap: wrap; gap: var(--hf-space-150); }
 .spy-prompt-input {
   width: 100%; resize: none;
+  min-height: calc(var(--hf-type-line-height-500) * var(--spy-prompt-lines));
   border: 0; background: none; outline: none; padding: 0;
   color: var(--hf-color-text-primary);
   font-family: inherit;
@@ -2680,7 +2735,10 @@ code, kbd, samp, pre,
 /* -- Chat tool ------------------------------------------------------------
    What the agent is doing, and what it got back. The trigger is a row; the
    output is a disclosure under it; approval turns the row into a question. */
-.spy-toolcall { display: grid; gap: var(--hf-space-200); }
+/* Same width rule as the composer above: a tool call spans the thread, so a
+   long path ellipsises against the column edge rather than setting the row's
+   width and leaving a short one floating at a third of it.               [D] */
+.spy-toolcall { display: grid; gap: var(--hf-space-200); width: 100%; }
 .spy-toolcall[data-variant="card"] {
   padding: var(--hf-space-300);
   border-radius: var(--hf-radius-300);
@@ -2743,7 +2801,7 @@ code, kbd, samp, pre,
    Joining is three rules. The seam collapses the facing corners; the shared
    edge is drawn once rather than twice; and whichever segment has focus rises
    above its neighbours so its ring is not clipped by them.               [D] */
-.spy-fieldgroup { display: flex; align-items: stretch; min-width: 0; }
+.spy-fieldgroup { display: flex; align-items: stretch; width: 100%; min-width: 0; }
 .spy-fieldgroup > * { border-radius: 0; }
 .spy-fieldgroup > :first-child { border-start-start-radius: var(--hf-radius-200); border-end-start-radius: var(--hf-radius-200); }
 .spy-fieldgroup > :last-child  { border-start-end-radius: var(--hf-radius-200); border-end-end-radius: var(--hf-radius-200); }
@@ -2827,7 +2885,11 @@ code, kbd, samp, pre,
    field's edge, so the control is one box and not a box beside two buttons. */
 .spy-number { display: flex; align-items: center; }
 .spy-number .spy-field-input { text-align: end; font-variant-numeric: tabular-nums; }
-.spy-number-steppers { display: flex; flex-direction: column; flex: none; margin-inline-end: calc(-1 * var(--hf-space-150)); }
+/* The steppers used to pull 6px out of the field's 12px inline padding, which
+   left the right edge half the inset of the left one inside a box whose whole
+   job is to look like one strip. The control-strip rule applies here too: the
+   inline padding is the parent's, and nothing reaches past it.          [D] */
+.spy-number-steppers { display: flex; flex-direction: column; flex: none; }
 .spy-number-step {
   display: flex; align-items: center; justify-content: center;
   width: var(--hf-space-500); height: var(--hf-space-300);
@@ -2842,13 +2904,24 @@ code, kbd, samp, pre,
    Keyword sets, competitor lists, negative terms. The tags live inside the
    field, so the field grows down as they wrap rather than scrolling sideways
    past what you already typed.                                              */
-.spy-tagsfield { height: auto; min-height: var(--hf-space-1000); flex-wrap: wrap; padding-block: var(--hf-space-150); align-items: center; }
+/* The tags wrap, so this is the one field that is a block of rows rather than
+   a strip. Its row gap used to equal its block padding, which put the chip row
+   as close to the input under it as to the edge above it, and the two stopped
+   reading as separate lines. The gap between rows is now a step wider than the
+   inset that holds them, and the inset itself matches the 8px the chips need
+   to sit inside a 40px floor.                                           [D] */
+.spy-tagsfield {
+  height: auto; min-height: var(--hf-space-1000);
+  flex-wrap: wrap; align-items: center;
+  padding-block: var(--hf-space-200);
+  column-gap: var(--hf-space-150); row-gap: var(--hf-space-250);
+}
 .spy-tagsfield .spy-field-input { flex: 1 1 6rem; width: auto; }
 .spy-tagsfield .spy-chip { flex: none; }
 
 /* -- Checkbox group --------------------------------------------------------
    Every filter list is one, and each had been re-deciding its own spacing. */
-.spy-checkgroup { display: flex; flex-direction: column; gap: var(--hf-space-200); }
+.spy-checkgroup { display: flex; flex-direction: column; gap: var(--hf-space-200); width: 100%; }
 .spy-checkgroup[data-orientation="horizontal"] { flex-direction: row; flex-wrap: wrap; gap: var(--hf-space-400); }
 .spy-checkgroup-label {
   font-size: var(--hf-type-size-100); line-height: var(--hf-type-line-height-300);
@@ -2917,7 +2990,7 @@ code, kbd, samp, pre,
 /* -- Tree ------------------------------------------------------------------
    The category taxonomy. A menu nests one level; a taxonomy does not. The
    guide line is drawn by the branch, so a collapsed branch has none.        */
-.spy-tree { display: flex; flex-direction: column; gap: var(--hf-space-050); }
+.spy-tree { display: flex; flex-direction: column; gap: var(--hf-space-050); width: 100%; }
 .spy-tree-item { display: flex; flex-direction: column; gap: var(--hf-space-050); }
 .spy-tree-row {
   display: flex; align-items: center; gap: var(--hf-space-200);
@@ -2947,14 +3020,23 @@ code, kbd, samp, pre,
    "You have used 180 of 200 scans." A quota warning is not a toast: it does
    not dismiss itself and it is not an event. It spans the app, above
    everything, and it is the one component allowed to.                       */
+/* BANNER carries one paragraph rather than a stack, so there is no element for
+   `:has()` to test — but a paragraph wraps too, and a 16px glyph centred
+   against two lines of it is the same mistake the rule above fixes. Its icon
+   takes back half the difference against the line instead, which computes to
+   a pixel while the text is one line and holds the icon on the first line the
+   moment it is two.                                                    [D] */
 .spy-banner {
-  display: flex; align-items: center; gap: var(--hf-space-300);
+  display: flex; align-items: flex-start; gap: var(--hf-space-300);
   padding: var(--hf-space-250) var(--hf-space-400);
   background-color: var(--hf-color-background-secondary-strong);
   color: var(--hf-color-text-primary);
   font-size: var(--hf-type-size-200); line-height: var(--hf-type-line-height-500);
 }
-.spy-banner > .spy-icon { --spy-icon-size: var(--hf-icon-sm); flex: none; }
+.spy-banner > .spy-icon {
+  --spy-icon-size: var(--hf-icon-sm); flex: none;
+  margin-block-start: calc((var(--hf-type-line-height-500) - var(--hf-icon-sm)) / 2);
+}
 .spy-banner-text { flex: 1 1 auto; min-width: 0; }
 .spy-banner[data-status="warning"] { background-color: var(--hf-color-state-warning-bg); color: var(--hf-color-state-warning-fg); }
 .spy-banner[data-status="error"]   { background-color: var(--hf-color-state-error-bg);   color: var(--hf-color-state-error-fg); }
@@ -2963,7 +3045,7 @@ code, kbd, samp, pre,
 /* -- Scroll area -----------------------------------------------------------
    A long list inside a panel. The browser's own scrollbar is the one piece of
    chrome the system does not control, so this one it does.                  */
-.spy-scroll { overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--hf-color-border-strong) transparent; }
+.spy-scroll { width: 100%; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--hf-color-border-strong) transparent; }
 .spy-scroll::-webkit-scrollbar { width: var(--hf-space-200); height: var(--hf-space-200); }
 .spy-scroll::-webkit-scrollbar-track { background: transparent; }
 .spy-scroll::-webkit-scrollbar-thumb { border-radius: var(--hf-radius-full); background-color: var(--hf-color-border-strong); }
@@ -2973,7 +3055,7 @@ code, kbd, samp, pre,
    List beside detail, resizable. The handle is 1px of line in an 11px hit
    target, because a divider you can grab and a divider you can see are two
    different sizes.                                                          */
-.spy-split { display: flex; align-items: stretch; min-width: 0; }
+.spy-split { display: flex; align-items: stretch; width: 100%; min-width: 0; }
 .spy-split > * { min-width: 0; }
 .spy-split-handle {
   flex: none; position: relative;

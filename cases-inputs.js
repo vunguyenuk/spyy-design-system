@@ -62,7 +62,7 @@ C.push({
     { id: 'default', name: 'Default',
       when: 'With a unit, as an affix. The unit is not part of the value, so it does not scroll with it.',
       demo:
-        `<div class="spy-field-control spy-number" style="max-width:200px">` +
+        `<div class="spy-field-control spy-number" style="max-width:240px">` +
         `<input class="spy-field-input" value="60" inputmode="numeric">` +
         `<span class="spy-field-affix">score</span>` +
         `<span class="spy-number-steppers">` +
@@ -82,7 +82,7 @@ C.push({
     { id: 'default', name: 'Default',
       when: 'Enter commits a tag; backspace on an empty input takes the last one back.',
       demo:
-        `<div class="spy-field-control spy-tagsfield" style="max-width:380px">` +
+        `<div class="spy-field-control spy-tagsfield" style="max-width:480px">` +
         [['running shoes'], ['trail'], ['marathon']].map(([t]) =>
           `<span class="spy-chip" data-size="xxs" data-selected>${t}${ic('close', 'xs')}</span>`).join('') +
         `<input class="spy-field-input" placeholder="Add a keyword">` +

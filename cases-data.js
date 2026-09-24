@@ -358,7 +358,7 @@ C.push({
       when: 'Input and controls. The send button is icon-only and disabled until there is something to send.',
       demo:
         `<form class="spy-prompt">` +
-        `<textarea class="spy-prompt-input" rows="2" placeholder="Ask about a competitor, a creative, or a scan"></textarea>` +
+        `<textarea class="spy-prompt-input" placeholder="Ask about a competitor, a creative, or a scan"></textarea>` +
         `<div class="spy-prompt-foot">` +
         `<button type="button" class="spy-btn" data-variant="ghost" data-size="sm" data-icon-only aria-label="Attach">${ic('plus')}</button>` +
         `<button type="button" class="spy-btn" data-variant="ghost" data-size="sm">${ic('layers')}All networks</button>` +
@@ -375,7 +375,7 @@ C.push({
         `<span class="spy-composer-attachment">${ic('video')}` +
         `<button type="button" class="spy-composer-attachment-remove" aria-label="Remove">${ic('close', 'xs')}</button></span>` +
         `</div>` +
-        `<textarea class="spy-prompt-input" rows="2">What are these two doing differently?</textarea>` +
+        `<textarea class="spy-prompt-input">What are these two doing differently?</textarea>` +
         `<div class="spy-prompt-foot">` +
         `<button type="button" class="spy-btn" data-variant="ghost" data-size="sm" data-icon-only aria-label="Attach">${ic('plus')}</button>` +
         `<span class="spy-prompt-foot-end">` +
@@ -385,7 +385,7 @@ C.push({
       when: 'The send button becomes a stop button. It does not become a spinner: while something is generating, the one thing a person wants is the ability to stop it.',
       demo:
         `<form class="spy-prompt">` +
-        `<textarea class="spy-prompt-input" rows="2">Which angle is Northwind testing hardest?</textarea>` +
+        `<textarea class="spy-prompt-input">Which angle is Northwind testing hardest?</textarea>` +
         `<div class="spy-prompt-foot">` +
         `<button type="button" class="spy-btn" data-variant="ghost" data-size="sm" data-icon-only aria-label="Attach">${ic('plus')}</button>` +
         `<span class="spy-prompt-foot-end">` +
@@ -395,7 +395,7 @@ C.push({
   api: {
     parts: [
       ['.spy-prompt-head', 'Attachments. Omit it when there are none.'],
-      ['.spy-prompt-input', 'The textarea. Contributes no chrome of its own.'],
+      ['.spy-prompt-input', 'The textarea. Contributes no chrome of its own; its resting height is <code>--spy-prompt-lines</code> on the form, not a <code>rows</code> attribute.'],
       ['.spy-prompt-foot', 'The control row. <code>.spy-prompt-foot-end</code> pushes the rest right.'],
     ],
   },

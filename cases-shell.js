@@ -186,7 +186,7 @@ C.push({
     { id: 'scroll', name: 'Scroll area',
       when: 'Put it on anything that scrolls inside a panel. It also contains overscroll, so reaching the end of a list does not start scrolling the page behind it.',
       demo:
-        `<div class="spy-scroll" style="height:132px;max-width:320px;padding:8px;border-radius:var(--hf-radius-300);background:var(--hf-color-background-secondary)">` +
+        `<div class="spy-scroll" style="height:148px;max-width:420px;padding:8px;border-radius:var(--hf-radius-300);background:var(--hf-color-background-secondary)">` +
         ['Northwind', 'Lumen', 'Parcel', 'Bevel', 'Corestack', 'Halyard', 'Merrow'].map(n =>
           `<div class="spy-list-item"><span class="spy-list-item-text"><span>${n}</span></span></div>`).join('') +
         `</div>` },

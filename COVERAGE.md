@@ -209,7 +209,7 @@ on screen.
 
 ## The audits
 
-Five scripts run against the rendered pages rather than against the source.
+Twelve scripts run against the rendered pages rather than against the source.
 Every one of them exists because a bug got past a careful reading, and reading
 more carefully is not a fix.
 
@@ -222,6 +222,11 @@ more carefully is not a fix.
 | `interactive.mjs` | a control whose state is supposed to change, changes | a select and a sidebar row that were only live where someone remembered a `data-js` attribute |
 | `scrolljump.mjs` | clicking a control does not move the page | three buttons inside a `<form>` with no `type`, which submitted it |
 | `themecheck.mjs` · `flashcheck.mjs` | the theme switch works on every page, and no page flashes on navigation | a switch built in one file and wired in another |
+| `spacing.mjs` | one control strip, one padding | five different paddings for the same row |
+| `edge.mjs` | the boundary that identifies a control clears 3:1 | the outlined field's edge at 1.21:1 dark, 1.00:1 light |
+| `fill.mjs` | a component that stacks its children was told a width | eleven panels collapsed to the longest string in them, the composer worst at 176px of a 918px column |
+| `iconalign.mjs` | an icon beside a title and a description is aligned to the title | five rows that centred it, so it sat in the gutter between two lines the moment one wrapped |
+| `clipcheck.mjs` | a leaf's content fits the box that holds it | the field affix — a 20px square built for a glyph, with the word `score` printed over the value beside it |
 
 The pattern in all of them is the same: assert the thing a reader would check by
 eye, against the DOM the browser actually produced. `constant.mjs` is the clearest
@@ -236,3 +241,27 @@ early, the remaining prose parsed as a declaration, and it ate the
 terminator, and a `var()` with no fallback naming a property nothing declares —
 which also turned up two transitions asking for a duration step that has never
 existed, and therefore not animating at all.
+
+`fill.mjs`, `iconalign.mjs` and `clipcheck.mjs` came out of one report, and the
+three of them are the same observation from three angles: **CSS fails quietly.**
+A panel with no width does not error, it shrinks. An icon centred against text
+that has grown to two lines does not error, it drifts. A word in a box built for
+a glyph does not error, it prints on top of its neighbour. None of the three is
+visible while the content is short, which is exactly why each survived a reading
+of the stylesheet and was caught by measuring the page instead.
+
+Each also had to be told what *correct* looks like, and in each case the answer
+was structural rather than a threshold:
+
+- a component is a panel when it stacks its children, and a panel's width comes
+  from its column — a button, a badge, a chip is content-sized and right to be;
+- an icon belongs to the title when the text beside it is a stack whose first
+  line is the larger type — `Last 30 days` over `Rolling, refreshed nightly`
+  takes the rule, `Brand` over `Nordic Labs` is one value in two lines and does
+  not, and an avatar identifies the whole block rather than labelling its first
+  line;
+- content is clipped when a leaf overflows a box that was not asked to scroll or
+  to ellipsise — those two say so in CSS, and everything else is an accident.
+
+Each rule is written into its script, so the next component is measured against
+it rather than against whoever last looked at the page.

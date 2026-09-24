@@ -643,7 +643,10 @@
 .spy-section-card { border-radius: var(--hf-radius-300); background-color: var(--hf-color-background-secondary); box-shadow: inset 0 0 0 var(--hf-border-width-thin) var(--hf-color-border-subtle); padding: var(--hf-space-500); display: flex; flex-direction: column; gap: var(--hf-space-400); }
 .spy-section-head { display: flex; align-items: center; gap: var(--hf-space-250); }
 .spy-section-head > .spy-icon { --spy-icon-size: var(--hf-icon-md); color: var(--q-tint-text); }
-.spy-section-title { flex: 1 1 0; min-width: 0; color: var(--hf-color-text-primary); font-size: var(--hf-type-size-400); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-semi-bold); }
+/* min-width:0 lets it shrink past its own word, which in a 120px panel slot
+   printed "Performance" straight out of the box. Shrinking is right; printing
+   outside is not, so it truncates the way the panel header already does. */
+.spy-section-title { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--hf-color-text-primary); font-size: var(--hf-type-size-400); line-height: var(--hf-type-line-height-600); font-weight: var(--hf-type-weight-semi-bold); }
 .spy-section-action { flex-shrink: 0; }
 
 /* ---------------------------------------------------------------------------

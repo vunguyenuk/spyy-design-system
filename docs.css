@@ -725,3 +725,10 @@ code {
    under a one-line swatch throws the row out. These are labels, not code that
    can be long, so they do not wrap. */
 .doc-radius-cell code, .doc-scale-row > code { white-space: nowrap; }
+
+/* The icon-size table puts a glyph beside a use-note that wraps in its column.
+   Centred, the 12px glyph ends up between the two lines it is labelling; the
+   same rule the components use applies here, scoped to this table so the
+   generic .spy-row utility keeps its centring. */
+.doc-scale-row .spy-row { align-items: flex-start; }
+.doc-scale-row .spy-row > .spy-icon { margin-block-start: calc((var(--hf-type-line-height-300) - var(--spy-icon-size)) / 2); }
